@@ -1,6 +1,6 @@
 package Domain;
 
-public class LZSS{
+public class LZSS extends Algorithm{
 
     public void comprimir(String InFile, String NewName, String NewPath){
 
