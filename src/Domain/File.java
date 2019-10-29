@@ -5,6 +5,8 @@ public class File {
     private String fileExtension;
     private String fileContent;
 
+    public File(){}
+
     public File (String filePath, String fileExtension, String fileContent) {
         this.filePath = filePath;
         this.fileExtension = fileExtension;
