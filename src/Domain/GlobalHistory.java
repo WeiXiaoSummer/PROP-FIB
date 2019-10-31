@@ -21,4 +21,16 @@ public class GlobalHistory {
         }
         return globalHistory;
     }
+
+    public ArrayList<LocalHistory> getGlobalHistory() {
+        return globalHistory;
+    }
+
+    public void delete(LocalHistory localHistory) {
+        globalHistory.remove(localHistory);
+    }
+
+    public void deleteAll() {
+        globalHistory.clear();
+    }
 }

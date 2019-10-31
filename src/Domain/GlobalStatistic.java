@@ -25,6 +25,14 @@ public class GlobalStatistic {
         this.averageCompressionRatio = averageCompressionRatio;
     }
 
+    public ArrayList<Object> getInformation() {
+        double averageCompressionSpeed = totalCompressedData/totalCompressionTime;
+        double averageDecompressionSpeed = totalDecompressedData/totalDecompressionTime;
+        ArrayList<Object> information = new ArrayList<>(Arrays.asList(numCompression, numDecompression, totalCompressedData,
+                totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionSpeed, averageDecompressionSpeed));
+        return information;
+    }
+
     public int getNumCompression() {
         return numCompression;
     }
@@ -51,14 +59,6 @@ public class GlobalStatistic {
 
     public double getAverageCompressionRatio() {
         return averageCompressionRatio;
-    }
-
-    public ArrayList<Object> getInformation() {
-        double averageCompressionSpeed = totalCompressedData/totalCompressionTime;
-        double averageDecompressionSpeed = totalDecompressedData/totalDecompressionTime;
-        ArrayList<Object> information = new ArrayList<>(Arrays.asList(numCompression, numDecompression, totalCompressedData,
-                totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionSpeed, averageDecompressionSpeed));
-        return information;
     }
 
     public void setNumCompression(int numCompression) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Algorithm {
 
-    private GlobalStatistic globalStatistic;
+    protected GlobalStatistic globalStatistic;
 
     public Algorithm(int numCompression, int numDecompression, int totalCompressedData,
                      int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
@@ -16,5 +16,4 @@ public class Algorithm {
     public ArrayList<Object> getGlobalStatistic() {
         return globalStatistic.getInformation();
     }
-
 }
