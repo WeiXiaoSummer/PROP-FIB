@@ -1,8 +1,6 @@
 package Domain;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
 
 public class LZSS extends Algorithm {
 
