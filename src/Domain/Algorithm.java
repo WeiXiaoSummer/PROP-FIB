@@ -6,6 +6,8 @@ public class Algorithm {
 
     protected GlobalStatistic globalStatistic;
 
+    public Algorithm() {}
+
     public Algorithm(int numCompression, int numDecompression, int totalCompressedData,
                      int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
                      double averageCompressionRatio) {
