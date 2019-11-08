@@ -1,19 +1,17 @@
 package Data;
 
 import java.io.*;
-import java.nio.Buffer;
-import java.util.ArrayList;
 
 public class IO {
 
     public String getInputTextFile(String Path) {
         String content = "";
         try {
-            BufferedReader bufferReader = new BufferedReader(new FileReader(Path));
-            String line = bufferReader.readLine();
-            while (line != null) {
-                content += line;
-                line = bufferReader.readLine();
+            FileReader bufferReader = new FileReader(Path);
+            short c = (short)bufferReader.read();
+            while (c != -1) {
+                content += (char)c;
+                c = (short)bufferReader.read();
             }
             bufferReader.close();
         }
@@ -23,7 +21,7 @@ public class IO {
         return content;
     }
 
-    public void outPutTextFile(String content, String Path) {
+    public void outputTextFile(String content, String Path) {
         try {
             File outputFile = new File(Path);
             BufferedWriter bufferWriter = new BufferedWriter(new FileWriter(Path, true));
