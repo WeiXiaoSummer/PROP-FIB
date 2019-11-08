@@ -13,7 +13,7 @@ public class Algorithm {
                                               totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
     }
 
-    public ArrayList<Object> getGlobalStatistic() {
+    ArrayList<Object> getGlobalStatistic() {
         return globalStatistic.getInformation();
     }
 }

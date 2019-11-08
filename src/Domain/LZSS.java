@@ -4,32 +4,25 @@ import java.io.*;
 
 public class LZSS extends Algorithm {
 
-    private FileReader FIn;
-    private FileWriter FOut;
     private StringBuilder Ventana;
-    private short nextChar;
+    private char nextChar;
+    private String outStream;
 
 
-    public LZSS() {
-
+    public LZSS(int numCompression, int numDecompression, int totalCompressedData, int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime, double averageCompressionRatio) {
+        super(numCompression, numDecompression, totalCompressedData, totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
     }
 
-
-    public void comprimir(String InFile, String NewName, String NewPath) throws IOException {
-
-        FIn = new FileReader(InFile);
-        FOut = new FileWriter(NewPath + "\\" + NewName + ".lzss");
+    public String comprimir(String content) throws IOException {
         Ventana = new StringBuilder();
         StringBuilder ActualMatch = new StringBuilder();
-
+        long startTime = System.nanoTime();
+        outStream = "";
         int MIndex = 0;
         int tempIndex;
-        int MidaOrig = 0;
-        int MidaComp = 0;
         int MidaMatch = 0;
-
-        while((nextChar =  (short) FIn.read()) != -1){
-            ++MidaOrig;
+        for(int i = 0; i < content.length(); ++i){
+            nextChar =  content.charAt(i);
             ActualMatch.append((char)nextChar);
             tempIndex = Ventana.indexOf(ActualMatch.toString());
 
@@ -39,12 +32,9 @@ public class LZSS extends Algorithm {
             }
             else{
                 if (MidaMatch > 3) {  //Si la mida es mes gran que 3, codifica el match
-                    char[] Codi = new char[3];
-                    Codi[0] = 1; //Flag a 1
-                    Codi[1] = (char)MIndex;
-                    Codi[2] = (char)MidaMatch;
-                    FOut.write(Codi);  //Escribim els 3 chars codificats
-                    MidaComp += 3;
+                    outStream += (char) 1;
+                    outStream += (char)MIndex;
+                    outStream += (char)MidaMatch;
 
                     Ventana.append(ActualMatch.substring(0, MidaMatch));
                     while(Ventana.length() > 65536) Ventana.deleteCharAt(0);
@@ -54,9 +44,8 @@ public class LZSS extends Algorithm {
                     MidaMatch = 1;
 
                 } else {  //Si la mida no es mes gran que 3, escriu flag a 0 i char sense codificar
-                    FOut.append((char)0);
-                    FOut.append(ActualMatch.charAt(0));
-                    MidaComp += 2;
+                    outStream += (char) 0;
+                    outStream += ActualMatch.charAt(0);
                     Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
                     if (Ventana.length() > 65536)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
 
@@ -72,12 +61,9 @@ public class LZSS extends Algorithm {
 
             if(MIndex != -1){
                 if (MidaMatch > 3) {  //Si la mida es mes gran que 3, codifica el match
-                    char[] Codi = new char[3];
-                    Codi[0] = 1; //Flag a 1
-                    Codi[1] = (char)MIndex;
-                    Codi[2] = (char)MidaMatch;
-                    FOut.write(Codi);  //Escribim els 3 chars codificats
-                    MidaComp += 3;
+                    outStream += (char) 1;
+                    outStream += (char)MIndex;
+                    outStream += (char)MidaMatch;
 
                     Ventana.append(ActualMatch.substring(0, MidaMatch));
                     while(Ventana.length() > 65536) Ventana.deleteCharAt(0);
@@ -86,9 +72,8 @@ public class LZSS extends Algorithm {
                     MidaMatch = 0;
 
                 } else {  //Si la mida no es mes gran que 3, escriu flag a 0 i char sense codificar
-                    FOut.append((char)0);
-                    FOut.append(ActualMatch.charAt(0));
-                    MidaComp += 2;
+                    outStream += (char) 0;
+                    outStream += ActualMatch.charAt(0);
 
                     Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
                     if (Ventana.length() > 65536)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
@@ -98,9 +83,8 @@ public class LZSS extends Algorithm {
                 }
             }
             else{
-                FOut.append((char)0);
-                FOut.append(ActualMatch.charAt(0));
-                MidaComp += 2;
+                outStream += (char) 0;
+                outStream += ActualMatch.charAt(0);
 
                 Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
                 if (Ventana.length() > 65536)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
@@ -109,42 +93,48 @@ public class LZSS extends Algorithm {
                 --MidaMatch;
             }
         }
-        //MAL
-        System.out.println("Mida del Fitxer Original: " + MidaOrig);
-        System.out.println("Mida del Fitxer Comprimit: " + MidaComp);
-        double OpMat = ((double)MidaComp/(double)MidaOrig)*100;
-        System.out.println("Percentatge de compressio: " + OpMat);
-        FIn.close();
-        FOut.close();
+
+        long endTime = System.nanoTime();
+        double compressTime = (double)(endTime-startTime)/1000000;
+
+        globalStatistic.setNumCompression(globalStatistic.getNumCompression()+1);
+        globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
+        double Ratio;
+        if(content.length() != 0) {
+            Ratio = ((double) content.length() / (double) outStream.length())*100;
+            globalStatistic.setAverageCompressionRatio((globalStatistic.getAverageCompressionRatio() + Ratio) /2);
+        }
+        return outStream;
     }
 
-
-    public void descomprimir(String InFile, String NewName, String NewPath) throws IOException {
-
-        FIn = new FileReader(InFile);
-        FOut = new FileWriter(NewPath + "\\" + NewName + ".txt");
+    public String descomprimir(String content) throws IOException {
+        long startTime = System.nanoTime();
         Ventana = new StringBuilder();
-        int nextInt;
-
-        while((nextChar = (short)FIn.read()) != -1){
-
+        outStream = "";
+        int i = 0;
+        while(i < content.length()){
+            nextChar = content.charAt(i);
+            ++i;
             if(nextChar == 0){
-                if((nextChar = (short) FIn.read()) != -1){
-                    Ventana.append((char)nextChar);
+                if(i < content.length()){
+                    nextChar = content.charAt(i);
+                    ++i;
+                    Ventana.append(nextChar);
                     if(Ventana.length() > 65536) Ventana.deleteCharAt(0);
-                    FOut.write((char)nextChar);
+                    outStream += nextChar;
                 }
             }
             else if(nextChar == 1){
                 int pos;
                 int tam;
-
-                if((nextInt = FIn.read()) != -1){
-                    pos = nextInt;
-                    if((nextChar = (short) FIn.read()) != -1){
-                        tam = nextChar;
+                if(i < content.length()){
+                    pos = content.charAt(i);
+                    ++i;
+                    if(i < content.length()){
+                        tam = content.charAt(i);
+                        ++i;
                         while(tam > 0){
-                            FOut.write(Ventana.charAt(pos));
+                            outStream += Ventana.charAt(pos);
                             Ventana.append(Ventana.charAt(pos));
                             ++pos;
                             --tam;
@@ -154,9 +144,11 @@ public class LZSS extends Algorithm {
                 }
             }
         }
-        FIn.close();
-        FOut.close();
+        long endTime = System.nanoTime();
+        double descompressTime = (double)(endTime-startTime)/1000000;
+        globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
+        globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime() + descompressTime);
+        return outStream;
     }
 
 }
-

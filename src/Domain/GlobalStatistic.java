@@ -28,9 +28,8 @@ public class GlobalStatistic {
     public ArrayList<Object> getInformation() {
         double averageCompressionSpeed = totalCompressedData/totalCompressionTime;
         double averageDecompressionSpeed = totalDecompressedData/totalDecompressionTime;
-        ArrayList<Object> information = new ArrayList<>(Arrays.asList(numCompression, numDecompression, totalCompressedData,
+        return new ArrayList<>(Arrays.asList(numCompression, numDecompression, totalCompressedData,
                 totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionSpeed, averageDecompressionSpeed));
-        return information;
     }
 
     public int getNumCompression() {
