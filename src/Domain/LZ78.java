@@ -19,7 +19,7 @@ public class LZ78 extends Algorithm {
         Dictionary<Integer, String> dic = new Hashtable();
         String inChar;
         String prefix = "";
-        String outStream = "LZ78";
+        String outStream = "";
         for (int i = 0; i < content.length(); ++i) {
             inChar = content.substring(i, i+1);
             if (((Hashtable<Integer, String>) dic).containsValue(prefix+inChar)) {
