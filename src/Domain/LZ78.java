@@ -6,9 +6,7 @@ import java.io.File;
 import java.util.*;
 
 public class LZ78 extends Algorithm {
-    public LZ78() {
-        super();
-    }
+
     public LZ78(int numCompression, int numDecompression, int totalCompressedData,
                 int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
                 double averageCompressionRatio) {
