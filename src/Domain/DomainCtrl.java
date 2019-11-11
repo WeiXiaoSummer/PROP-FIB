@@ -1,9 +1,7 @@
 package Domain;
 import Data.DataCtrl;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class DomainCtrl {
 
@@ -23,28 +21,22 @@ public class DomainCtrl {
     }
 
     public void initializeDomainCtrl() {
-        //lz78 = new LZ78();
-        lzss = new LZSS();
-        jpeg = new JPEG();
-        globalHistory = new GlobalHistory();
+
     }
 
     public void compressFileTo(String filePath, String savePath, String algoritmeType){
         String content = loadFile(filePath); // get the content of file
-        MyFile file = new MyFile(filePath, content);
-        if (algoritmeType.equals("AUTO")) {
-            chooseTheBestAlgoritme(getFileType(filePath)); //random
-        }
+        File file = new File(filePath, content, getFileType(filePath));
+        String algorithm;
         String contentCompressed = null;
         long startTime = System.nanoTime(); // get the time when start the compression
-        //compressed file with the algorithm we had selected
-        switch(algoritmeType) {
-            case "LZ78" :
-                contentCompressed = lz78.comprimir(content);
-            case "LZSS" :
-                //contentCompressed = lzss.comprimir(content);
-            case "JPEG" :
-                //contentCompressed = jpeg.comprimir(content);
+        //Choose the right algorithm and compressed file
+        if (algoritmeType.equals("LZ78")) {
+            contentCompressed = lz78.comprimir(content);
+        }else if (algoritmeType.equals("LZSS")) {
+            //contentCompressed = lzss.comprimir(content);
+        }else if (algoritmeType.equals("JPEG")){
+            //contentCompressed = jpeg.comprimir(content);
         }
         long endTime = System.nanoTime(); // get the time when end the compression
         double compressTime = (double)(endTime-startTime)/1000000;
@@ -55,8 +47,8 @@ public class DomainCtrl {
         globalHistory.addLocalHistory(localHistory);
     }
 
-    /*public void compressFolderTo(String folderPath, String savePath){
-        File file = new File(folderPath);
+    public void compressFolderTo(String folderPath, String savePath){
+        java.io.File file = new java.io.File(folderPath);
         java.io.File[] tempList = file.listFiles();
 
         for (int i = 0; i < tempList.length; i++) {
@@ -64,33 +56,33 @@ public class DomainCtrl {
                 compressFileTo(tempList[i].toString(), folderPath, "AUTO");
             }
             if (tempList[i].isDirectory()) {
-                compressFolderTo(tempList[i].toString(), savePath);
+                compressFolderTo(tempList[i].toString(), tempList[i].toString());
             }
         }
-    }*/
+    }
 
     public void decompressFileTo(String filePath, String savePath){
         String content = DataCtrl.getInstance().getInputTextFile(filePath);
-        MyFile myFile = new MyFile(filePath, content);
-        String algorithm = null;
+        File file = new File(filePath, content, getFileType(filePath));
+        String algorithm;
+        String algoritme = null;
         String contentDescompressed = null;
         long startTime = System.nanoTime(); // get the time when start the descompression
-        switch(content.substring(0,4)) {
-            case "LZ78" :
-                contentDescompressed = lz78.descomprimir(content.substring(4));
-                algorithm = "LZ78";
-            case "LZSS" :
-                //contentDescompressed = lz78.descomprimir(content.substring(4));
-                algorithm = "LZSS";
-            case "JPEG" :
-                //contentDescompressed = lz78.descomprimir(content.substring(4));
-                algorithm = "JPEG";
+        if (content.contains("LZ78")) {
+            contentDescompressed = lz78.descomprimir(content.substring(4));
+            algorithm = "LZ78";
+        }else if(content.contains("LZSS")) {
+            //contentDescompressed = lz78.descomprimir(content.substring(4));
+            algorithm = "LZSS";
+        } else if (content.contains("JPEG")) {
+            //contentDescompressed = lz78.descomprimir(content.substring(4));
+            algorithm = "JPEG";
         }
         long endTime = System.nanoTime(); // get the time when end the compression
         double descompressTime = (double)(endTime-startTime)/1000000;
         saveFileTo(content, savePath);
         // create a new history
-        LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Decompression", algorithm,
+        LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Decompression", algoritme,
                                                       content.length()/contentDescompressed.length(), descompressTime);
         //add to history
         globalHistory.addLocalHistory(localHistory);
@@ -140,13 +132,5 @@ public class DomainCtrl {
         else if (filePath.contains(".ppm")) return ".ppm";
         else if (filePath.charAt(filePath.length()-4) != '.') return "folder";
         return null;
-    }
-
-    public String chooseTheBestAlgoritme(String fileType) {
-        if (fileType.equals(".ppm")) return "JPEG";
-        else{
-            if ((int)Math.random()%2 == 0) return "LZ78";
-            else return "LZSS";
-        }
     }
 }
