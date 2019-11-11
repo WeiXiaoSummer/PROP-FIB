@@ -1,8 +1,4 @@
 package Domain;
-import Domain.DomainCtrl;
-
-import java.io.*;
-import java.io.File;
 import java.util.*;
 
 public class LZ78 extends Algorithm {
@@ -15,31 +11,32 @@ public class LZ78 extends Algorithm {
     }
 
     public String comprimir(String content) {
-        long startTime = System.nanoTime();
-        Dictionary<Integer, String> dic = new Hashtable();
+        long startTime=System.currentTimeMillis();
+        Dictionary<String, Integer> dic = new Hashtable<>();
         String inChar;
         String prefix = "";
         String outStream = "";
         for (int i = 0; i < content.length(); ++i) {
             inChar = content.substring(i, i+1);
-            if (((Hashtable<Integer, String>) dic).containsValue(prefix+inChar)) {
-                if (i+1 == content.length()) outStream += toASCII(findKey(dic,prefix+inChar));
+            if (((Hashtable<String, Integer>) dic).containsKey(prefix+inChar)) {
+                if (i+1 == content.length()) outStream += toASCII(dic.get(prefix+inChar));
                 prefix += inChar;
             }
 
             else {
-                if (prefix.isEmpty()) outStream += toASCII(0); //int key --> char key
+                if (prefix.isEmpty()) outStream += (char) 0; //int key --> char key
                 else {
-                    outStream += toASCII(findKey(dic,prefix));
+                    outStream += toASCII(dic.get(prefix));
                 }
                 outStream += inChar;
-                dic.put(dic.size()+1, prefix+inChar);
+                dic.put(prefix+inChar,dic.size()+1);
                 prefix = "";
             }
         }
-        //staticglobal
-        long endTime = System.nanoTime();
-        double compressTime = (double)(endTime-startTime)/1000000;
+        long endTime=System.currentTimeMillis(); // get the time when end the compression
+        double compressTime = (double)(endTime-startTime)* 0.001;
+        System.out.print("Time:"+ compressTime +"s\n");
+        System.out.print("length:"+outStream.length() +"\n");
         globalStatistic.setNumCompression(globalStatistic.getNumCompression()+1);
         globalStatistic.setTotalCompressedData(globalStatistic.getTotalCompressedData()+content.length());
         globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
@@ -48,7 +45,7 @@ public class LZ78 extends Algorithm {
     }
 
     public String descomprimir(String content) {
-        long startTime = System.nanoTime();
+        long startTime=System.currentTimeMillis();
         Dictionary<Integer, String> dic = new Hashtable();
         String outStream = "";
         int i = 0;
@@ -67,8 +64,8 @@ public class LZ78 extends Algorithm {
             }
             ++i;
         }
-        long endTime = System.nanoTime();
-        double descompressTime = (double)(endTime-startTime)/1000000;
+        long endTime=System.currentTimeMillis(); // get the time when end the compression
+        double descompressTime = (double)(endTime-startTime)* 0.001;
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
         globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+content.length());
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime()+descompressTime);
@@ -76,28 +73,15 @@ public class LZ78 extends Algorithm {
         return outStream;
     }
 
-    // get the key of value s in the dictionary dic
-    public int findKey(Dictionary dic ,String s) {
-        Enumeration<Integer> key = dic.keys();
-        while (key.hasMoreElements()) {
-            int k = key.nextElement();
-            if (dic.get(k).equals(s)) {
-                return k;
-            }
-        }
-        return 0;
-    }
-
     //change the int s to ASCII
     public char toASCII(int s) {
         char c = (char) s;
-        c += 32;
         return c;
     }
 
     //change the ASCII to int
     public int ASCIItoInt(char s) {
-        return Integer.valueOf(s-32);
+        return Integer.valueOf(s);
     }
 
 }

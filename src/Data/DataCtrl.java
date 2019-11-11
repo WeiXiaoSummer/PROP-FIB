@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 public class DataCtrl {
 
     private static DataCtrl instance = null;
-    private IO iostream = new IO();
+    private IO io = new IO();
 
     private DataCtrl() {}
 
@@ -17,11 +17,11 @@ public class DataCtrl {
     }
 
     public String getInputTextFile(String Path) {
-        return iostream.getInputTextFile(Path);
+        return io.getInputTextFile(Path);
     }
 
     public void outPutTextFile(String content, String Path) {
-        iostream.outPutTextFile(content, Path);
+        io.outputTextFile(content, Path);
     }
 
 

@@ -26,7 +26,7 @@ public class DomainCtrl {
 
     public void compressFileTo(String filePath, String savePath, String algoritmeType){
         String content = loadFile(filePath); // get the content of file
-        File file = new File(filePath, content, getFileType(filePath));
+        Fitxer file = new Fitxer(filePath, content, getFileType(filePath));
         String algorithm;
         String contentCompressed = null;
         long startTime = System.nanoTime(); // get the time when start the compression
@@ -63,7 +63,7 @@ public class DomainCtrl {
 
     public void decompressFileTo(String filePath, String savePath){
         String content = DataCtrl.getInstance().getInputTextFile(filePath);
-        File file = new File(filePath, content, getFileType(filePath));
+        Fitxer file = new Fitxer(filePath, content, getFileType(filePath));
         String algorithm;
         String algoritme = null;
         String contentDescompressed = null;

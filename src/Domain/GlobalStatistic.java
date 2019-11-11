@@ -13,6 +13,8 @@ public class GlobalStatistic {
     private double totalDecompressionTime;
     private double averageCompressionRatio;
 
+    public GlobalStatistic(){}
+
     public GlobalStatistic (int numCompression, int numDecompression, int totalCompressedData, int
                             totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
                             double averageCompressionRatio) {
