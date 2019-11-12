@@ -37,7 +37,7 @@ public class DriverGeneral {
                     Path = entrada.nextLine();
                     System.out.println("Introdueix el path on vulguis guardar el fitxer comprimit");
                     NPath = entrada.nextLine();
-                    System.out.println("Introdueix l'algoritme de compressió");
+                    System.out.println("Introdueix l'algoritme de compressió: AUTO, LZ78, LZSS, JPEG(només per imatges)");
                     Alg = entrada.nextLine();
                     System.out.println("Comprimint...");
                     DomainCtrl.getInstance().compressFileTo(Path, NPath, Alg);

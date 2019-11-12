@@ -2,6 +2,7 @@ package Domain;
 import java.util.*;
 
 public class LZ78 extends Algorithm {
+    public LZ78(){}
 
     public LZ78(int numCompression, int numDecompression, int totalCompressedData,
                 int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
