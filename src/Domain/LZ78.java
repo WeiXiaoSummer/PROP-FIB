@@ -2,13 +2,22 @@ package Domain;
 import java.util.*;
 
 public class LZ78 extends Algorithm {
-    public LZ78(){}
 
     public LZ78(int numCompression, int numDecompression, int totalCompressedData,
                 int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
                 double averageCompressionRatio) {
         super(numCompression, numDecompression, totalCompressedData, totalDecompressedData, totalCompressionTime,
                 totalDecompressionTime, averageCompressionRatio);
+    }
+
+    @Override
+    public Fitxer comprimir(Fitxer file) {
+        return null;
+    }
+
+    @Override
+    public Fitxer descomprimir(Fitxer file) {
+        return null;
     }
 
     public String comprimir(String content) {

@@ -1,7 +1,5 @@
 package Data;
 
-import java.io.InputStreamReader;
-
 public class DataCtrl {
 
     private static DataCtrl instance = null;
@@ -16,13 +14,12 @@ public class DataCtrl {
         return instance;
     }
 
-    public String getInputTextFile(String Path) {
-        return io.getInputTextFile(Path);
+    public String getInputFile(String Path) {
+        return io.getInputFile(Path);
     }
 
-    public void outPutTextFile(String content, String Path) {
-        io.outputTextFile(content, Path);
+    public void outputFile(String content, String Path) {
+        io.outputFile(content, Path);
     }
-
 
 }

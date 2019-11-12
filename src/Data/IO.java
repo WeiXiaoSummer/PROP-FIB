@@ -4,7 +4,7 @@ import java.io.*;
 
 public class IO {
 
-    public String getInputTextFile(String Path) {
+    public String getInputFile(String Path) {
         String content = "";
         /*try {
             FileReader bufferReader = new FileReader(Path);
@@ -36,9 +36,8 @@ public class IO {
         else return content;
     }
 
-    public void outputTextFile(String content, String Path) {
+    public void outputFile(String content, String Path) {
         try {
-            File outputFile = new File(Path);
             BufferedWriter bufferWriter = new BufferedWriter(new FileWriter(Path, true));
             bufferWriter.write(content);
             bufferWriter.flush();
