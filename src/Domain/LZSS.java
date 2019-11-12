@@ -37,7 +37,7 @@ public class LZSS extends Algorithm {
                     outStream += (char)MidaMatch;
 
                     Ventana.append(ActualMatch.substring(0, MidaMatch));
-                    while(Ventana.length() > 65536) Ventana.deleteCharAt(0);
+                    while(Ventana.length() > 32768) Ventana.deleteCharAt(0);
 
                     while(ActualMatch.length() > 1) ActualMatch.deleteCharAt(0);
                     MIndex = -1;
@@ -47,7 +47,7 @@ public class LZSS extends Algorithm {
                     outStream += (char) 0;
                     outStream += ActualMatch.charAt(0);
                     Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
-                    if (Ventana.length() > 65536)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
+                    if (Ventana.length() > 32768)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
 
                     ActualMatch.deleteCharAt(0);
                     if(ActualMatch.length() == 0) MidaMatch = 0;
@@ -66,7 +66,7 @@ public class LZSS extends Algorithm {
                     outStream += (char)MidaMatch;
 
                     Ventana.append(ActualMatch.substring(0, MidaMatch));
-                    while(Ventana.length() > 65536) Ventana.deleteCharAt(0);
+                    while(Ventana.length() > 32768) Ventana.deleteCharAt(0);
 
                     while(ActualMatch.length() > 0) ActualMatch.deleteCharAt(0);
                     MidaMatch = 0;
@@ -76,7 +76,7 @@ public class LZSS extends Algorithm {
                     outStream += ActualMatch.charAt(0);
 
                     Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
-                    if (Ventana.length() > 65536)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
+                    if (Ventana.length() > 32768)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
 
                     ActualMatch.deleteCharAt(0);
                     if(ActualMatch.length() == 0) MidaMatch = 0;
@@ -87,30 +87,30 @@ public class LZSS extends Algorithm {
                 outStream += ActualMatch.charAt(0);
 
                 Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
-                if (Ventana.length() > 65536)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
+                if (Ventana.length() > 32768)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
 
                 ActualMatch.deleteCharAt(0);
                 --MidaMatch;
             }
         }
 
-        long endTime = System.nanoTime();
-        double compressTime = (double)(endTime-startTime)/1000000;
+        long endTime=System.currentTimeMillis(); // get the time when end the compression
+        double compressTime = (double)(endTime-startTime)* 0.001;
 
-        globalStatistic.setNumCompression(globalStatistic.getNumCompression()+1);
+        globalStatistic.setNumCompression(globalStatistic.getNumCompression() + 1);
         globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
         double Ratio;
         if(content.length() != 0) {
             Ratio = ((double) content.length() / (double) outStream.length())*100;
-            globalStatistic.setAverageCompressionRatio((globalStatistic.getAverageCompressionRatio() + Ratio) /2);
+            globalStatistic.setAverageCompressionRatio((globalStatistic.getAverageCompressionRatio() + Ratio) / 2);
         }
-        return new Fitxer("//", ".lzss", outStream);
+        return new Fitxer("", ".lzss", outStream);
     }
 
 
     public Fitxer descomprimir(Fitxer file) {
         String content = file.getFileContent();
-        long startTime = System.nanoTime();
+        long startTime = System.currentTimeMillis();
         Ventana = new StringBuilder();
         outStream = "";
         int i = 0;
@@ -122,7 +122,7 @@ public class LZSS extends Algorithm {
                     nextChar = content.charAt(i);
                     ++i;
                     Ventana.append(nextChar);
-                    if(Ventana.length() > 65536) Ventana.deleteCharAt(0);
+                    if(Ventana.length() > 32768) Ventana.deleteCharAt(0);
                     outStream += nextChar;
                 }
             }
@@ -141,16 +141,16 @@ public class LZSS extends Algorithm {
                             ++pos;
                             --tam;
                         }
-                        while(Ventana.length() > 65536) Ventana.deleteCharAt(0);
+                        while(Ventana.length() > 32768) Ventana.deleteCharAt(0);
                     }
                 }
             }
         }
-        long endTime = System.nanoTime();
-        double descompressTime = (double)(endTime-startTime)/1000000;
+        long endTime=System.currentTimeMillis(); // get the time when end the compression
+        double descompressTime = (double)(endTime-startTime)* 0.001;
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime() + descompressTime);
-        return new Fitxer("//", ".txt", outStream);
+        return new Fitxer("", ".txt", outStream);
     }
 
 }
