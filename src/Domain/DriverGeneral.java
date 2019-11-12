@@ -63,28 +63,32 @@ public class DriverGeneral {
                     Alg = entrada.nextLine();
                     switch(Alg){
                         case "LZ78":
-                            DomainCtrl.getInstance().getStatisticLZ78();
+                            System.out.print(DomainCtrl.getInstance().getStatisticLZ78() + "\n");
                             break;
                         case "LZSS":
-                            DomainCtrl.getInstance().getStatisticLZSS();
+                            System.out.print(DomainCtrl.getInstance().getStatisticLZSS() + "\n");
                             break;
                         case "JPEG":
-                            DomainCtrl.getInstance().getStatisticJPEG();
+                            System.out.print(DomainCtrl.getInstance().getStatisticJPEG() + "\n");
                             break;
                         default:
                             throw new IllegalStateException("Unexpected value: " + Alg);
                     }
+                    mostraMenu();
+                    opcion = entrada.nextLine();
                     break;
                 case "4":  //Falta per fer
                     System.out.println("Has seleccionat: Historial");
-                    DomainCtrl.getInstance().getHistory();
+                    System.out.print(DomainCtrl.getInstance().getHistory() + "\n");
+                    mostraMenu();
+                    opcion = entrada.nextLine();
                     break;
                 case "5":
                     System.out.println("Sortint...");
                     out = 1;
                     break;
                 default:
-                    System.out.println("Acció no valida");
+                    System.out.println("Acció no valida \n");
                     mostraMenu();
                     opcion = entrada.nextLine();
             }

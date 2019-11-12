@@ -1,4 +1,4 @@
-package Domain;
+/*package Domain;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,7 +8,7 @@ public class DriverAlgorithm {
         String nomClasse = "Algorithm";
         System.out.println("Driver " + nomClasse + ":");
 
-        Algorithm a = new Algorithm();
+        //Algorithm a = new Algorithm();
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -68,3 +68,4 @@ public class DriverAlgorithm {
         }
     }
 }
+*/

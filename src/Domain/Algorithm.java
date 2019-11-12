@@ -10,7 +10,7 @@ public abstract class Algorithm {
                      int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
                      double averageCompressionRatio) {
         globalStatistic = new GlobalStatistic(numCompression, numDecompression, totalCompressedData, totalDecompressedData,
-                                              totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
+                totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
     }
 
     ArrayList<Object> getGlobalStatistic() {

@@ -82,7 +82,7 @@ public class DomainCtrl {
                 outFile = lzss.descomprimir(file);
                 algoritme = "LZSS";
                 savePath += ".txt";
-                    break;
+                break;
             case ".jpeg":
                 outFile = jpeg.descomprimir(file);
                 algoritme = "JPEG";
