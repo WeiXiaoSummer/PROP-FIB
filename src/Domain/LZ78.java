@@ -10,7 +10,8 @@ public class LZ78 extends Algorithm {
                 totalDecompressionTime, averageCompressionRatio);
     }
 
-    public String comprimir(String content) {
+    public Fitxer comprimir(Fitxer file) {
+        String content = file.getFileContent();
         long startTime=System.currentTimeMillis();
         Dictionary<String, Integer> dic = new Hashtable<>();
         String inChar;
@@ -40,11 +41,12 @@ public class LZ78 extends Algorithm {
         globalStatistic.setNumCompression(globalStatistic.getNumCompression()+1);
         globalStatistic.setTotalCompressedData(globalStatistic.getTotalCompressedData()+content.length());
         globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
-        globalStatistic.setAverageCompressionRatio(globalStatistic.getTotalCompressedData()/globalStatistic.getTotalDecompressedData());
-        return outStream;
+        globalStatistic.setAverageCompressionRatio((double)globalStatistic.getTotalCompressedData()/(double)globalStatistic.getTotalDecompressedData());
+        return new Fitxer("//", ".lz78", outStream);
     }
 
-    public String descomprimir(String content) {
+    public Fitxer descomprimir(Fitxer file) {
+        String content = file.getFileContent();
         long startTime=System.currentTimeMillis();
         Dictionary<Integer, String> dic = new Hashtable();
         String outStream = "";
@@ -69,19 +71,18 @@ public class LZ78 extends Algorithm {
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
         globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+content.length());
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime()+descompressTime);
-        globalStatistic.setAverageCompressionRatio(globalStatistic.getTotalCompressedData()/globalStatistic.getTotalDecompressedData());
-        return outStream;
+        globalStatistic.setAverageCompressionRatio((double)globalStatistic.getTotalCompressedData()/(double)globalStatistic.getTotalDecompressedData());
+        return new Fitxer("//", ".txt", outStream);
     }
 
     //change the int s to ASCII
     public char toASCII(int s) {
-        char c = (char) s;
-        return c;
+        return (char) s;
     }
 
     //change the ASCII to int
     public int ASCIItoInt(char s) {
-        return Integer.valueOf(s);
+        return s;
     }
 
 }

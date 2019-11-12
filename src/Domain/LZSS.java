@@ -1,7 +1,5 @@
 package Domain;
 
-import java.io.*;
-
 public class LZSS extends Algorithm {
 
     private StringBuilder Ventana;
@@ -13,10 +11,12 @@ public class LZSS extends Algorithm {
         super(numCompression, numDecompression, totalCompressedData, totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
     }
 
-    public String comprimir(String content) throws IOException {
+
+    public Fitxer comprimir(Fitxer file) {
+        String content = file.getFileContent();
         Ventana = new StringBuilder();
         StringBuilder ActualMatch = new StringBuilder();
-        long startTime = System.nanoTime();
+        long startTime = System.currentTimeMillis();
         outStream = "";
         int MIndex = 0;
         int tempIndex;
@@ -104,10 +104,12 @@ public class LZSS extends Algorithm {
             Ratio = ((double) content.length() / (double) outStream.length())*100;
             globalStatistic.setAverageCompressionRatio((globalStatistic.getAverageCompressionRatio() + Ratio) /2);
         }
-        return outStream;
+        return new Fitxer("//", ".lzss", outStream);
     }
 
-    public String descomprimir(String content) throws IOException {
+
+    public Fitxer descomprimir(Fitxer file) {
+        String content = file.getFileContent();
         long startTime = System.nanoTime();
         Ventana = new StringBuilder();
         outStream = "";
@@ -148,7 +150,7 @@ public class LZSS extends Algorithm {
         double descompressTime = (double)(endTime-startTime)/1000000;
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime() + descompressTime);
-        return outStream;
+        return new Fitxer("//", ".txt", outStream);
     }
 
 }

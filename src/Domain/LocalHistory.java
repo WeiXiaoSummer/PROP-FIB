@@ -13,7 +13,7 @@ public class LocalHistory {
     private double compressionRatio;
     private double timeUsed;
 
-    public LocalHistory(){};
+    public LocalHistory(){}
 
     public LocalHistory(String inputPath, String outputPath, String fileExtension, String operation, String algorithm, double compressionRatio, double timeUsed) {
         this.inputPath = inputPath;
