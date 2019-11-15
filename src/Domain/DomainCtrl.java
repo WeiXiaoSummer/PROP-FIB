@@ -4,9 +4,7 @@ import Data.DataCtrl;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class DomainCtrl {
 
@@ -79,7 +77,7 @@ public class DomainCtrl {
             Fitxer outPutFile = jpeg.comprimir(inputImage);
             long endTime = System.nanoTime();
             double compressTime = (double)(endTime-startTime)/1000000000;
-            double compressRatio =  (RGB.length)/outPutFile.getImageContent().length;
+            double compressRatio =  (double)(RGB.length)/(double)outPutFile.getImageContent().length;
             LocalHistory localHistory = new LocalHistory(filePath, savePath+".jppeg", getFileType(filePath), "Compression", algoritmeType, compressRatio, compressTime);
             globalHistory.addLocalHistory(localHistory);
             DataCtrl.getInstance().outPutImg(savePath+".jppeg", Dimension.getKey(), Dimension.getValue(), outPutFile.getImageContent());
@@ -103,11 +101,12 @@ public class DomainCtrl {
 
     public void decompressFileTo(String filePath, String savePath) throws IOException {
         String fileType = getFileType(filePath);
+        assert fileType != null;
         if (filePath.equals(".lz78") || filePath.equals(".lzss")) {
             String content = Data.DataCtrl.getInstance().getInputFile(filePath);
             Fitxer file = new Fitxer(filePath, getFileType(filePath), content);
-            String algoritme = "";
-            Fitxer outFile = new Fitxer();
+            String algoritme;
+            Fitxer outFile;
             long startTime = System.nanoTime(); // get the time when start the descompression
             if (fileType.equals(".lz78")) {
                 outFile = lz78.descomprimir(file);
@@ -130,19 +129,20 @@ public class DomainCtrl {
             globalHistory.addLocalHistory(localHistory);
         }
         else if (fileType.equals(".jppeg")) {
-            Pair<Integer, Integer> dimension = DataCtrl.getInstance().getImgDimension(filePath);
-            byte[] compressedImg = DataCtrl.getInstance().getInputImg(filePath, dimension.getKey(), dimension.getValue());
-            Fitxer inputCompressedImg = new Fitxer();
-            inputCompressedImg.setDimension(dimension);
-            inputCompressedImg.setImageContent(compressedImg);
-            long startTime = System.nanoTime();
-            Fitxer outPutImage = jpeg.descomprimir(inputCompressedImg);
-            long endTime = System.nanoTime();
-            double decompressTime = (double)(endTime-startTime)/1000000000;
-            double compressRatio =  compressedImg.length/outPutImage.getImageContent().length;
-            LocalHistory localHistory = new LocalHistory(filePath, savePath, ".jppeg", "Decompression", "JPEG", compressRatio, decompressTime);
-            globalHistory.addLocalHistory(localHistory);
-            DataCtrl.getInstance().outPutImg(savePath+".ppm", dimension.getKey(), dimension.getValue(), outPutImage.getImageContent());
+                Pair<Integer, Integer> dimension = DataCtrl.getInstance().getImgDimension(filePath);
+                byte[] compressedImg = DataCtrl.getInstance().getInputImg(filePath, dimension.getKey(), dimension.getValue());
+                Fitxer inputCompressedImg = new Fitxer();
+                inputCompressedImg.setDimension(dimension);
+                inputCompressedImg.setImageContent(compressedImg);
+                long startTime = System.nanoTime();
+                Fitxer outPutImage = jpeg.descomprimir(inputCompressedImg);
+                long endTime = System.nanoTime();
+                double decompressTime = (double)(endTime-startTime)/1000000000;
+                double compressRatio =  (double)compressedImg.length/(double)outPutImage.getImageContent().length;
+                LocalHistory localHistory = new LocalHistory(filePath, savePath, ".jppeg", "Decompression", "JPEG", compressRatio, decompressTime);
+                globalHistory.addLocalHistory(localHistory);
+                DataCtrl.getInstance().outPutImg(savePath+".ppm", dimension.getKey(), dimension.getValue(), outPutImage.getImageContent());
+            }
         }
         /*switch (Objects.requireNonNull(getFileType(filePath))){
             case ".lz78":
@@ -173,7 +173,7 @@ public class DomainCtrl {
                 (double)content.length()/(double)contentOut.length(), descompressTime);
         //add to history
         globalHistory.addLocalHistory(localHistory);*/
-    }
+
 
     //get the content of file
     private String loadFile(String filePath) {
@@ -181,15 +181,14 @@ public class DomainCtrl {
     }
 
     // get the statistic of the algorithm we have selected
-    public ArrayList<Object> loadStatistic(String algorithm){
-        switch(algorithm)
-        {
+    public ArrayList<Object> GetStatistic(String algorithm){
+        switch(algorithm) {
             case "LZ78" :
-                return lz78.getGlobalStatistic();
+                return getStatisticLZ78();
             case "LZSS" :
-                return lzss.getGlobalStatistic();
+                return getStatisticLZSS();
             case "JPEG" :
-                return jpeg.getGlobalStatistic();
+                return getStatisticJPEG();
         }
         return null;
     }
