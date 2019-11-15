@@ -1,5 +1,7 @@
 package Data;
 
+import javafx.util.Pair;
+
 public class DataCtrl {
 
     private static DataCtrl instance = null;
@@ -20,6 +22,14 @@ public class DataCtrl {
 
     public void outputFile(String content, String Path) {
         io.outputFile(content, Path);
+    }
+
+    public Pair<Integer, Integer> getImgDimension(String Path) { return io.getImgDimension(Path);}
+
+    public byte[] getInputImg(String Path, Integer width, Integer height) { return io.getInputImg(Path, width, height);}
+
+    public void outPutImg(String Path, Integer width, Integer height, byte[] RGB) {
+        io.outPutImg(Path, width, height, RGB);
     }
 
 }

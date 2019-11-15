@@ -1,12 +1,15 @@
 package Domain;
 
+import javafx.util.Pair;
+
 public class Fitxer {
     private String filePath;
     private String fileExtension;
     private String fileContent;
+    private byte[] imageContent;
+    private Pair<Integer, Integer> dimension;
 
     public Fitxer(){
-
     }
 
     public Fitxer (String filePath, String fileExtension, String fileContent) {
@@ -27,6 +30,10 @@ public class Fitxer {
         this.fileContent = fileContent;
     }
 
+    public void setImageContent(byte[] imageContent) { this.imageContent = imageContent; }
+
+    public void setDimension(Pair<Integer, Integer> dimension) {this.dimension = dimension;}
+
     public String getFileContent() {
         return fileContent;
     }
@@ -38,4 +45,8 @@ public class Fitxer {
     public String getFileExtension() {
         return fileExtension;
     }
+
+    public byte[] getImageContent() { return imageContent;}
+
+    public Pair<Integer, Integer> getDimension() {return dimension;}
 }
