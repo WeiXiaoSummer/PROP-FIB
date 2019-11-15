@@ -1,4 +1,6 @@
-package Domain;
+package Drivers;
+
+import Domain.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,7 +10,7 @@ public class DriverGlobalHistory {
         String nomClasse = "GlobalHistory";
         System.out.println("Driver " + nomClasse + ":");
 
-        GlobalHistory globalHistory = new GlobalHistory();
+        Domain.GlobalHistory globalHistory = new Domain.GlobalHistory();
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -30,7 +32,7 @@ public class DriverGlobalHistory {
                 System.out.println("\t 0) Sortir");
 
                 String linea;
-                String paraules[];
+                String[] paraules;
                 String opcio;
 
                 linea = br.readLine();

@@ -1,5 +1,6 @@
-package Domain;
+package Drivers;
 
+import Domain.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -28,7 +29,7 @@ public class DriverFitxer {
                 System.out.println("\t 0) Sortir");
 
                 String linea;
-                String paraules[];
+                String[] paraules;
                 String opcio;
 
                 linea = br.readLine();
