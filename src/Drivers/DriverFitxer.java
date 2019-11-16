@@ -6,7 +6,6 @@ import org.junit.runner.notification.Failure;
 
 public class DriverFitxer {
 
-
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(FitxerTest.class);
         int NumError = 0;
