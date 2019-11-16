@@ -12,7 +12,7 @@ public class Fitxer {
     public Fitxer(){
     }
 
-    public Fitxer (String filePath, String fileExtension, String fileContent) {
+    public Fitxer(String filePath, String fileExtension, String fileContent) {
         this.filePath = filePath;
         this.fileExtension = fileExtension;
         this.fileContent = fileContent;
