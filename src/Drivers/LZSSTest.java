@@ -6,13 +6,15 @@ import Data.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import java.io.File;
+
 public class LZSSTest {
 
     private LZSS lzss = new LZSS(0, 0, 0, 0, 0, 0, 0);
 
     @Test
     public void Comprimeix(){
-        String Path = "\\Prueba.txt";
+        String Path = new File("").getAbsolutePath() + "\\Prueba.txt";
         String text = DataCtrl.getInstance().getInputFile(Path);
         Fitxer fitxer = new Fitxer("", "", text);
         int midaNormal = text.length();
@@ -23,7 +25,7 @@ public class LZSSTest {
 
     @Test
     public void Descomprimeix(){
-        String Path = "\\Prueba.txt";
+        String Path = new File("").getAbsolutePath() + "\\Prueba.txt";
         String text = DataCtrl.getInstance().getInputFile(Path);
         Fitxer fitxer = new Fitxer("", "", text);
         int midaNormal = text.length();
