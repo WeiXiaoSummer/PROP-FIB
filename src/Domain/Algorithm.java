@@ -13,7 +13,7 @@ public abstract class Algorithm {
                 totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
     }
 
-    ArrayList<Object> getGlobalStatistic() {
+    public ArrayList<Object> getGlobalStatistic() {
         return globalStatistic.getInformation();
     }
 

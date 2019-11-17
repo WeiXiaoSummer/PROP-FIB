@@ -27,9 +27,7 @@ public class DriverGlobalHistory {
                         "String algorithm, double compressionRatio, double timeUsed");
                 System.out.println("\t 3) ArrayList<ArrayList<Object>> getInformation ()");
                 System.out.println("\t 4) ArrayList<LocalHistory> getGlobalHistory()");
-                System.out.println("\t 5) void delete(LocalHistory localHistory)" + "LocalHistory necessita els seguents " +
-                        "paràmetres per crear-se: String inputPath, String outPutPath, String fileExtension, String operation, " +
-                        "String algorithm, double compressionRatio, double timeUsed");
+                System.out.println("\t 5) void delete(LocalHistory localHistory)");
                 System.out.println("\t 6) void deleteAll()");
 
                 System.out.println("\t 0) Sortir");
@@ -56,7 +54,7 @@ public class DriverGlobalHistory {
                             System.out.print("El contingut del historia és: " + globalHistory.getInformation());
                             break;
                         case "4":
-                            System.out.print("El contingut del historia és: " + globalHistory.getInformation());
+                            System.out.print("El contingut del historial és: " + globalHistory.getInformation());
                             break;
                         case "5":
                             LH = new LocalHistory(paraules[1], paraules[2], paraules[3], paraules[4], paraules[5],

@@ -10,7 +10,7 @@ public class GlobalHistory {
         globalHistory = new ArrayList<>();
     }
 
-    public void addLocalHistory(Domain.LocalHistory LH) {
+    public void addLocalHistory(LocalHistory LH) {
         globalHistory.add(LH);
     }
 
@@ -22,11 +22,11 @@ public class GlobalHistory {
         return globalHistory;
     }
 
-    public ArrayList<Domain.LocalHistory> getGlobalHistory() {
+    public ArrayList<LocalHistory> getGlobalHistory() {
         return globalHistory;
     }
 
-    public void delete(Domain.LocalHistory localHistory) {
+    public void delete(LocalHistory localHistory) {
         globalHistory.remove(localHistory);
     }
 

@@ -23,13 +23,14 @@ public class DomainCtrl {
         return instance;
     }
 
-    public void compressFileTo(String filePath, String savePath, String algoritmeType) throws IOException {
-        if (algoritmeType.equals("LZ78") || algoritmeType.equals("LZSS")) {
+    //Compress a file with the algorithm selected by the user, and save at the path selected by user
+    public void compressFileTo(String filePath, String savePath, String algorithmType) throws IOException {
+        if (algorithmType.equals("LZ78") || algorithmType.equals("LZSS")) {
             String content = loadFile(filePath); // get the content of file
             Fitxer file = new Fitxer(filePath, getFileType(filePath), content);
             Fitxer outFile = new Fitxer();
             long startTime = System.nanoTime(); // get the time when start the compression
-            if (algoritmeType.equals("LZ78")) {
+            if (algorithmType.equals("LZ78")) {
                 outFile = lz78.comprimir(file);
                 savePath += ".lz78";
             }
@@ -42,29 +43,9 @@ public class DomainCtrl {
             saveFileTo(outFile, savePath);
             //history
             String contentCompressed = outFile.getFileContent();
-            LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Compression", algoritmeType, (double)content.length()/(double)contentCompressed.length(), compressTime);
+            LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Compression", algorithmType, (double)content.length()/(double)contentCompressed.length(), compressTime);
             globalHistory.addLocalHistory(localHistory);
         }
-        /*String content = loadFile(filePath); // get the content of file
-        Fitxer file = new Fitxer(filePath, getFileType(filePath), content);
-        Fitxer outFile = new Fitxer();
-        long startTime = System.nanoTime(); // get the time when start the compression
-        //Choose the right algorithm and compressed file
-        switch (algoritmeType) {
-            case "LZ78":
-                outFile = lz78.comprimir(file);
-                savePath += ".lz78";
-                break;
-            case "LZSS":
-                outFile = lzss.comprimir(file);
-                savePath += ".lzss";
-                break;
-            case "JPEG":
-                //outFile = jpeg.comprimir(file);
-                savePath += ".jpeg";
-                break;
-            default:
-        }*/
         else {
             Pair<Integer, Integer> Dimension = DataCtrl.getInstance().getImgDimension(filePath);
             byte[] RGB = DataCtrl.getInstance().getInputImg(filePath, Dimension.getKey(), Dimension.getValue());
@@ -78,12 +59,12 @@ public class DomainCtrl {
             long endTime = System.nanoTime();
             double compressTime = (double)(endTime-startTime)/1000000000;
             double compressRatio =  (double)(RGB.length)/(double)outPutFile.getImageContent().length;
-            LocalHistory localHistory = new LocalHistory(filePath, savePath+".jppeg", getFileType(filePath), "Compression", algoritmeType, compressRatio, compressTime);
+            LocalHistory localHistory = new LocalHistory(filePath, savePath+".jppeg", getFileType(filePath), "Compression", algorithmType, compressRatio, compressTime);
             globalHistory.addLocalHistory(localHistory);
             DataCtrl.getInstance().outPutImg(savePath+".jppeg", Dimension.getKey(), Dimension.getValue(), outPutFile.getImageContent());
         }
     }
-
+    //Compress the files in a folder with the algorithm selected by the user, and save at the path selected by user
     public void compressFolderTo(String folderPath, String savePath) throws IOException {
         java.io.File file = new java.io.File(folderPath);
         java.io.File[] tempList = file.listFiles();
@@ -99,6 +80,7 @@ public class DomainCtrl {
         }
     }
 
+    //Desompress a file and save at the path selected by user
     public void decompressFileTo(String filePath, String savePath) throws IOException {
         String fileType = getFileType(filePath);
         assert fileType != null;
@@ -144,57 +126,40 @@ public class DomainCtrl {
                 DataCtrl.getInstance().outPutImg(savePath+".ppm", dimension.getKey(), dimension.getValue(), outPutImage.getImageContent());
             }
         }
-        /*switch (Objects.requireNonNull(getFileType(filePath))){
-            case ".lz78":
-                outFile = lz78.descomprimir(file);
-                algoritme = "LZ78";
-                savePath += ".txt";
-                break;
-            case ".lzss":
-                outFile = lzss.descomprimir(file);
-                algoritme = "LZSS";
-                savePath += ".txt";
-                break;
-            case ".jpeg":
-                outFile = jpeg.descomprimir(file);
-                algoritme = "JPEG";
-                savePath += ".ppm";
-                break;
-            case "folder":
-                break;
-            default:
-        }
-        long endTime = System.nanoTime(); // get the time when end the compression
-        double descompressTime = (double)(endTime-startTime)/1000000;
-        saveFileTo(outFile, savePath);
-        String contentOut = outFile.getFileContent();
-        // create a new history
-        LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Decompression", algoritme,
-                (double)content.length()/(double)contentOut.length(), descompressTime);
-        //add to history
-        globalHistory.addLocalHistory(localHistory);*/
 
-
-    //get the content of file
+    //load the content of file
     private String loadFile(String filePath) {
-        return Data.DataCtrl.getInstance().getInputFile(filePath); // go to the date layer for load the content of file
+        return Data.DataCtrl.getInstance().getInputFile(filePath);
     }
 
-    // get the statistic of the algorithm we have selected
-    public ArrayList<Object> GetStatistic(String algorithm){
-        switch(algorithm) {
-            case "LZ78" :
-                return getStatisticLZ78();
-            case "LZSS" :
-                return getStatisticLZSS();
-            case "JPEG" :
-                return getStatisticJPEG();
-        }
+    //Save the file to a path
+    private void saveFileTo(Fitxer file, String savePath){
+        String content = file.getFileContent();
+        Data.DataCtrl.getInstance().outputFile(content, savePath);
+    }
+
+    // Load statistics from the database.
+    public ArrayList<ArrayList<Object>> loadStatistic(){
         return null;
     }
 
-    public ArrayList<ArrayList<Object>> getHistory() {
+    // Save statistics on the database.
+    public void saveStatistic(){
+        ArrayList<ArrayList<Object>> statistics = new ArrayList<>();
+        statistics.add(lz78.getGlobalStatistic());
+        statistics.add(lzss.getGlobalStatistic());
+        statistics.add(jpeg.getGlobalStatistic());
+        Data.DataCtrl.getInstance().outputFile(statistics.toString(), null);
+    }
+
+    // Load history from the database.
+    public ArrayList<ArrayList<Object>> loadHistory() {
         return globalHistory.getInformation();
+    }
+
+    // Save history on the database.
+    public void saveHistory(){
+        Data.DataCtrl.getInstance().outputFile(globalHistory.getInformation().toString(), null);
     }
 
     public ArrayList<Object> getStatisticLZ78 () {
@@ -207,11 +172,6 @@ public class DomainCtrl {
 
     public ArrayList<Object> getStatisticJPEG() {
         return jpeg.getGlobalStatistic();
-    }
-
-    private void saveFileTo(Fitxer file, String savePath){
-        String content = file.getFileContent();
-        Data.DataCtrl.getInstance().outputFile(content, savePath);
     }
 
     private String getFileType(String filePath) {
