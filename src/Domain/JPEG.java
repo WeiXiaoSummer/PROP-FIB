@@ -273,7 +273,7 @@ public class JPEG extends Algorithm {
         }
         else {
             CodeBits code = diff < 0 ? VLCTable[diff*-1] : VLCTable[diff+2048];
-            bitWriter.write(huffmanDC[code.bits]);
+            bitWriter.write(huffmanDC[code.getBits()]);
             bitWriter.write(code);
         }
         //Encoding the rest AC values
@@ -290,7 +290,7 @@ public class JPEG extends Algorithm {
             CodeBits EncodedNonZeroNumber;
             if (zigzag[i/8][i%8] < 0) EncodedNonZeroNumber = VLCTable[-zigzag[i/8][i%8]];
             else EncodedNonZeroNumber = VLCTable[zigzag[i/8][i%8]+2048];
-            bitWriter.write(huffmanAC[offset+EncodedNonZeroNumber.bits]);
+            bitWriter.write(huffmanAC[offset+EncodedNonZeroNumber.getBits()]);
             bitWriter.write(EncodedNonZeroNumber);
             offset = 0;
         }

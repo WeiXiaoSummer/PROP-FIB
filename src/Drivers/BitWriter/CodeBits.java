@@ -1,4 +1,4 @@
-package Domain;
+package Drivers.BitWriter;
 
 public class CodeBits {
     private char code;

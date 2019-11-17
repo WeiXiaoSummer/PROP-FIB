@@ -1,0 +1,21 @@
+Objecte de la prova:
+        Classe GlobalStatistic
+
+Driver:
+        DriverGlobalStatistic
+
+Stub:
+        Cap
+
+Fitxers de dades necessaris:
+        jocsDeProva1.txt jocsDeProva2.txt
+
+Valors estudiats:
+        En el jocsDeProva1 comprovem la primera constructora la qual no necessita ningun parametre.
+        Demanem l'informació d'aquest GlobalStatic que acabem de crear i comprovem que tots els valors són
+        0 mentres que els dos ultims valors han de ser NaN perque estem dividint un número entre 0.
+
+        En el jocsDeProva2 comprovem la segona constructora amb totes les parametres necessaries i no nulls.
+        Demanem l'informació d'aquest GlobalStatic que acabem de crear i comprovem aquest GlobalStatistic s'ha ini-
+        cialitzat correctament amb els parametres que li hem passat i que els dos ultimes valors s'ha obintingut
+        correctament.

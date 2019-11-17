@@ -1,4 +1,4 @@
-package Domain;
+package Drivers.BitReader;
 
 public class BitReader {
     private byte[] input;

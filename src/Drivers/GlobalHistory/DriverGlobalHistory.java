@@ -1,4 +1,4 @@
-package Drivers;
+package Drivers.GlobalHistory;
 
 import Domain.*;
 
@@ -6,18 +6,21 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class DriverGlobalHistory {
+
+    private static GlobalHistory globalHistory = new GlobalHistory();
     public static void main(String[] args) {
         String nomClasse = "GlobalHistory";
         System.out.println("Driver " + nomClasse + ":");
-
-        Domain.GlobalHistory globalHistory = new Domain.GlobalHistory();
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
             boolean sortir = false;
             while (!sortir) {
-                System.out.println("Tria una opció (número) seguit dels paràmetres necessaris per comprovar el mètode:");
+                System.out.println("Tria una opció (número) seguit dels paràmetres necessaris per comprovar el mètode:\n-Els opcions amb" +
+                        " * no cal introduir paràmetres sino que posteriorment haurà de triar una entrada predefinida\n" +
+                        "-Els paràmetres no primitives es representen amb paràmetres primitives requerits per les seves constructores.\n" +
+                        "Per exemple per representar CodeBits(char code, char bits) cal introduir en l'ordre code i bits.\n");
                 System.out.println("\t 1) GlobalHistory()");
                 System.out.println("\t 2) void addLocalHistory(LocalHistory LH)" + "LocalHistory necessita els seguents " +
                         "paràmetres per crear-se: String inputPath, String outPutPath, String fileExtension, String operation, " +
@@ -80,4 +83,10 @@ public class DriverGlobalHistory {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void testConstructora() {
+        globalHistory = new GlobalHistory();
+    }
+
+    public static void addLocalHistory() {}
 }

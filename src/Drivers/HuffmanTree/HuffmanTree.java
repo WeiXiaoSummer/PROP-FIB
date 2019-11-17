@@ -1,4 +1,4 @@
-package Domain;
+package Drivers.HuffmanTree;
 
 public class HuffmanTree {
     private NodePtr root;
@@ -46,7 +46,6 @@ public class HuffmanTree {
         }
     }
 
-    //returns the node at the immediate right & at same level of this Node.
     public NodePtr getRightNode(NodePtr actualNode) {
         //node is the left child of it's parent, so we just returns the right child of the parent-node
         if (actualNode.getParent() != null && actualNode.isLeft()) return actualNode.getParent().getrChildren();

@@ -1,4 +1,4 @@
-package Domain;
+package Drivers.NodePtr;
 
 public class NodePtr {
     private char value = 0x00;

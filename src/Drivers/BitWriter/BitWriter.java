@@ -1,4 +1,4 @@
-package Domain;
+package Drivers.BitWriter;
 
 import java.io.ByteArrayOutputStream;
 

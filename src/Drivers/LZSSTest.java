@@ -2,14 +2,14 @@ package Drivers;
 
 import Domain.*;
 import Data.*;
-
+/*
 import static org.junit.Assert.*;
 import org.junit.Test;
-
+*/
 import java.io.File;
 
 public class LZSSTest {
-
+/*
     private LZSS lzss = new LZSS(0, 0, 0, 0, 0, 0, 0);
 
     @Test
@@ -36,5 +36,5 @@ public class LZSSTest {
         String textDescomp = fitxerDescomp.getFileContent();
         assertFalse("L'algorisme LZSS no ha descomprimit correctament", (text == textDescomp));
     }
-
+*/
 }

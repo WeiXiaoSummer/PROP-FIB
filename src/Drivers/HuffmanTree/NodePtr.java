@@ -1,4 +1,4 @@
-package Domain;
+package Drivers.HuffmanTree;
 
 public class NodePtr {
     private char value = 0x00;
@@ -55,5 +55,4 @@ public class NodePtr {
         this.rChildren.Left = false;
     }
 
-    //returns the node at the immediate right & at same level of this Node.
 }
