@@ -22,11 +22,11 @@ public class GlobalHistory {
         return globalHistory;
     }
 
-    public ArrayList<Domain.LocalHistory> getGlobalHistory() {
+    public ArrayList<LocalHistory> getGlobalHistory() {
         return globalHistory;
     }
 
-    public void delete(Domain.LocalHistory localHistory) {
+    public void delete(LocalHistory localHistory) {
         globalHistory.remove(localHistory);
     }
 

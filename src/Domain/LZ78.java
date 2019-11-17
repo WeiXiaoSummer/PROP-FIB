@@ -23,7 +23,7 @@ public class LZ78 extends Algorithm {
             inChar = text.substring(i, i+1);
             if (dic.containsKey(prefix+inChar)) {
                 if (i+1 == text.length()) {
-                    outStream.append(toASCII(dic.get(prefix+inChar)));
+                    outStream.append(InttoChar(dic.get(prefix+inChar)));
                 }
                 prefix += inChar;
             }
@@ -33,7 +33,7 @@ public class LZ78 extends Algorithm {
                     outStream.append((char) 0); //int key --> char key
                 }
                 else {
-                    outStream.append(toASCII(dic.get(prefix)));
+                    outStream.append(InttoChar(dic.get(prefix)));
                 }
                 dic.put(prefix+inChar,dic.size()+1);
                 outStream.append(inChar);
@@ -59,7 +59,7 @@ public class LZ78 extends Algorithm {
         int i = 0;
         while (i < text.length()) {
             if (i%2 == 0) {
-                int key = ASCIItoInt(text.charAt(i));
+                int key = chartoInt(text.charAt(i));
                 if (key == 0) {
                     outStream.append(text.charAt(i+1));
                     dic.put(dic.size()+1,text.substring(i+1,i+2));
@@ -81,14 +81,14 @@ public class LZ78 extends Algorithm {
         return new Fitxer(null, ".txt", outStream.toString());
     }
 
-    //change the int s to ASCII
-    public char toASCII(int s) {
+    //change the int s to char
+    private char InttoChar(int s) {
         char c = (char) s;
         return c;
     }
 
-    //change the ASCII to int
-    public int ASCIItoInt(char s) {
+    //change the char to int
+    private int chartoInt(char s) {
         return Integer.valueOf(s);
     }
 
