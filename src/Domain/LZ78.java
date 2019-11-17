@@ -14,26 +14,32 @@ public class LZ78 extends Algorithm {
     public Fitxer comprimir(Fitxer file) {
         long startTime=System.currentTimeMillis();
         String text = file.getFileContent();
-        Dictionary<String, Integer> dic = new Hashtable<>();
+        HashMap<String, Integer> dic = new HashMap<>();
         String inChar;
         String prefix = "";
-        String outStream = "";
-        for (int i = 0; i < text.length(); ++i) {
+        StringBuilder outStream = new StringBuilder();
+        int i = 0;
+        while (i < text.length()) {
             inChar = text.substring(i, i+1);
-            if (((Hashtable<String, Integer>) dic).containsKey(prefix+inChar)) {
-                if (i+1 == text.length()) outStream += toASCII(dic.get(prefix+inChar));
+            if (dic.containsKey(prefix+inChar)) {
+                if (i+1 == text.length()) {
+                    outStream.append(toASCII(dic.get(prefix+inChar)));
+                }
                 prefix += inChar;
             }
 
             else {
-                if (prefix.isEmpty()) outStream += (char) 0; //int key --> char key
-                else {
-                    outStream += toASCII(dic.get(prefix));
+                if (prefix.isEmpty()) {
+                    outStream.append((char) 0); //int key --> char key
                 }
-                outStream += inChar;
+                else {
+                    outStream.append(toASCII(dic.get(prefix)));
+                }
                 dic.put(prefix+inChar,dic.size()+1);
+                outStream.append(inChar);
                 prefix = "";
             }
+            ++i;
         }
         long endTime=System.currentTimeMillis(); // get the time when end the compression
         double compressTime = (double)(endTime-startTime)* 0.001;
@@ -41,38 +47,38 @@ public class LZ78 extends Algorithm {
         globalStatistic.setTotalCompressedData(globalStatistic.getTotalCompressedData()+text.length());
         globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
         //globalStatistic.setAverageCompressionRatio(globalStatistic.getTotalCompressedData()/globalStatistic.getTotalDecompressedData());
-        return new Fitxer(null, ".lz78", outStream);
+        return new Fitxer(null, ".lz78", outStream.toString());
     }
 
     @Override
     public Fitxer descomprimir(Fitxer file) {
         long startTime=System.currentTimeMillis();
-        Dictionary<Integer, String> dic = new Hashtable();
-        String content = file.getFileContent();
-        String outStream = "";
+        String text = file.getFileContent();
+        HashMap<Integer, String> dic = new HashMap<>();
+        StringBuilder outStream = new StringBuilder();
         int i = 0;
-        while (i < content.length()) {
+        while (i < text.length()) {
             if (i%2 == 0) {
-                int key = ASCIItoInt(content.charAt(i));
+                int key = ASCIItoInt(text.charAt(i));
                 if (key == 0) {
-                    outStream += content.charAt(i+1);
-                    dic.put(dic.size()+1,content.substring(i+1,i+2));
+                    outStream.append(text.charAt(i+1));
+                    dic.put(dic.size()+1,text.substring(i+1,i+2));
                 }
-                else if (i+1 < content.length()){
-                    outStream += dic.get(key) + content.charAt(i+1);
-                    dic.put(dic.size()+1,dic.get(key) + content.substring(i+1,i+2));
+                else if (i+1 < text.length()){
+                    outStream.append(dic.get(key) + text.charAt(i+1));
+                    dic.put(dic.size()+1,dic.get(key) + text.substring(i+1,i+2));
                 }
-                else outStream += dic.get(key);
+                else outStream.append(dic.get(key));
             }
             ++i;
         }
         long endTime=System.currentTimeMillis(); // get the time when end the compression
         double descompressTime = (double)(endTime-startTime)* 0.001;
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
-        globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+content.length());
+        globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+text.length());
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime()+descompressTime);
         //globalStatistic.setAverageCompressionRatio(globalStatistic.getTotalCompressedData()/globalStatistic.getTotalDecompressedData());
-        return new Fitxer(null, ".txt", outStream);
+        return new Fitxer(null, ".txt", outStream.toString());
     }
 
     //change the int s to ASCII
@@ -85,5 +91,7 @@ public class LZ78 extends Algorithm {
     public int ASCIItoInt(char s) {
         return Integer.valueOf(s);
     }
+
+
 
 }
