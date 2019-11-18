@@ -1,0 +1,9 @@
+Aquest directori conte tota la documentacio actual sobre el projecte. 
+
+Entre la documentacio podem trobar:
+· Diagrama de cassos d'us,
+· Document explicatiu dels cassos d'us,
+· Diagrama de classes de Domini,
+· Document explicatiu de les classes de Domini,
+· Document del projecte que engloba tots dos diagrames amb les seves explicacions, les explicacions
+  dels diferents algorismes i la explicacio de la organtzacio del grup.

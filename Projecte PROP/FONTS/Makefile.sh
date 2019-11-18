@@ -1,0 +1,1 @@
+javac Data/*.java Domain/*.java Drivers/*.java

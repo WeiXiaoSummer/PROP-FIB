@@ -1,0 +1,16 @@
+1
+2
+2
+3
+3
+4 3
+0
+
+Resultat esperat seguint aquestes opcions:
+1 ->
+2 ->
+2 -> true
+3 -> true
+3 -> false
+4 3 -> 5
+0 -> final del driver

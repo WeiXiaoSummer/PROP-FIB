@@ -1,0 +1,8 @@
+Aquest directori conte el codi de les diferents classes implementades actualment.
+
+Es divideixen en 3 subcarpetes o packages: Data, Domain i Drivers.
+
+A Data hi ha el codi de les classes pertanyents a la capa de dades,
+a Domain hi ha el codi de les classes pertanyents a la capa de domini,
+i a Drivers hi ha el codi dels diferents drivers, i les classes auxiliars (en el cas dels drivers fets amb JUnit),
+per provar les classes de domini.
