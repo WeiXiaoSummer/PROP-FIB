@@ -1,0 +1,8 @@
+2 C:\PROP\input.txt C:\PROP\output.lz78 .txt Compressió LZ78 1.5 0.78
+3
+0
+
+Resultat esperat seguint aquestes opcions:
+2 ->
+3 -> Tota la informació de l'història local: [C:\PROP\input.txt, C:\PROP\output.lz78, .txt, Compressió, LZ78, 1.5, 0.78].
+0 -> Final del driver

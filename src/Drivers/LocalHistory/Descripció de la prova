@@ -1,0 +1,20 @@
+Objecte de la prova:
+        Classe LocalHistory
+
+Driver:
+        Driver LocalHistory
+
+Stub:
+        Cap
+
+Fitxers de dades necessaris:
+        JocsDeProva1.txt JocsDeProva2.txt
+
+Valors estudiats:
+        En el jocsDeProva1 comprovem la primera constructora la qual no necessita ningun parametre.
+        Demanem l'informació d'aquest LocalHistory que acabem de crear i comprovem que tots els valors són NaN.
+
+        En el jocsDeProva2 comprovem la segona constructora amb totes les parametres necessaries i no nulls.
+        Demanem l'informació d'aquest LocalHistory que acabem de crear i comprovem aquest LocalHistory s'ha ini-
+        cialitzat correctament amb els parametres que li hem passat i que els dos ultimes valors s'ha obintingut
+        correctament.

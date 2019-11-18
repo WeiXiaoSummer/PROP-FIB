@@ -80,7 +80,7 @@ public class DriverLZ78 {
         File directory = new File("");
         switch (opcio) {
             case 1:
-                String pathIn = directory.getAbsolutePath()+"\\Proba1.txt";
+                String pathIn = directory.getAbsolutePath()+"\\Prova1.txt";
                 String content = io.getInputFile(pathIn);
                 Fitxer fitxerIn = new Fitxer(pathIn,null, content);
                 long startTime=System.currentTimeMillis();
@@ -110,7 +110,7 @@ public class DriverLZ78 {
                         + "\nDecompress time = "+Time);
                 break;
             case 2:
-                pathIn = directory.getAbsolutePath()+"\\Proba2.txt";
+                pathIn = directory.getAbsolutePath()+"\\Prova2.txt";
                 content = io.getInputFile(pathIn);
                 fitxerIn = new Fitxer(pathIn,null, content);
                 startTime=System.currentTimeMillis();
@@ -140,7 +140,7 @@ public class DriverLZ78 {
                         + "\nDecompress time = "+Time);
                 break;
             case 3:
-                pathIn = directory.getAbsolutePath()+"\\Proba3.txt";
+                pathIn = directory.getAbsolutePath()+"\\Prova3.txt";
                 content = io.getInputFile(pathIn);
                 fitxerIn = new Fitxer(pathIn,null, content);
                 startTime=System.currentTimeMillis();
