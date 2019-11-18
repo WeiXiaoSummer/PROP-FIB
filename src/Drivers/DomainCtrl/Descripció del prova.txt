@@ -1,0 +1,18 @@
+Objecte de la prova:
+        Classe DomainCtrl
+
+Driver:
+        DriverDomaninCtrl
+
+Stub:
+        Degut a la impossiblitat de testejar DomainCtrl fent servir els Stubs en aquesta prova suposarem que tots els class-
+        es que es intervenen funcionen correctament.
+
+Fitxers de dades necessaris:
+        Prova1.ppm Prova2.txt
+
+Valors estudiats:
+
+        En aquesta prova comprovarem el funcionament dels funcions compressFileTo() i descompresFileto(), aquesta prova consta
+        d'una prova lliure, és a dir, l'Usuari pot seleccionar els fitxers de testeig ell mateix, peró com a joc de prova
+        proposarem Prova1.ppm i Prova2.txt

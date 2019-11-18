@@ -77,7 +77,7 @@ public class DriverLZ78 {
 
     public static void testComprimirIDescomprimir(int opcio) {
         IO io = new IO();
-        File directory = new File("src\\Drivers\\LZ78");
+        File directory = new File("");
         switch (opcio) {
             case 1:
                 String pathIn = directory.getAbsolutePath()+"\\Prova1.txt";

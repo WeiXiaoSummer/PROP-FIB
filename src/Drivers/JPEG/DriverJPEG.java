@@ -64,7 +64,7 @@ public class DriverJPEG {
 
     public static void test1() {
         System.out.println("Compression");
-        File directory = new File("src\\Drivers\\JPEG");
+        File directory = new File("");
         String filePath = directory.getAbsolutePath()+"\\Prova1.ppm";
         String savePath = directory.getAbsolutePath()+"\\Prova1.jpeg";
         Pair<Integer, Integer> Dimension = io.getImgDimension(filePath);
@@ -105,7 +105,7 @@ public class DriverJPEG {
 
     public static void test2() {
         System.out.println("Compression");
-        File directory = new File("src\\Drivers\\JPEG");
+        File directory = new File("");
         String filePath = directory.getAbsolutePath()+"\\Prova2.ppm";
         String savePath = directory.getAbsolutePath()+"\\Prova2.jpeg";
         Pair<Integer, Integer> Dimension = io.getImgDimension(filePath);
@@ -146,7 +146,7 @@ public class DriverJPEG {
 
     public static void test3() {
         System.out.println("Compression");
-        File directory = new File("src\\Drivers\\JPEG");
+        File directory = new File("");
         String filePath = directory.getAbsolutePath()+"\\Prova3.ppm";
         String savePath = directory.getAbsolutePath()+"\\Prova3.jpeg";
         Pair<Integer, Integer> Dimension = io.getImgDimension(filePath);

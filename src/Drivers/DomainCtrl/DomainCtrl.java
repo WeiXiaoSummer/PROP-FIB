@@ -1,10 +1,8 @@
-package Domain;
+package Drivers.DomainCtrl;
 
-import Data.DataCtrl;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DomainCtrl {
 
@@ -43,6 +41,8 @@ public class DomainCtrl {
             //history
             String contentCompressed = outFile.getFileContent();
             LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Compression", algorithmType, (double)content.length()/(double)contentCompressed.length(), compressTime);
+            System.out.print("input fila Path = " + filePath + "\nsava path = " + savePath + "\nfile extension = .txt" +
+                    "\noperation = Compression\nalgorithm = "+ algorithmType+"\nCompression Ratio = "+(double)content.length()/(double)contentCompressed.length() + "\nCompress time = "+compressTime+"\n");
         }
         else {
             Pair<Integer, Integer> Dimension = DataCtrl.getInstance().getImgDimension(filePath);
@@ -58,6 +58,8 @@ public class DomainCtrl {
             double compressTime = (double)(endTime-startTime)/1000000000;
             double compressRatio =  (double)(RGB.length)/(double)outPutFile.getImageContent().length;
             LocalHistory localHistory = new LocalHistory(filePath, savePath+".jpeg", getFileType(filePath), "Compression", algorithmType, compressRatio, compressTime);
+            System.out.print("input fila Path = " + filePath + "\nsava path = " + savePath + "\nfile extension = .jpeg" +
+                    "\noperation = Compression\nalgorithm = "+ algorithmType+"\nCompression Ratio = "+compressRatio+ "\nCompress time = "+compressTime+"\n");
             DataCtrl.getInstance().outPutImg(savePath+".jpeg", Dimension.getKey(), Dimension.getValue(), outPutFile.getImageContent());
         }
     }
@@ -68,7 +70,7 @@ public class DomainCtrl {
         String fileType = getFileType(filePath);
         assert fileType != null;
         if (filePath.equals(".lz78") || filePath.equals(".lzss")) {
-            String content = Data.DataCtrl.getInstance().getInputFile(filePath);
+            String content = DataCtrl.getInstance().getInputFile(filePath);
             Fitxer file = new Fitxer(filePath, getFileType(filePath), content);
             String algoritme;
             Fitxer outFile;
@@ -89,7 +91,9 @@ public class DomainCtrl {
             String contentOut = outFile.getFileContent();
             // create a new history
             LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Decompression", algoritme,
-                    (double)content.length()/(double)contentOut.length(), descompressTime);
+                    (double)contentOut.length()/(double)content.length(), descompressTime);
+            System.out.print("input fila Path = " + filePath + "\nsava path = " + savePath + "\nfile extension = .jpeg" +
+                    "\noperation = Compression\nalgorithm = "+ algoritme+"\nCompression Ratio = "+(double)contentOut.length()/(double)content.length()+ "\nDecompress time = "+descompressTime+"\n");
             //add to history
         }
         else if (fileType.equals(".jpeg")) {
@@ -102,21 +106,23 @@ public class DomainCtrl {
                 Fitxer outPutImage = jpeg.descomprimir(inputCompressedImg);
                 long endTime = System.nanoTime();
                 double decompressTime = (double)(endTime-startTime)/1000000000;
-                double compressRatio =  (double)compressedImg.length/(double)outPutImage.getImageContent().length;
+                double compressRatio =  (double)outPutImage.getImageContent().length/compressedImg.length;
                 LocalHistory localHistory = new LocalHistory(filePath, savePath, ".jpeg", "Decompression", "JPEG", compressRatio, decompressTime);
                 DataCtrl.getInstance().outPutImg(savePath+".ppm", dimension.getKey(), dimension.getValue(), outPutImage.getImageContent());
+                System.out.print("input fila Path = " + filePath + "\nsava path = " + savePath + "\nfile extension = .txt" +
+                    "\noperation = Compression\nalgorithm = JPEG" +"\nCompression Ratio = "+compressRatio + "\nDecompress time = "+decompressTime+"\n");
             }
         }
 
     //load the content of file
     private String loadFile(String filePath) {
-        return Data.DataCtrl.getInstance().getInputFile(filePath);
+        return DataCtrl.getInstance().getInputFile(filePath);
     }
 
     //Save the file to a path
     private void saveFileTo(Fitxer file, String savePath){
         String content = file.getFileContent();
-        Data.DataCtrl.getInstance().outputFile(content, savePath);
+        DataCtrl.getInstance().outputFile(content, savePath);
     }
 
     private String getFileType(String filePath) {
@@ -124,7 +130,7 @@ public class DomainCtrl {
         else if (filePath.contains(".ppm")) return ".ppm";
         else if (filePath.contains(".lzss")) return ".lzss";
         else if (filePath.contains(".lz78")) return ".lz78";
-        else if (filePath.contains(".jppeg")) return ".jppeg";
+        else if (filePath.contains(".jpeg")) return ".jpeg";
         else if (filePath.charAt(filePath.length()-4) != '.') return "folder";
         return null;
     }
