@@ -1,9 +1,9 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="HuffmanTree.jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/HuffmanTree_jar</output-path>
-    <root id="archive" name="HuffmanTree.jar">
+  <artifact type="jar" name="JPEG.jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JPEG_jar</output-path>
+    <root id="archive" name="JPEG.jar">
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/HuffmanTree_jar/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/JPEG_jar/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="PROP-FIB" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar" path-in-jar="/" />
