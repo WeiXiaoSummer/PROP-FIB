@@ -12,7 +12,6 @@ public class DomainCtrl {
     private LZ78 lz78 = new LZ78(0,0,0,0,0,0,0);
     private LZSS lzss = new LZSS(0,0,0,0,0,0,0);
     private JPEG jpeg = new JPEG(0,0,0,0,0,0,0);
-    private GlobalHistory globalHistory = new GlobalHistory();
 
     private DomainCtrl(){}
 
@@ -44,7 +43,6 @@ public class DomainCtrl {
             //history
             String contentCompressed = outFile.getFileContent();
             LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Compression", algorithmType, (double)content.length()/(double)contentCompressed.length(), compressTime);
-            globalHistory.addLocalHistory(localHistory);
         }
         else {
             Pair<Integer, Integer> Dimension = DataCtrl.getInstance().getImgDimension(filePath);
@@ -60,7 +58,6 @@ public class DomainCtrl {
             double compressTime = (double)(endTime-startTime)/1000000000;
             double compressRatio =  (double)(RGB.length)/(double)outPutFile.getImageContent().length;
             LocalHistory localHistory = new LocalHistory(filePath, savePath+".jppeg", getFileType(filePath), "Compression", algorithmType, compressRatio, compressTime);
-            globalHistory.addLocalHistory(localHistory);
             DataCtrl.getInstance().outPutImg(savePath+".jppeg", Dimension.getKey(), Dimension.getValue(), outPutFile.getImageContent());
         }
     }
@@ -108,7 +105,6 @@ public class DomainCtrl {
             LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Decompression", algoritme,
                     (double)content.length()/(double)contentOut.length(), descompressTime);
             //add to history
-            globalHistory.addLocalHistory(localHistory);
         }
         else if (fileType.equals(".jpeg")) {
                 Pair<Integer, Integer> dimension = DataCtrl.getInstance().getImgDimension(filePath);
@@ -122,7 +118,6 @@ public class DomainCtrl {
                 double decompressTime = (double)(endTime-startTime)/1000000000;
                 double compressRatio =  (double)compressedImg.length/(double)outPutImage.getImageContent().length;
                 LocalHistory localHistory = new LocalHistory(filePath, savePath, ".jpeg", "Decompression", "JPEG", compressRatio, decompressTime);
-                globalHistory.addLocalHistory(localHistory);
                 DataCtrl.getInstance().outPutImg(savePath+".ppm", dimension.getKey(), dimension.getValue(), outPutImage.getImageContent());
             }
         }
