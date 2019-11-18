@@ -1,0 +1,12 @@
+1
+1
+2
+0
+
+Resultats esperat seguint aquestes opcions:
+1 ->
+1 ->
+2 -> adreça fillDret
+     adreça retornat per getRightNode
+     aquestes dues adreçes haurien de coincidir
+0 -> final del driver

@@ -9,3 +9,4 @@ Resultats esperats seguint aquestes opcions:
         10 false false false null adreçaFillEsquerre null adreçaPare
 4 4  -> 4 false false false adreçaPare null null adreçaFillDret
         10 false false false null adreçaFillEsquerre adreçaFillDret adreçaPare
+0 -> final del driver

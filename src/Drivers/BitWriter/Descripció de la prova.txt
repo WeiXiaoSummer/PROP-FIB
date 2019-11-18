@@ -13,15 +13,27 @@ Fitxers de dades necessaris:
         JocsDeProva3.txt: aquest joc de prova està dedicat a testejar el funcionament correcte del flush().
 
 Valors estudiats:
+
         En el JocsDeProva1 comprovem primer la constructora.
+
         Comprovem que si demanem output ens donarà un byte array buit ja que no hi hem escrit res.
 
+        ----------------------------------------------------------------------------------------------------------------
+
         En el JocsDeProva2 comprovem primer la constructora.
+
         Escrivim el CodeBits per defecte {0x0A, 4}
+
         Tornem a escribir el CodeBits per defecte {0x0A, 4}
+
         Comprovem que si demanem output ens retornarà un byte array que només conté un byte [0xAA] = -86
 
+        ----------------------------------------------------------------------------------------------------------------
+
         En el JocsDeProva3 comprovem primer la constructora.
+
         Escrivem el CodeBits per defecte {0x0A, 4}
+
         Li apliquem un flush
+
         Comprovem que si demanem output ens donarà un byte array que només conté un byte [0xA0] = -96

@@ -11,35 +11,36 @@ Stub:
 
 Fitxers de dades necessaris:
         JocsDeProva1.txt: aquest joc de prova està dedicat a testejar la constructora i getRightNode()
-        JocsDeProva2.txt: aquest joc de prova està dedicat a testejar decodeHuffmanCode().
+        JocsDeProva2.txt: aquest joc de prova està dedicat a testejar decodeHuffmanCode()
 
 Valors estudiats:
 
-        En el JocsDeProva1 comprovem la constructora agafant com a opció "la taula de Huffman de Luminance DC Coefficients".
+        En el JocsDeProva1 comprovem la constructora agafant com a opció "la taula de Huffman de Luminance DC Coefficie-
+        nts".
 
-        Executem getRightNode(), ens retornarà dos valors, el primer és adreça del fill dret del root aconseguit amb get mentres
-        que el segon valor és el que ens retorna si executem getRightNode() sobre el fill esquerre, comprovem que haurien de ser
-        els mateixos.
+        Executem getRightNode(), ens retornarà dos valors, el primer és adreça del fill dret del root aconseguit amb get
+        mentres que el segon valor és el que ens retorna si executem getRightNode() sobre el fill esquerre, comprovem
+        que haurien de ser mateixos.
 
-        -------------------------------------------------------------------------------------------------------------------------
+        ----------------------------------------------------------------------------------------------------------------
 
-        En el JocsDeProva2 primer inicialitzarem el HuffmanTree amb "la taula de Huffman de Luminance DC Coefficients"
+        En el JocsDeProva2 primer inicialitzarem el HuffmanTree amb "la taula de Huffman de Luminance DC Coefficients".
 
-        Comprovem que si executem decodeHuffmanCode() aquest ens retornara 0, el stub BitReader només retorna 0, així que
-        el procés de decodificació hauria de parar quan se llegeix un 00, que és el primer huffmancode que es troba seguint
-        aquesta entrada i aquesta inicialització, i la seva corresponent decodificació és 0.
+        Comprovem que si executem decodeHuffmanCode() aquest ens retornara 0, el stub BitReader només retorna 0, així
+        que el procés de decodificació hauria de parar quan se llegeix un 00, que és el primer huffmancode que es troba
+        seguint aquesta entrada i aquesta inicialització, i la seva corresponent decodificació és 0.
 
-        Tornem a inicialitzar el HuffmanTree amb "la taula de Huffman de Luminance AC Coefficients"
+        Tornem a inicialitzar el HuffmanTree amb "la taula de Huffman de Luminance AC Coefficients".
 
-        Comprovem que si executem decodeHuffmanCode() el procés de decodificació para quan se llegeix un 00 i ens retorna un 1
-        seguint el mateix raonament que abans.
+        Comprovem que si executem decodeHuffmanCode() el procés de decodificació para quan se llegeix un 00 i ens retor-
+        na un 1 seguint el mateix raonament que abans.
 
-        Tornem a inicialitzar el HuffmanTree amb "la taula de Huffman de Chrominance DC Coefficients"
+        Tornem a inicialitzar el HuffmanTree amb "la taula de Huffman de Chrominance DC Coefficients".
 
-        Comprovem que si executem decodeHuffmanCode() aquest para quan se llegeix un 00 i ens retorna un 0
-        seguint el mateix raonament que abans.
+        Comprovem que si executem decodeHuffmanCode() aquest para quan se llegeix un 00 i ens retorna un 0 seguint el
+        mateix raonament que abans.
 
-        Finalment inicialitzarem el HuffmanTree amb "la taula de Huffman de Chrominance AC Coefficients"
+        Finalment inicialitzarem el HuffmanTree amb "la taula de Huffman de Chrominance AC Coefficients".
 
-        Comprovem que si executem decodeHuffmanCode() aquest para quan se llegeix un 00 i ens retorna un 0
-        seguint el mateix raonament que abans.
+        Comprovem que si executem decodeHuffmanCode() aquest para quan se llegeix un 00 i ens retorna un 0 seguint el
+        mateix raonament que abans.

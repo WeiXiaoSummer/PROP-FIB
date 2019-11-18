@@ -32,13 +32,13 @@ public class DriverHuffmanTree {
                 paraules = linea.split(" ");
                 opcio = paraules[0];
                 try {
-                    System.out.println("Opció " + opcio + " seleccionada.\n");
+                    System.out.println("Opció " + opcio + " seleccionada.");
                     switch (opcio) {
                         case "1":
                             System.out.println("\t Opció 1: inicialitzar HuffmanTree amb la taula de Huffman de Luminance DC Coefficients;");
                             System.out.println("\t Opció 2: inicialitzar HuffmanTree amb la taula de Huffman de Luminance AC Coefficients;");
                             System.out.println("\t Opció 3: inicialitzar HuffmanTree amb la taula de Huffman de Chrominance DC Coefficients;");
-                            System.out.println("\t Opció 3: inicialitzar HuffmanTree amb la taula de Huffman de Chrominance AC Coefficients;");
+                            System.out.println("\t Opció 4: inicialitzar HuffmanTree amb la taula de Huffman de Chrominance AC Coefficients;");
                             linea = br.readLine();
                             paraules = linea.split(" ");
                             opcio = paraules[0];
