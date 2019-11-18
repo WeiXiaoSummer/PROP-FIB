@@ -96,13 +96,14 @@ public class LZSS extends Algorithm {
 
         long endTime=System.currentTimeMillis(); // get the time when end the compression
         double compressTime = (double)(endTime-startTime)* 0.001;
-
+        System.out.println("Temps trigat: " + compressTime);
         globalStatistic.setNumCompression(globalStatistic.getNumCompression() + 1);
         globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
         double Ratio;
         if(content.length() != 0) {
             Ratio = ((double) content.length() / (double) outStream.length())*100;
             globalStatistic.setAverageCompressionRatio((globalStatistic.getAverageCompressionRatio() + Ratio) / 2);
+            System.out.println("Ratio de compressió: " + Ratio);
         }
         return new Fitxer("", ".lzss", outStream);
     }
@@ -148,6 +149,7 @@ public class LZSS extends Algorithm {
         }
         long endTime=System.currentTimeMillis(); // get the time when end the compression
         double descompressTime = (double)(endTime-startTime)* 0.001;
+        System.out.println("Temps trigat: " + descompressTime);
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime() + descompressTime);
         return new Fitxer("", ".txt", outStream);
