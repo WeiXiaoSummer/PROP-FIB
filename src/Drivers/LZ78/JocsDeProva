@@ -4,3 +4,48 @@
 4
 0
 
+Resultat esperat seguint aquestes opcions:
+1 ->
+2 ->input fila Path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Prova1.txt
+    sava path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Compressió1.lz78
+    file extension = .lz78
+    operation = Compression
+    algorithm = LZ78
+    compression Ratio = 2
+    Compress time = 0.178
+    input fila Path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Compressió1.lz78
+    sava path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Descompressió1.txt
+    file extension = .txt
+    operation = Descompression
+    algorithm = LZ78
+    compression Ratio = 2
+    Decompress time = 0.041
+3 ->input fila Path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Prova2.txt
+    sava path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Compressió2.lz78
+    file extension = .lz78
+    operation = Compression
+    algorithm = LZ78
+    compression Ratio = 2
+    Compress time = 0.28200000000000003
+    input fila Path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Compressió2.lz78
+    sava path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Descompressió2.txt
+    file extension = .txt
+    operation = Descompression
+    algorithm = LZ78
+    compression Ratio = 2
+    Decompress time = 0.107
+4 ->input fila Path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Prova3.txt
+    sava path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Compressió3.lz78
+    file extension = .lz78
+    operation = Compression
+    algorithm = LZ78
+    compression Ratio = 1
+    Compress time = 0.002
+    input fila Path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Compressió3.lz78
+    sava path = C:\Users\sheng\IdeaProjects\PROP-FIB\src\Drivers\LZ78\Descompressió3.txt
+    file extension = .txt
+    operation = Descompression
+    algorithm = LZ78
+    compression Ratio = 1
+    Decompress time = 0.003
+0 -> Final del driver
