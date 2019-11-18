@@ -1,16 +1,17 @@
 package Drivers.LocalHistory;
 
 import Domain.*;
+import Drivers.GlobalStatistic.GlobalStatistic;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class DriverLocalHistory {
+    private static LocalHistory localHistory = new LocalHistory();
     public static void main(String[] args) {
         String nomClasse = "LocalHistory";
         System.out.println("Driver " + nomClasse + ":");
-
-        LocalHistory localHistory = new LocalHistory();
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -60,5 +61,19 @@ public class DriverLocalHistory {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void testConstructora1() {
+        localHistory = new LocalHistory();
+    }
+
+    public static void testConstructora2(String[] paraules) {
+        localHistory = new LocalHistory(paraules[1], paraules[2], paraules[3], paraules[4], paraules[5],
+                Double.parseDouble(paraules[6]),Double.parseDouble(paraules[7]));
+    }
+
+    public static void testGetInformation() {
+        ArrayList<Object> information = localHistory.getInformation();
+        System.out.println("Tota la informació de l'història local: " + information + ".");
     }
 }
