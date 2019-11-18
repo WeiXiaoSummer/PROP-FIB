@@ -1,0 +1,19 @@
+Objecte de la prova:
+	Aquest joc de proves esta pensat per comprovar el correcte funcionament de la classe fitxer.
+
+Descripció del driver:
+	Aquest driver, fet amb JUnit, fa en total 12 proves. Cadascuna consisteix en provar un metode
+	de la classe Fitxer, les 2 creadores, els 5 gets i els 5 sets. El driver implementa la classe
+	FitxerTest, la qual te els tests que ha de fer aquest per comprovar el correcte funcionament
+	de la classe a tractar.
+
+Valors estudiats:
+	En els tests, es mira de crear un fitxer vuit, un fitxer a partir de certs parametres
+	(path, extensio i contingut), l'assignacio de certs parametres
+	(path, extensio, contingut, dimensió de la imatge i contingut de la imatge) i la
+	obtencio d’aquests parametres.
+
+Operativa:
+	L’executable automaticament fa els 12 tests i comprova que siguin satisfactoris, indicant
+	a l’usuari el nombre de tests passats correctament, a mes de per que no ha passat els que
+	no han estat satisfactoris si n’hi ha algun.

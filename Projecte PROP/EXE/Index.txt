@@ -1,0 +1,4 @@
+Aquest directori conte diferents subcarpetes, una per a cada classe o conjunt de classes a provar.
+
+Cada subcarpeta conte un executable, un document explicatiu i els diferents jocs de prova
+per provar la classe o conjunt de classes que engloba.

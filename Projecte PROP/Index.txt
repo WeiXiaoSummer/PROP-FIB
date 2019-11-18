@@ -1,0 +1,13 @@
+Aquest directori principal conte tres subdirectoris i un fitxer Grup.txt:
+
+DOCS: Aquest directori conte tota la documentacio actual sobre el projecte. Diagrama de cassos d'us,
+      diagrama de sequencia i document amb les explicacions dels diferents cassos d'us, les classes de domini,
+      els diferents algorismes i la organtzacio del grup.
+
+FONTS: Aquest directori conte el codi de les diferents classes implementades actualment, amb cada driver
+       corresponent, a mes d'un fitxer Makefile per compilar-les.
+
+EXE: Aquest directori conte diferents subcarpetes, on a cadascuna hi han un executable i els diferents jocs de prova
+     per provar la classe o conjunt de classes que engloba.
+
+Grup.txt: Aquest fitxer conte les dades del grup: noms, correus de la universitat i correus alternatius personals.

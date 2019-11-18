@@ -82,14 +82,14 @@ public class LZ78 extends Algorithm {
     }
 
     //change the int s to char
-    private char InttoChar(int i) {
-        char c = (char) i;
+    private char InttoChar(int s) {
+        char c = (char) s;
         return c;
     }
 
     //change the char to int
-    private int chartoInt(char c) {
-        return Integer.valueOf(c);
+    private int chartoInt(char s) {
+        return Integer.valueOf(s);
     }
 
 

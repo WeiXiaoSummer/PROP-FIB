@@ -1,0 +1,27 @@
+Objecte de la prova:
+	Aquest joc de proves esta pensat per comprovar el correcte funcionament de la classe LZSS,
+	que es filla de la classe abstracta Algorisme, a mes de comprovar els casos d’us Comprimir
+	Fitxer de tipus .txt amb LZSS i Descomprimir fitxer de tipus .lzss amb LZSS.
+
+Elements integrats a la prova:
+	Aquesta prova integra la classe Fitxer, necesaria per utilitzar els metodes de la classe
+	LZSS, a mes de la classe GlobalStatistic, on es guarden les estadistiques sobre l’algoritme
+	i les classes de dades DataCtrl i IO que permeten llegir el fitxer de Prova.
+
+Fitxers de dades:
+	Aquest joc de prova utilitza el fitxer Prueba.txt amb el que fa dos de les quatre proves.
+
+Descripció del driver:
+	Aquest driver, fet amb JUnit, fa en total 4 proves, dues per cada metode. Aquests metodes
+	son comprimir(Fitxer):Fitxer i descomprimir(Fitxer):Fitxer. El driver implementa la classe
+	LZSSTest, la qual te els tests que ha de fer aquest per tal de comprovar el correcte
+	funcionament de la classe a tractar.
+
+Valors estudiats:
+	En els tests es mira de comprimir un fitxer de text amb dades, descomprimir aquest mateix
+	fitxer, comprimir un fitxer de text buit i descomprimir-lo.
+
+Operativa:
+	L’executable automaticament fa els 4 tests i comprova que siguin satisfactoris, indicant a
+	l’usuari el nombre de tests passats correctament, a mes de per que no ha passat els que no
+	han estat satisfactoris si n’hi ha algun.
