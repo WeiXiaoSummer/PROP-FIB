@@ -138,30 +138,6 @@ public class DomainCtrl {
         Data.DataCtrl.getInstance().outputFile(content, savePath);
     }
 
-    // Load statistics from the database.
-    public ArrayList<ArrayList<Object>> loadStatistic(){
-        return null;
-    }
-
-    // Save statistics on the database.
-    public void saveStatistic(){
-        ArrayList<ArrayList<Object>> statistics = new ArrayList<>();
-        statistics.add(lz78.getGlobalStatistic());
-        statistics.add(lzss.getGlobalStatistic());
-        statistics.add(jpeg.getGlobalStatistic());
-        Data.DataCtrl.getInstance().outputFile(statistics.toString(), null);
-    }
-
-    // Load history from the database.
-    public ArrayList<ArrayList<Object>> loadHistory() {
-        return globalHistory.getInformation();
-    }
-
-    // Save history on the database.
-    public void saveHistory(){
-        Data.DataCtrl.getInstance().outputFile(globalHistory.getInformation().toString(), null);
-    }
-
     public ArrayList<Object> getStatisticLZ78 () {
         return lz78.getGlobalStatistic();
     }

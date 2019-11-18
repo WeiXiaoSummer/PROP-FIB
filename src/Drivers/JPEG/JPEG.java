@@ -1,11 +1,10 @@
-package Domain;
+package Drivers.JPEG;
 
 import javafx.util.Pair;
 
 import java.util.Arrays;
 
 import static java.lang.Math.*;
-import static java.lang.Math.round;
 
 public class JPEG extends Algorithm {
 
@@ -26,7 +25,6 @@ public class JPEG extends Algorithm {
         compressedImg.setFileExtension(".jpeg");
         compressedImg.setImageContent(compressedData);
         double compressTime = (double)(endTime-startTime)* 0.001;
-        System.out.println(compressTime);
         double compressedRation = inputImg.length/compressedData.length;
         globalStatistic.setNumCompression(globalStatistic.getNumCompression()+1);
         globalStatistic.setTotalCompressedData(globalStatistic.getTotalCompressedData()+inputImg.length);
@@ -46,7 +44,6 @@ public class JPEG extends Algorithm {
         outputImg.setFileExtension(".ppm");
         outputImg.setImageContent(decompressedImg);
         double decompressTime = (double)(endTime-startTime)* 0.001;
-        System.out.println(decompressTime);
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
         globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+inputCompressedImg.length);
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime()+decompressTime);
