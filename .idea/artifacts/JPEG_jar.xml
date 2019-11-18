@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="NodePtr.jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/NodePtr_jar</output-path>
-    <root id="archive" name="NodePtr.jar">
+  <artifact type="jar" name="JPEG.jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JPEG_jar</output-path>
+    <root id="archive" name="JPEG.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/JPEG_jar/META-INF/MANIFEST.MF" />
       </element>
