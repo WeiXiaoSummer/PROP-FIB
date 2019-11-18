@@ -6,7 +6,8 @@ import java.util.Arrays;
 
 public class DriverBitWriter {
 
-    private static BitWriter bitWriter;
+    private static BitWriter bitWriter = new BitWriter();
+    private static CodeBits codeBits = new CodeBits();
 
     public static void main(String[] args) {
 
@@ -19,8 +20,7 @@ public class DriverBitWriter {
             while (!sortir) {
                 System.out.println("Tria una opció (número) seguit dels paràmetres necessaris per comprovar el mètode:\n-Els opcions amb" +
                         " * no cal introduir paràmetres sino que posteriorment haurà de triar una entrada predefinida\n" +
-                        "-Els paràmetres no primitives es representen amb paràmetres primitives requerits per les seves constructores.\n" +
-                        "Per exemple per representar CodeBits(char code, char bits) cal introduir en l'ordre code i bits.\n");
+                        "-Els paràmetres que són de classe Stub no falta introduir ja que tenen comportament per defecte.\n");
                 System.out.println("\t 1) BitWriter()");
                 System.out.println("\t 2) void write(CodeBits data)");
                 System.out.println("\t 3) void flush()");
@@ -41,10 +41,7 @@ public class DriverBitWriter {
                             testConstructor();
                             break;
                         case "2":
-                            char code = (char)Integer.parseInt(paraules[1]);
-                            byte bits = (byte)Integer.parseInt(paraules[2]);
-                            CodeBits code_bits = new CodeBits(code, bits);
-                            testWrite(code_bits);
+                            testWrite(codeBits);
                             break;
                         case "3":
                             testFlush();
@@ -83,6 +80,6 @@ public class DriverBitWriter {
 
     public static void testGetOutput() {
         byte[] result = bitWriter.getOutput();
-        System.out.println("resultat = " + Arrays.toString(result));
+        System.out.println(Arrays.toString(result));
     }
 }

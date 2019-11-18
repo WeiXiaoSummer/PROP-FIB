@@ -19,8 +19,7 @@ public class DriverBitReader {
             while (!sortir) {
                 System.out.println("Tria una opció (número) seguit dels paràmetres necessaris per comprovar el mètode:\n-Els opcions amb" +
                         " * no cal introduir paràmetres sino que posteriorment haurà de triar una entrada predefinida\n" +
-                        "-Els paràmetres no primitives es representen amb paràmetres primitives requerits per les seves constructores.\n" +
-                        "Per exemple per representar CodeBits(char code, char bits) cal introduir en l'ordre code i bits.\n");
+                        "-Els paràmetres que són de classe Stub no falta introduir ja que tenen comportament per defecte.\n");
                 System.out.println("\t 1) *BitReader(byte[] input)");
                 System.out.println("\t 2) boolean next()");
                 System.out.println("\t 3) boolean readOne()");
@@ -41,7 +40,7 @@ public class DriverBitReader {
                         case "1":
                             System.out.println("\t 1) inicialitzar BitReader amb byte[] B = []");
                             System.out.println("\t 2) inicialitzar BitReader amb byte[] B = [0xAA, 0xFF, 0x33, 0xEE]");
-                            System.out.println("\t 3) inicialitzar BitReader amb byte[] B = [0xA2, 0x3A, 0x6B, 0x4C]");
+                            System.out.println("\t 3) inicialitzar BitReader amb byte[] B = [0xA2, 0xEA, 0xFB, 0xCC]");
                             linea = br.readLine();
                             paraules = linea.split(" ");
                             opcio = paraules[0];
@@ -82,22 +81,22 @@ public class DriverBitReader {
                 bitReader = new BitReader(new byte[]{(byte)0xAA, (byte)0xFF, (byte)0x33, (byte)0xEE});
                 break;
             case "3":
-                bitReader = new BitReader(new byte[]{(byte)0xA2, 0x3A, 0x6B, 0x4C});
+                bitReader = new BitReader(new byte[]{(byte)0xA2, (byte)0xEA, (byte)0xFB, (byte)0xCC});
                 break;
 
         }
     }
 
     public static void testNext() {
-        System.out.println("resultat = " + bitReader.next());
+        System.out.println(bitReader.next());
     }
 
     public static void testReadOne() {
-        System.out.println("resultat = " + bitReader.readOne());
+        System.out.println(bitReader.readOne());
     }
 
     public static void testReadInt(String lenght) {
-        System.out.println("resultat = " + bitReader.readInt(Integer.parseInt(lenght)));
+        System.out.println(bitReader.readInt(Integer.parseInt(lenght)));
     }
 
 }

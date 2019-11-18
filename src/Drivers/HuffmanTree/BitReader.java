@@ -6,6 +6,6 @@ public class BitReader {
     }
 
     public boolean readOne() {
-        return true;
+        return false;
     }
 }

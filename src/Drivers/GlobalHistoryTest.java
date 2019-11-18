@@ -1,14 +1,14 @@
 package Drivers;
 import Domain.*;
-import org.junit.Test;
+/*import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
+*/
 public class GlobalHistoryTest {
-    @Test
+    /*@Test
     public void createGlobalHistory(){
         GlobalHistory globalHistory = new GlobalHistory();
         assertNotNull("El globalHistory no s'ha creat correctament", globalHistory);
@@ -43,5 +43,5 @@ public class GlobalHistoryTest {
         globalHistory.addLocalHistory(localHistory);
         globalHistory.delete(localHistory);
         assertEquals("No eliminar el localHistory del globalHistory correctament ", 0, globalHistory.getGlobalHistory().size());
-    }
+    }*/
 }

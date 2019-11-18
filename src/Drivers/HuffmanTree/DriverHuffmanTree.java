@@ -16,8 +16,10 @@ public class DriverHuffmanTree {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             boolean sortir = false;
             while (!sortir) {
-                System.out.println("Tria una opció (número) seguit dels paràmetres necessaris per comprovar el mètode:");
-                System.out.println("\t 1) HuffmanTree(char[] codesPerBitSize, char[] huffmanValues)");
+                System.out.println("Tria una opció (número) seguit dels paràmetres necessaris per comprovar el mètode:\n-Els opcions amb" +
+                        " * no cal introduir paràmetres sino que posteriorment haurà de triar una entrada predefinida\n" +
+                        "-Els paràmetres que són de classe Stub no falta introduir ja que tenen comportament per defecte.\n");
+                System.out.println("\t 1) *HuffmanTree(char[] codesPerBitSize, char[] huffmanValues)");
                 System.out.println("\t 2) public NodePtr getRightNode(NodePtr actualNode)");
                 System.out.println("\t 3) public int decodeHuffmanCode(BitReader bitReader)");
                 System.out.println("\t 0) Sortir");
@@ -33,16 +35,19 @@ public class DriverHuffmanTree {
                     System.out.println("Opció " + opcio + " seleccionada.\n");
                     switch (opcio) {
                         case "1":
-                            System.out.println("Opció 1: inicialitzar HuffmanTree amb la taula de Huffman de Luminance DC Coefficients;");
-                            System.out.println("Opció 2: inicialitzar HuffmanTree amb la taula de Huffman de Luminance AC Coefficients;");
-                            System.out.println("Opció 3: inicialitzar HuffmanTree amb la taula de Huffman de Chrominance DC Coefficients;");
-                            System.out.println("Opció 3: inicialitzar HuffmanTree amb la taula de Huffman de Chrominance AC Coefficients;");
+                            System.out.println("\t Opció 1: inicialitzar HuffmanTree amb la taula de Huffman de Luminance DC Coefficients;");
+                            System.out.println("\t Opció 2: inicialitzar HuffmanTree amb la taula de Huffman de Luminance AC Coefficients;");
+                            System.out.println("\t Opció 3: inicialitzar HuffmanTree amb la taula de Huffman de Chrominance DC Coefficients;");
+                            System.out.println("\t Opció 3: inicialitzar HuffmanTree amb la taula de Huffman de Chrominance AC Coefficients;");
                             linea = br.readLine();
                             paraules = linea.split(" ");
                             opcio = paraules[0];
                             testConstructora(Integer.parseInt(opcio));
                             break;
                         case "2":
+                            System.out.println("\t Aquesta funció per defecte retorna el node dret del fill esquerre del root");
+                            testGetRightNode();
+                        case "3":
                             testDecodeHuffmanCode();
                             break;
 
@@ -103,6 +108,11 @@ public class DriverHuffmanTree {
                 System.out.println("La opció triada no existeix");
                 break;
         }
+    }
+
+    public static void testGetRightNode() {
+        System.out.println(huffmanTree.getRoot().getrChildren());
+        System.out.println(huffmanTree.getRightNode(huffmanTree.getRoot().getlChildren()));
     }
 
     public static void testDecodeHuffmanCode() {

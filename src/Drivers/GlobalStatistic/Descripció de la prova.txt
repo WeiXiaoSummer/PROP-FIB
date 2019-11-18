@@ -8,7 +8,7 @@ Stub:
         Cap
 
 Fitxers de dades necessaris:
-        jocsDeProva1.txt jocsDeProva2.txt
+        JocsDeProva1.txt JocsDeProva2.txt
 
 Valors estudiats:
         En el jocsDeProva1 comprovem la primera constructora la qual no necessita ningun parametre.

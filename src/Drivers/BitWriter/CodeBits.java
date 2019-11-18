@@ -1,19 +1,8 @@
 package Drivers.BitWriter;
 
 public class CodeBits {
-    private char code;
-    private byte bits;
 
-    public CodeBits(char code, byte bits) {
-        this.code = code;
-        this.bits = bits;
-    }
+    public char getCode() { return 0x0A; }
 
-    public char getCode() {
-        return this.code;
-    }
-
-    public byte getBits() {
-        return this.bits;
-    }
+    public byte getBits() { return 4; }
 }

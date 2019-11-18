@@ -1,0 +1,12 @@
+1
+2
+2
+4
+0
+
+Resultat esperat seguint aquestes opcions:
+1 ->
+2 ->
+2 ->
+4 -> [-86]
+0 -> final del driver

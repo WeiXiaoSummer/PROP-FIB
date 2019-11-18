@@ -1,0 +1,14 @@
+1
+1
+2
+3
+4
+0
+
+Resultat esperat seguint aquestes opcions:
+1 ->
+1 ->
+2 -> false
+3 -> ArrayIndexOutOfBoundsException
+4 -> ArrayIndexOutOfBoundsException
+0 -> final del driver

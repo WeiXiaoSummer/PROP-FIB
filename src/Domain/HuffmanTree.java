@@ -7,6 +7,10 @@ public class HuffmanTree {
         constructHuffmanTree(codesPerBitSize, huffmanValues);
     }
 
+    public NodePtr getRoot() {
+        return root;
+    }
+
     private void constructHuffmanTree(char[] codesPerBitSize, char[] huffmanValues) {
         root = new NodePtr();
         root.setRoot(true);

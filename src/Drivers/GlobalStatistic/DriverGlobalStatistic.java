@@ -19,8 +19,7 @@ public class DriverGlobalStatistic {
             while (!sortir) {
                 System.out.println("Tria una opció (número) seguit dels paràmetres necessaris per comprovar el mètode:\n-Els opcions amb" +
                         " * no cal introduir paràmetres sino que posteriorment haurà de triar una entrada predefinida\n" +
-                        "-Els paràmetres no primitives es representen amb paràmetres primitives requerits per les seves constructores.\n" +
-                        "Per exemple per representar CodeBits(char code, char bits) cal introduir en l'ordre code i bits.\n");
+                        "-Els paràmetres que són de classe Stub no falta introduir ja que tenen comportament per defecte.\n");
                 System.out.println("\t 1) GlobalStatistic()");
                 System.out.println("\t 2) GlobalStatistic (int numCompression, int numDecompression, int totalCompressedData, " +
                         "int totalDecompressedData, \n\t    double totalCompressionTime, double totalDecompressionTime," +

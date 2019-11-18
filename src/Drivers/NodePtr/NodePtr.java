@@ -55,5 +55,4 @@ public class NodePtr {
         this.rChildren.Left = false;
     }
 
-    //returns the node at the immediate right & at same level of this Node.
 }

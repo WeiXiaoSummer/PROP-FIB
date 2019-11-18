@@ -110,7 +110,7 @@ public class DomainCtrl {
             //add to history
             globalHistory.addLocalHistory(localHistory);
         }
-        else if (fileType.equals(".jppeg")) {
+        else if (fileType.equals(".jpeg")) {
                 Pair<Integer, Integer> dimension = DataCtrl.getInstance().getImgDimension(filePath);
                 byte[] compressedImg = DataCtrl.getInstance().getInputImg(filePath, dimension.getKey(), dimension.getValue());
                 Fitxer inputCompressedImg = new Fitxer();
@@ -121,7 +121,7 @@ public class DomainCtrl {
                 long endTime = System.nanoTime();
                 double decompressTime = (double)(endTime-startTime)/1000000000;
                 double compressRatio =  (double)compressedImg.length/(double)outPutImage.getImageContent().length;
-                LocalHistory localHistory = new LocalHistory(filePath, savePath, ".jppeg", "Decompression", "JPEG", compressRatio, decompressTime);
+                LocalHistory localHistory = new LocalHistory(filePath, savePath, ".jpeg", "Decompression", "JPEG", compressRatio, decompressTime);
                 globalHistory.addLocalHistory(localHistory);
                 DataCtrl.getInstance().outPutImg(savePath+".ppm", dimension.getKey(), dimension.getValue(), outPutImage.getImageContent());
             }
