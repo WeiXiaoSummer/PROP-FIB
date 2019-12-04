@@ -1,4 +1,4 @@
-package Drivers.LZSS;
+/*package Drivers.LZSS;
 
 
 import org.junit.runner.JUnitCore;
@@ -20,4 +20,4 @@ public class DriverLZSS {
             System.out.println("Error de ejecución. Numero de tests pasados: " + (4 - NumError) + "/4");
         }
     }
-}
+}*/

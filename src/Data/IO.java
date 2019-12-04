@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class IO {
 
-    public String getInputFile(String Path) {
+    /*public String getInputFile(String Path) {
         String content = "";
         try {
             FileReader bufferReader = new FileReader(Path);
@@ -86,6 +86,6 @@ public class IO {
         catch (Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 
 }

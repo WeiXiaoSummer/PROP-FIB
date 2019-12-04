@@ -1,14 +1,14 @@
 package Drivers.Fitxer;
 
-/*
+
 import static org.junit.Assert.*;
 
 import javafx.util.Pair;
 import org.junit.Test;
-*/
+
 
 public class FitxerTest {
-    /*
+
     @Test
     public void creaFitxerBuit(){
         Fitxer fitxer = new Fitxer();
@@ -90,6 +90,6 @@ public class FitxerTest {
         Fitxer fitxer = new Fitxer(null, null,null);
         fitxer.setImageContent(imageContent);
         assertEquals("El contingut de la imatge no s'ha adquirit correctament", imageContent, fitxer.getImageContent());
-    }*/
+    }
 
 }
