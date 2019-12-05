@@ -2,10 +2,11 @@ package Domain;
 
 import javafx.util.Pair;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import static java.lang.Math.*;
-import static java.lang.Math.round;
 
 public class JPEG extends Algorithm {
 
@@ -17,42 +18,80 @@ public class JPEG extends Algorithm {
     }
 
     @Override
-    public Fitxer comprimir(Fitxer image) {
+    public Pair<Double, Double> comprimir(Fitxer inputImg, ByteArrayOutputStream compressedFile) {
+
         long startTime=System.currentTimeMillis();
-        byte[] inputImg = image.getImageContent();
-        byte[] compressedData = Compress(inputImg, image.getDimension().getKey(), image.getDimension().getValue());
-        long endTime=System.currentTimeMillis(); // get the time when end the compression
-        Fitxer compressedImg = new Fitxer();
-        compressedImg.setFileExtension(".jpeg");
-        compressedImg.setImageContent(compressedData);
+        byte[] input = inputImg.getContent();
+        Pair<Integer, Integer> dimension = getDimension(input);
+        int offset = 9 + dimension.getKey().toString().length() + dimension.getValue().toString().length();
+        byte[] compressedContent = Compress(input, dimension.getKey(), dimension.getValue(), offset);
+        long endTime=System.currentTimeMillis();
+
+        byte fileNameLength = (byte) inputImg.getFile().getName().length();
+        byte[] outPutWidth =  ByteBuffer.allocate(4).putInt(dimension.getKey()).array();
+        byte[] outPutHeight = ByteBuffer.allocate(4).putInt(dimension.getValue()).array();
+        byte[] compressedContentSize = ByteBuffer.allocate(4).putInt(compressedContent.length).array();
+
+        try {
+            compressedFile.write("JPEG".getBytes());
+            compressedFile.write(fileNameLength); compressedFile.write(inputImg.getFile().getName().getBytes());
+            compressedFile.write(compressedContentSize); compressedFile.write(outPutWidth);
+            compressedFile.write(outPutHeight); compressedFile.write(compressedContent);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
         double compressTime = (double)(endTime-startTime)* 0.001;
-        System.out.println(compressTime);
-        double compressedRation = inputImg.length/compressedData.length;
+        double compressRation = input.length/compressedContent.length;
+
+        Pair<Double, Double> compressionStatistic = new Pair<>(compressTime, compressRation);
         globalStatistic.setNumCompression(globalStatistic.getNumCompression()+1);
-        globalStatistic.setTotalCompressedData(globalStatistic.getTotalCompressedData()+inputImg.length);
+        globalStatistic.setTotalCompressedData(globalStatistic.getTotalCompressedData()+input.length);
         globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
-        globalStatistic.setAverageCompressionRatio((globalStatistic.getAverageCompressionRatio()+compressedRation)/globalStatistic.getNumCompression());
-        return compressedImg;
+        globalStatistic.setTotalCompressionRatio(globalStatistic.getTotalCompressionRatio()+compressRation);
+        return compressionStatistic;
     }
 
     @Override
-    public Fitxer descomprimir(Fitxer compressedData) {
+    public Pair<Double, Double> descomprimir(byte[] compressedContent, Fitxer outPutFile) {
         long startTime=System.currentTimeMillis();
-        byte[] inputCompressedImg = compressedData.getImageContent();
-        Pair<Integer, Integer> dimension = compressedData.getDimension();
-        byte[] decompressedImg = DeCompress(inputCompressedImg, dimension.getKey(), dimension.getValue());
+        byte[] getWidth = Arrays.copyOfRange(compressedContent, 0, 4);
+        byte[] getHeight = Arrays.copyOfRange(compressedContent, 4, 8);
+        Integer width = ByteBuffer.wrap(getWidth).getInt();
+        Integer height = ByteBuffer.wrap(getHeight).getInt();
+        byte[] header = ("P6\n"+width.toString()+" "+height.toString()+"\n255\n").getBytes();
+        byte[] decompressedContent = new byte[width*height*3+header.length];
+        for(int i = 0; i < header.length; ++i) {
+            decompressedContent[i] = header[i];
+        }
+        int offset = header.length;
+        DeCompress(compressedContent, decompressedContent, width, height, offset);
         long endTime=System.currentTimeMillis(); // get the time when end the compression
-        Fitxer outputImg = new Fitxer();
-        outputImg.setFileExtension(".ppm");
-        outputImg.setImageContent(decompressedImg);
         double decompressTime = (double)(endTime-startTime)* 0.001;
-        System.out.println(decompressTime);
+        double compressionRatio = decompressedContent.length/(compressedContent.length-8);
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
-        globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+inputCompressedImg.length);
+        globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+compressedContent.length);
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime()+decompressTime);
-        return outputImg;
+        outPutFile.setContent(decompressedContent);
+        return new Pair<>(decompressTime, compressionRatio);
     }
 
+    private Pair<Integer, Integer> getDimension(byte[] imgContent) {
+        Integer width = 0;
+        Integer height = 0;
+        int pos = 3;
+        while (imgContent[pos] != ' ') {
+            width = width * 10 + (imgContent[pos] - '0');
+            ++pos;
+        }
+        ++pos;
+        while (imgContent[pos] != '\n') {
+            height = height * 10 + (imgContent[pos] - '0');
+            ++pos;
+        }
+        return new Pair<>(width, height);
+    }
     //-----------------------------------------------Initializer------------------------------------------------------//
 
     //Initialize Luminance Quantization Table and Chrominance Quantization Table
@@ -244,7 +283,6 @@ public class JPEG extends Algorithm {
         DCTTransform(Block, false);
         //Quantize
 
-
         for(int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 Block[i][j] = round(Block[i][j]*QuantMatrix[i][j]);
@@ -336,14 +374,14 @@ public class JPEG extends Algorithm {
     }
     
 
-    private byte[][] getBlockWithID(int rowID, int columnID, int realHeight, int realWidth, byte RGB[]) {
+    private byte[][] getBlockWithID(int rowID, int columnID, int realHeight, int realWidth, byte RGB[], int offset) {
         byte[][] block = new byte[8][24];
         int rowPos, columnPos, i, j;
         for (i = 0, rowPos = rowID << 3; i < 8 && rowPos < realHeight; ++i, ++rowPos) {
             for (j = 0, columnPos = columnID * 24; j < 22 && columnPos < realWidth; j += 3, columnPos += 3) {
-                block[i][j] = RGB[rowPos*realWidth+columnPos];
-                block[i][j+1] = RGB[rowPos*realWidth+columnPos+1];
-                block[i][j+2] = RGB[rowPos*realWidth+columnPos+2];
+                block[i][j] = RGB[rowPos*realWidth+columnPos+offset];
+                block[i][j+1] = RGB[rowPos*realWidth+columnPos+1+offset];
+                block[i][j+2] = RGB[rowPos*realWidth+columnPos+2+offset];
             }
             while (j < 22) {
                 block[i][j] = block[i][j+1] = block[i][j+2] = (byte)0x00;
@@ -395,7 +433,7 @@ public class JPEG extends Algorithm {
     
     //--------------------------------------- Compressor and Decompressor---------------------------------------------//
     
-    private byte[] Compress(byte RGB[], int width, int height) {
+    private byte[] Compress(byte RGB[], int width, int height, int offSet) {
         int realHeight = height;
         int realWidth = width*3;
         int multipleOfEight = width%8;
@@ -473,7 +511,7 @@ public class JPEG extends Algorithm {
 
         for (int i = 0; i < rowID; ++i) {
             for (int j = 0; j < columnID; ++j) {
-                rgb = getBlockWithID(i, j, realHeight, realWidth,RGB);
+                rgb = getBlockWithID(i, j,realHeight,realWidth,RGB, offSet);
                 YCrCbTransform(rgb, Y, Cr, Cb);
                 lastDCY = EncodeBlock(Y, YQuantMatrix, lastDCY, Zigzag, huffmanLuminanceDC, huffmanLuminanceAC, VLCTable, bitWriter);
                 lastDCCr = EncodeBlock(Cr, CrCbQuantMatrix, lastDCCr,Zigzag, huffmanChrominanceDC, huffmanChrominanceAC, VLCTable, bitWriter);
@@ -484,8 +522,9 @@ public class JPEG extends Algorithm {
         return bitWriter.getOutput();
     }
     
-    private byte[] DeCompress(byte[] InPut, int width, int height) {
+    private void DeCompress(byte[] InPut, byte[] outPut, int width, int height, int offset) {
         BitReader bitReader = new BitReader(InPut);
+        bitReader.setActualBytePointer(8);
         int lastRow = height;
         int lastColumn = width*3;
         int multipleOfEight = width%8;
@@ -540,7 +579,6 @@ public class JPEG extends Algorithm {
                 58, 59, 52, 45, 38, 31, 39, 46,
                 53, 60, 61, 54, 47, 55, 62, 63};
 
-        byte[] outPut = new byte[lastRow*lastColumn];
         float[][] Y = new float[8][8];
         float[][] Cr = new float[8][8];
         float[][] Cb = new float[8][8];
@@ -564,9 +602,9 @@ public class JPEG extends Algorithm {
             for(i = 0; i < 8 && rowPos < lastRow; ++i, ++rowPos) {
                 aux = columnPos;
                 for (j = 0; j < 8 && aux < lastColumn; ++j, aux+=3) {
-                    outPut[rowPos*lastColumn+aux] = R[i][j];
-                    outPut[rowPos*lastColumn+aux+1] = G[i][j];
-                    outPut[rowPos*lastColumn+aux+2] = B[i][j];
+                    outPut[rowPos*lastColumn+aux + offset] = R[i][j];
+                    outPut[rowPos*lastColumn+aux+1 + offset] = G[i][j];
+                    outPut[rowPos*lastColumn+aux+2 + offset] = B[i][j];
                 }
             }
             rowPos -= 8;
@@ -577,7 +615,6 @@ public class JPEG extends Algorithm {
             }
             numBlock -= 3;
         }
-        return outPut;
     }
     //--------------------------------------- Compressor and Decompressor---------------------------------------------//
 }

@@ -28,4 +28,5 @@ public class LocalHistory {
     public ArrayList<Object> getInformation() {
         return new ArrayList<>(Arrays.asList(inputPath, outPutPath, fileExtension, operation, algorithm, compressionRatio, timeUsed));
     }
+
 }

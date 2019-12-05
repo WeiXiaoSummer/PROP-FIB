@@ -1,14 +1,6 @@
 package Drivers.LZ78;
 
-import Domain.Fitxer;
-import Drivers.GlobalStatistic.GlobalStatistic;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
-public class DriverLZ78 {
+public class DriverLZ78 {/*
     public static LZ78 lz78 = new LZ78(0,0,0,0,0,0,0);
     public static void main(String[] args) {
         String nomClasse = "LZ78";
@@ -171,5 +163,5 @@ public class DriverLZ78 {
                 break;
 
         }
-    }
+    }*/
 }

@@ -11,27 +11,27 @@ public class GlobalStatistic {
     private int totalDecompressedData;
     private double totalCompressionTime;
     private double totalDecompressionTime;
-    private double averageCompressionRatio;
+    private double totalCompressionRatio;
 
     public GlobalStatistic(){}
 
     public GlobalStatistic (int numCompression, int numDecompression, int totalCompressedData, int
                             totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
-                            double averageCompressionRatio) {
+                            double totalCompressionRatio) {
         this.numCompression = numCompression;
         this.numDecompression = numDecompression;
         this.totalCompressedData = totalCompressedData;
         this.totalDecompressedData = totalDecompressedData;
         this.totalCompressionTime = totalCompressionTime;
         this.totalDecompressionTime = totalDecompressionTime;
-        this.averageCompressionRatio = averageCompressionRatio;
+        this.totalCompressionRatio = totalCompressionRatio;
     }
 
     public ArrayList<Object> getInformation() {
         double averageCompressionSpeed = totalCompressedData/totalCompressionTime;
         double averageDecompressionSpeed = totalDecompressedData/totalDecompressionTime;
-        return new ArrayList<>(Arrays.asList(numCompression, numDecompression, totalCompressedData,
-                totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionSpeed, averageDecompressionSpeed));
+        double averageCompressionRatio = totalCompressionRatio/numCompression;
+        return new ArrayList<>(Arrays.asList(averageCompressionSpeed, averageDecompressionSpeed, averageCompressionRatio));
     }
 
     public int getNumCompression() {
@@ -58,8 +58,8 @@ public class GlobalStatistic {
         return totalDecompressionTime;
     }
 
-    public double getAverageCompressionRatio() {
-        return averageCompressionRatio;
+    public double getTotalCompressionRatio() {
+        return totalCompressionRatio;
     }
 
     public void setNumCompression(int numCompression) {
@@ -86,8 +86,8 @@ public class GlobalStatistic {
         this.totalDecompressionTime = totalDecompressionTime;
     }
 
-    public void setAverageCompressionRatio(double averageCompressionRatio) {
-        this.averageCompressionRatio = averageCompressionRatio;
+    public void setTotalCompressionRatio(double totalCompressionRatio) {
+        this.totalCompressionRatio = totalCompressionRatio;
     }
 
 }

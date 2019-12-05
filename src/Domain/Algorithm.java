@@ -1,5 +1,8 @@
 package Domain;
 
+import javafx.util.Pair;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public abstract class Algorithm {
@@ -17,6 +20,13 @@ public abstract class Algorithm {
         return globalStatistic.getInformation();
     }
 
-    public abstract Fitxer comprimir(Fitxer file);
-    public abstract Fitxer descomprimir(Fitxer file);
+    public void setGlobalStatistic(int numCompression, int numDecompression, int totalCompressedData,
+                                                int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
+                                                double averageCompressionRatio) {
+        globalStatistic = new GlobalStatistic(numCompression, numDecompression, totalCompressedData, totalDecompressedData,
+                totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
+    }
+
+    public abstract Pair<Double, Double> comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile);
+    public abstract Pair<Double, Double> descomprimir(byte[] compressedContent, Fitxer outPutFile);
 }

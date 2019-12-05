@@ -1,5 +1,10 @@
 package Domain;
 
+import javafx.util.Pair;
+
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+
 public class LZSS extends Algorithm {
 
     private StringBuilder Ventana;
@@ -12,8 +17,9 @@ public class LZSS extends Algorithm {
     }
 
 
-    public Fitxer comprimir(Fitxer file) {
-        String content = file.getFileContent();
+    public Pair<Double, Double> comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) {
+        Pair<Double, Double> compressionStatistic = new Pair<>(0.0, 0.0);
+        String content = new String(inFile.getContent());
         Ventana = new StringBuilder();
         StringBuilder ActualMatch = new StringBuilder();
         long startTime = System.currentTimeMillis();
@@ -93,24 +99,39 @@ public class LZSS extends Algorithm {
                 --MidaMatch;
             }
         }
-
         long endTime=System.currentTimeMillis(); // get the time when end the compression
         double compressTime = (double)(endTime-startTime)* 0.001;
-        System.out.println("Temps trigat: " + compressTime);
         globalStatistic.setNumCompression(globalStatistic.getNumCompression() + 1);
         globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
-        double Ratio;
+        double Ratio = 0.0;
         if(content.length() != 0) {
             Ratio = ((double) content.length() / (double) outStream.length())*100;
-            globalStatistic.setAverageCompressionRatio((globalStatistic.getAverageCompressionRatio() + Ratio) / 2);
-            System.out.println("Ratio de compressió: " + Ratio);
+            globalStatistic.setTotalCompressionRatio(globalStatistic.getTotalCompressionRatio()+Ratio);
         }
-        return new Fitxer("", ".lzss", outStream);
+            //output compressed file header and it's content
+        try {
+            byte fileNameLength = (byte) inFile.getFile().getName().length();
+            byte[] compressedContent = outStream.getBytes("UTF-8");
+            byte[] compressedContentSize = ByteBuffer.allocate(4).putInt(compressedContent.length).array();
+            compressedFile.write("LZSS".getBytes());
+            compressedFile.write(fileNameLength); compressedFile.write(inFile.getFile().getName().getBytes());
+            compressedFile.write(compressedContentSize); compressedFile.write(compressedContent);
+        }
+        catch (Exception e) {e.printStackTrace();}
+
+        compressionStatistic = new Pair<>(compressTime, Ratio);
+        return compressionStatistic;
     }
 
 
-    public Fitxer descomprimir(Fitxer file) {
-        String content = file.getFileContent();
+    public Pair<Double, Double> descomprimir(byte[] compressedContent, Fitxer outPutFile) {
+        String content = "";
+        try {
+            content = new String(compressedContent, "UTF-8");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         long startTime = System.currentTimeMillis();
         Ventana = new StringBuilder();
         outStream = "";
@@ -147,12 +168,15 @@ public class LZSS extends Algorithm {
                 }
             }
         }
+        System.out.println("decompressFinished");
         long endTime=System.currentTimeMillis(); // get the time when end the compression
         double descompressTime = (double)(endTime-startTime)* 0.001;
-        System.out.println("Temps trigat: " + descompressTime);
+        outPutFile.setContent(outStream.getBytes());
+        globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+compressedContent.length);
         globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
         globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime() + descompressTime);
-        return new Fitxer("", ".txt", outStream);
+
+        return new Pair<>(descompressTime, (double) outPutFile.getContent().length/compressedContent.length);
     }
 
 }

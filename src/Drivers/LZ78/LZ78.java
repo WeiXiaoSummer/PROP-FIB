@@ -1,11 +1,16 @@
 package Drivers.LZ78;
 
-import Domain.Algorithm;
 import Domain.Fitxer;
 
-import java.util.HashMap;
-
 public class LZ78 extends Algorithm {
+    @Override
+    public Fitxer comprimir(Fitxer input) {
+        return null;
+    }
+    @Override
+    public Fitxer descomprimir(Fitxer output) {
+        return null;
+    }
 
     public LZ78(int numCompression, int numDecompression, int totalCompressedData,
                 int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
@@ -13,7 +18,7 @@ public class LZ78 extends Algorithm {
         super(numCompression, numDecompression, totalCompressedData, totalDecompressedData, totalCompressionTime,
                 totalDecompressionTime, averageCompressionRatio);
     }
-
+    /*
     @Override
     public Fitxer comprimir(Fitxer file) {
         long startTime=System.currentTimeMillis();
@@ -95,7 +100,7 @@ public class LZ78 extends Algorithm {
     private int chartoInt(char c) {
         return Integer.valueOf(c);
     }
-
+*/
 
 
 }

@@ -13,7 +13,7 @@ public class PROP extends Application {
         primaryStage.setTitle("PROP");
         //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false);//窗体缩放（默认为true）
+        primaryStage.setResizable(true);//窗体缩放（默认为true）
         primaryStage.show();
     }
     public static void main( String[] args )

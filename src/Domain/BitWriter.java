@@ -25,6 +25,24 @@ public class BitWriter {
         }
     }
 
+    public void write(byte[] array) {
+        try {
+            Output.write(array);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void write(byte b) {
+        try {
+            Output.write(b);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void flush() {
         if (WriteBufferSize != 0) {
             Byte oneByte = (byte)(WriteBuffer << (8-WriteBufferSize));
@@ -45,4 +63,5 @@ public class BitWriter {
         }
         return result;
     }
+
 }

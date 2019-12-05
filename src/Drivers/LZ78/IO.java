@@ -63,11 +63,11 @@ public class IO {
     }
 
     public static byte[] getInputImg(String Path, Integer width, Integer height){
-        byte[] input = new byte[0];
+        byte[] input = new byte[width*height*3];
         try (FileInputStream byteReader = new FileInputStream(Path)){
             int headerLength = 9 + width.toString().length()+height.toString().length();
             byteReader.skip(headerLength);
-            input = byteReader.readAllBytes();
+            byteReader.read(input);
         }
         catch (Exception e){
             e.printStackTrace();

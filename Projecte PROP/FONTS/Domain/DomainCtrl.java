@@ -4,7 +4,6 @@ import Data.DataCtrl;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DomainCtrl {
 
@@ -12,7 +11,6 @@ public class DomainCtrl {
     private LZ78 lz78 = new LZ78(0,0,0,0,0,0,0);
     private LZSS lzss = new LZSS(0,0,0,0,0,0,0);
     private JPEG jpeg = new JPEG(0,0,0,0,0,0,0);
-    private GlobalHistory globalHistory = new GlobalHistory();
 
     private DomainCtrl(){}
 
@@ -44,7 +42,6 @@ public class DomainCtrl {
             //history
             String contentCompressed = outFile.getFileContent();
             LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Compression", algorithmType, (double)content.length()/(double)contentCompressed.length(), compressTime);
-            globalHistory.addLocalHistory(localHistory);
         }
         else {
             Pair<Integer, Integer> Dimension = DataCtrl.getInstance().getImgDimension(filePath);
@@ -59,26 +56,11 @@ public class DomainCtrl {
             long endTime = System.nanoTime();
             double compressTime = (double)(endTime-startTime)/1000000000;
             double compressRatio =  (double)(RGB.length)/(double)outPutFile.getImageContent().length;
-            LocalHistory localHistory = new LocalHistory(filePath, savePath+".jppeg", getFileType(filePath), "Compression", algorithmType, compressRatio, compressTime);
-            globalHistory.addLocalHistory(localHistory);
-            DataCtrl.getInstance().outPutImg(savePath+".jppeg", Dimension.getKey(), Dimension.getValue(), outPutFile.getImageContent());
+            LocalHistory localHistory = new LocalHistory(filePath, savePath+".jpeg", getFileType(filePath), "Compression", algorithmType, compressRatio, compressTime);
+            DataCtrl.getInstance().outPutImg(savePath+".jpeg", Dimension.getKey(), Dimension.getValue(), outPutFile.getImageContent());
         }
     }
-    //Compress the files in a folder with the algorithm selected by the user, and save at the path selected by user
-    public void compressFolderTo(String folderPath, String savePath) throws IOException {
-        java.io.File file = new java.io.File(folderPath);
-        java.io.File[] tempList = file.listFiles();
 
-        assert tempList != null;
-        for (int i = 0; i < tempList.length; i++) {
-            if (tempList[i].isFile()) {
-                compressFileTo(tempList[i].toString(), folderPath, "AUTO");
-            }
-            if (tempList[i].isDirectory()) {
-                compressFolderTo(tempList[i].toString(), tempList[i].toString());
-            }
-        }
-    }
 
     //Desompress a file and save at the path selected by user
     public void decompressFileTo(String filePath, String savePath) throws IOException {
@@ -108,7 +90,6 @@ public class DomainCtrl {
             LocalHistory localHistory = new LocalHistory(filePath, savePath, getFileType(filePath), "Decompression", algoritme,
                     (double)content.length()/(double)contentOut.length(), descompressTime);
             //add to history
-            globalHistory.addLocalHistory(localHistory);
         }
         else if (fileType.equals(".jpeg")) {
                 Pair<Integer, Integer> dimension = DataCtrl.getInstance().getImgDimension(filePath);
@@ -122,7 +103,6 @@ public class DomainCtrl {
                 double decompressTime = (double)(endTime-startTime)/1000000000;
                 double compressRatio =  (double)compressedImg.length/(double)outPutImage.getImageContent().length;
                 LocalHistory localHistory = new LocalHistory(filePath, savePath, ".jpeg", "Decompression", "JPEG", compressRatio, decompressTime);
-                globalHistory.addLocalHistory(localHistory);
                 DataCtrl.getInstance().outPutImg(savePath+".ppm", dimension.getKey(), dimension.getValue(), outPutImage.getImageContent());
             }
         }
@@ -136,42 +116,6 @@ public class DomainCtrl {
     private void saveFileTo(Fitxer file, String savePath){
         String content = file.getFileContent();
         Data.DataCtrl.getInstance().outputFile(content, savePath);
-    }
-
-    // Load statistics from the database.
-    public ArrayList<ArrayList<Object>> loadStatistic(){
-        return null;
-    }
-
-    // Save statistics on the database.
-    public void saveStatistic(){
-        ArrayList<ArrayList<Object>> statistics = new ArrayList<>();
-        statistics.add(lz78.getGlobalStatistic());
-        statistics.add(lzss.getGlobalStatistic());
-        statistics.add(jpeg.getGlobalStatistic());
-        Data.DataCtrl.getInstance().outputFile(statistics.toString(), null);
-    }
-
-    // Load history from the database.
-    public ArrayList<ArrayList<Object>> loadHistory() {
-        return globalHistory.getInformation();
-    }
-
-    // Save history on the database.
-    public void saveHistory(){
-        Data.DataCtrl.getInstance().outputFile(globalHistory.getInformation().toString(), null);
-    }
-
-    public ArrayList<Object> getStatisticLZ78 () {
-        return lz78.getGlobalStatistic();
-    }
-
-    public ArrayList<Object> getStatisticLZSS() {
-        return lzss.getGlobalStatistic();
-    }
-
-    public ArrayList<Object> getStatisticJPEG() {
-        return jpeg.getGlobalStatistic();
     }
 
     private String getFileType(String filePath) {

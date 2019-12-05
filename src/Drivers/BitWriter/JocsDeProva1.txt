@@ -1,8 +1,0 @@
-1
-4
-0
-
-Resultat esperat seguint aquestes opcions:
-1 ->
-4 -> []
-0 -> final del driver

@@ -1,6 +1,6 @@
 package Data;
 
-import javafx.util.Pair;
+import java.io.File;
 
 public class DataCtrl {
 
@@ -16,20 +16,25 @@ public class DataCtrl {
         return instance;
     }
 
-    public String getInputFile(String Path) {
-        return io.getInputFile(Path);
+    public byte[] getInputFile(File inputFile) {
+        return io.getInputFile(inputFile);
     }
 
-    public void outputFile(String content, String Path) {
-        io.outputFile(content, Path);
+    public void outputFile(byte[] content, File destinyFile) { io.outputFile(content, destinyFile); }
+
+    public void setInputCompressedFileStream(File compressedFile) {
+       io.setInputCompressedFileStream(compressedFile);
     }
 
-    public Pair<Integer, Integer> getImgDimension(String Path) { return io.getImgDimension(Path);}
-
-    public byte[] getInputImg(String Path, Integer width, Integer height) { return io.getInputImg(Path, width, height);}
-
-    public void outPutImg(String Path, Integer width, Integer height, byte[] RGB) {
-        io.outPutImg(Path, width, height, RGB);
+    public void closeInputCompressedFileStream() {
+        io.closeInputCompressedFileStream();
     }
 
+    public byte readFromInputCompressedFileStream() {
+        return io.readFromInputCompressedFileStream();
+    }
+
+    public void readFromInputCompressedFileStream(byte[] array) {
+        io.readFromInputCompressedFileStream(array);
+    }
 }

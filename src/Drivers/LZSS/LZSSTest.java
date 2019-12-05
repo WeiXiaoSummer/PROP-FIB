@@ -1,13 +1,8 @@
-/*package Drivers.LZSS;
+package Drivers.LZSS;
 
-
-import static org.junit.Assert.*;
-import org.junit.Test;
-
-import java.io.File;
 
 public class LZSSTest {
-
+    /*
     private LZSS lzss = new LZSS(0, 0, 0, 0, 0, 0, 0);
 
     @Test
@@ -55,5 +50,5 @@ public class LZSSTest {
         int midaDescomprimida = fitxerDescomp.getFileContent().length();
         assertTrue("L'algorisme LZSS no ha descomprimit correctament", (midaNormal == midaDescomprimida));
     }
-
-}*/
+    */
+}

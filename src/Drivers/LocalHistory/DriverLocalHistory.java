@@ -1,8 +1,5 @@
 package Drivers.LocalHistory;
 
-import Domain.*;
-import Drivers.GlobalStatistic.GlobalStatistic;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;

@@ -1,11 +1,8 @@
 package Drivers.LZSS;
 
-import Domain.Algorithm;
-import Domain.Fitxer;
-
+/*
 public class LZSS extends Algorithm {
-
-    private StringBuilder Ventana;
+      private StringBuilder Ventana;
     private char nextChar;
     private String outStream;
 
@@ -159,3 +156,4 @@ public class LZSS extends Algorithm {
     }
 
 }
+*/

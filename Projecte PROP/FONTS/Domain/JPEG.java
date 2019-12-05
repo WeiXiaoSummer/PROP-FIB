@@ -2,7 +2,6 @@ package Domain;
 
 import javafx.util.Pair;
 
-import java.nio.file.Path;
 import java.util.Arrays;
 
 import static java.lang.Math.*;
@@ -57,7 +56,7 @@ public class JPEG extends Algorithm {
     //-----------------------------------------------Initializer------------------------------------------------------//
 
     //Initialize Luminance Quantization Table and Chrominance Quantization Table
-    public void initializeQuantizationTable(float YQuantMatrix[][], float CrCbQuantMatrix[][]) {
+    private void initializeQuantizationTable(float YQuantMatrix[][], float CrCbQuantMatrix[][]) {
         //Arai, Agui and Nakajima Scale factor
         float aanSf[] = {1f, 1.387039845f, 1.306562965f, 1.175875602f, 1f, 0.785694958f, 0.541196100f, 0.275899379f};
 
@@ -92,7 +91,7 @@ public class JPEG extends Algorithm {
     }
 
     //Initialize Value-Length-Code Table
-    public void initializeVLCTable(CodeBits[] VLCTable) {
+    private void initializeVLCTable(CodeBits[] VLCTable) {
         byte numBits = 1;
         int mask = 1;
         for(int value = 1; value < 2048; ++value) {
@@ -106,7 +105,7 @@ public class JPEG extends Algorithm {
     }
 
     //Initialize Huffman Table
-    public void initializeMyHuffmanTable(char[] numCodes, char[] values, CodeBits[] huffmantable) {
+    private void initializeMyHuffmanTable(char[] numCodes, char[] values, CodeBits[] huffmantable) {
         char huffmanCode = 0;
         int valuePos = 0;
         for (byte numBits = 1; numBits <= 16 & numBits <= numCodes.length; ++numBits) {
@@ -121,7 +120,7 @@ public class JPEG extends Algorithm {
 
     //----------------------------------------Discrete Cosine Transform-----------------------------------------------//
 
-    public void DCTTransform(float[][] Block, boolean byRow) {
+    private void DCTTransform(float[][] Block, boolean byRow) {
 
         float sqrtHalfSqrt = 1.306562965f; //    sqrt((2 + sqrt(2)) / 2) = cos(pi * 1 / 8) * sqrt(2)
         float invSqrt      = 0.707106781f; //                1 / sqrt(2) = cos(pi * 2 / 8)
@@ -178,7 +177,7 @@ public class JPEG extends Algorithm {
         }
     }
 
-    public void IDCTTransform(float[][] Block, boolean byRow) {
+    private void IDCTTransform(float[][] Block, boolean byRow) {
         int RowChange = byRow ? 1 : 0;
         int ColumnChange = byRow ? 0 : 1;
 
@@ -237,7 +236,7 @@ public class JPEG extends Algorithm {
 
     //-----------------------------------------Block Encoder and Decoder-----------------------------------------------//
 
-    public int EncodeBlock(float[][] Block, float[][] QuantMatrix, int lastDC, int[] Zigzag, CodeBits[] huffmanDC,
+    private int EncodeBlock(float[][] Block, float[][] QuantMatrix, int lastDC, int[] Zigzag, CodeBits[] huffmanDC,
                                    CodeBits[] huffmanAC, CodeBits[] VLCTable, BitWriter bitWriter) {
         //DCT: by rows
         DCTTransform(Block, true);
@@ -298,7 +297,7 @@ public class JPEG extends Algorithm {
         return zigzag[0][0];
     }
 
-    public int decodeBlock(float[][] block, BitReader bitReader, HuffmanTree DC, HuffmanTree AC, float[][] quantMatrix, int lastDC, int[] Zigzag) {
+    private int decodeBlock(float[][] block, BitReader bitReader, HuffmanTree DC, HuffmanTree AC, float[][] quantMatrix, int lastDC, int[] Zigzag) {
         int length = DC.decodeHuffmanCode(bitReader);
         int diff = bitReader.readInt(length);
         int actualDC = lastDC + diff;
@@ -337,7 +336,7 @@ public class JPEG extends Algorithm {
     }
     
 
-    public byte[][] getBlockWithID(int rowID, int columnID, int realHeight, int realWidth, byte RGB[]) {
+    private byte[][] getBlockWithID(int rowID, int columnID, int realHeight, int realWidth, byte RGB[]) {
         byte[][] block = new byte[8][24];
         int rowPos, columnPos, i, j;
         for (i = 0, rowPos = rowID << 3; i < 8 && rowPos < realHeight; ++i, ++rowPos) {
@@ -361,7 +360,7 @@ public class JPEG extends Algorithm {
     //----------------------------------------Block Encoder and Decoder-----------------------------------------------//
 
     //------------------------------------------Color Space Transform-------------------------------------------------//
-    public void YCrCbTransform(byte [][] RGB, float[][] Y, float[][] Cr, float[][] Cb) {
+    private void YCrCbTransform(byte [][] RGB, float[][] Y, float[][] Cr, float[][] Cb) {
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 22; j += 3) {
                 int posJ = j/3;
@@ -375,7 +374,7 @@ public class JPEG extends Algorithm {
         }
     }
 
-    public void RGBTransform(byte [][] R, byte[][] G, byte[][] B, float[][] Y, float[][] Cr, float[][] Cb) {
+    private void RGBTransform(byte [][] R, byte[][] G, byte[][] B, float[][] Y, float[][] Cr, float[][] Cb) {
 
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
@@ -396,7 +395,7 @@ public class JPEG extends Algorithm {
     
     //--------------------------------------- Compressor and Decompressor---------------------------------------------//
     
-    public byte[] Compress(byte RGB[], int width, int height) {
+    private byte[] Compress(byte RGB[], int width, int height) {
         int realHeight = height;
         int realWidth = width*3;
         int multipleOfEight = width%8;
@@ -485,7 +484,7 @@ public class JPEG extends Algorithm {
         return bitWriter.getOutput();
     }
     
-    public byte[] DeCompress(byte[] InPut, int width, int height) {
+    private byte[] DeCompress(byte[] InPut, int width, int height) {
         BitReader bitReader = new BitReader(InPut);
         int lastRow = height;
         int lastColumn = width*3;

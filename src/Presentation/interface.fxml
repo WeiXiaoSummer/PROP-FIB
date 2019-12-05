@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -8,6 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Presentation.Controller">
    <children>
       <VBox prefHeight="600.0" prefWidth="240.0" style="-fx-background-color: #283747;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -225,16 +230,16 @@
                   <RowConstraints maxHeight="447.0" minHeight="10.0" prefHeight="447.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <AnchorPane GridPane.rowIndex="1">
+                  <AnchorPane prefHeight="432.0" prefWidth="740.0" GridPane.rowIndex="1">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="191.0" layoutX="59.0" layoutY="170.0" stroke="BLACK" strokeType="INSIDE" width="216.0" />
-                        <TextField fx:id="filePath" layoutX="196.0" layoutY="14.0" onAction="#selectCompFile" prefHeight="30.0" prefWidth="350.0" />
-                        <Button layoutX="557.0" layoutY="14.0" mnemonicParsing="false" onAction="#selectCompFile" text="SELECT FILE" />
-                        <Button layoutX="558.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectSaveDirectory" text="SELECT" />
+                        <TextField fx:id="filePath" layoutX="241.0" layoutY="15.0" onAction="#selectCompFile" prefHeight="30.0" prefWidth="350.0" />
+                        <Button layoutX="623.0" layoutY="14.0" mnemonicParsing="false" onAction="#selectCompFile" text="SELECT FILE" />
+                        <Button layoutX="639.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectSaveDirectory" text="SELECT" />
                         <Label layoutX="31.0" layoutY="20.0" text="SELECT FILE TO COMPRESS" />
-                        <TextField fx:id="directoryPath" layoutX="196.0" layoutY="63.0" onAction="#selectSaveDirectory" prefHeight="30.0" prefWidth="350.0" />
+                        <TextField fx:id="directoryPath" layoutX="241.0" layoutY="63.0" onAction="#selectSaveDirectory" prefHeight="30.0" prefWidth="350.0" />
                         <Label layoutX="30.0" layoutY="69.0" text="SELECT PATH TO SAVE" />
-                        <TextField layoutX="196.0" layoutY="112.0" prefHeight="30.0" prefWidth="350.0" />
+                        <TextField layoutX="241.0" layoutY="113.0" prefHeight="30.0" prefWidth="350.0" />
                         <Label layoutX="34.0" layoutY="118.0" text="NEW NAME" />
                         <RadioButton layoutX="80.0" layoutY="229.0" mnemonicParsing="false" text="AUTO">
                            <toggleGroup>
@@ -247,7 +252,7 @@
                         <Label layoutX="81.0" layoutY="193.0" text="SELECT ALGORITHM : " />
                         <Button layoutX="598.0" layoutY="324.0" mnemonicParsing="false" text="ACCEPT" />
                         <Button layoutX="495.0" layoutY="324.0" mnemonicParsing="false" text="CANCEL" />
-                        <Button layoutX="642.0" layoutY="14.0" mnemonicParsing="false" onAction="#selectCompDirectory" text="SELECT FOLDER" />
+                        <Button layoutX="563.0" layoutY="188.0" mnemonicParsing="false" onAction="#selectCompDirectory" text="SELECT FOLDER" />
                      </children>
                   </AnchorPane>
                </children>

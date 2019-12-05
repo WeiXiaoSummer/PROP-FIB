@@ -2,51 +2,32 @@ package Domain;
 
 import javafx.util.Pair;
 
+import java.io.File;
+
 public class Fitxer {
-    private String filePath;
-    private String fileExtension;
-    private String fileContent;
-    private byte[] imageContent;
+    private File file;
+    private byte[] content;
     private Pair<Integer, Integer> dimension;
 
     public Fitxer(){
     }
 
-    public Fitxer(String filePath, String fileExtension, String fileContent) {
-        this.filePath = filePath;
-        this.fileExtension = fileExtension;
-        this.fileContent = fileContent;
+    public Fitxer(File file, byte[] content) {
+        this.file = file;
+        this.content = content;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFile(File file) { this.file = file; }
+
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
-    public void setFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
-    }
+    public void setDimension(Pair<Integer, Integer> dimension) { this.dimension = dimension; }
 
-    public void setFileContent(String fileContent) {
-        this.fileContent = fileContent;
-    }
+    public File getFile() {return file;}
 
-    public void setImageContent(byte[] imageContent) { this.imageContent = imageContent; }
+    public byte[] getContent() { return content;}
 
-    public void setDimension(Pair<Integer, Integer> dimension) {this.dimension = dimension;}
-
-    public String getFileContent() {
-        return fileContent;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public String getFileExtension() {
-        return fileExtension;
-    }
-
-    public byte[] getImageContent() { return imageContent;}
-
-    public Pair<Integer, Integer> getDimension() {return dimension;}
+    public Pair<Integer, Integer> getDimension() { return dimension; }
 }

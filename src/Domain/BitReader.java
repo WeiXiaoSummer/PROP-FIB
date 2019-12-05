@@ -41,4 +41,8 @@ public class BitReader {
         if (positive) return value;
         return value-mask;
     }
+
+    public void setActualBytePointer(int pos) {
+        actualByte = pos;
+    }
 }
