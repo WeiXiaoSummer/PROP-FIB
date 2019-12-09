@@ -3,6 +3,7 @@ package Domain;
 import javafx.util.Pair;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Algorithm {
@@ -27,6 +28,6 @@ public abstract class Algorithm {
                 totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
     }
 
-    public abstract Pair<Double, Double> comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile);
-    public abstract Pair<Double, Double> descomprimir(byte[] compressedContent, Fitxer outPutFile);
+    public abstract Pair<Double, Double> comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) throws IOException;
+    public abstract Pair<Double, Double> descomprimir(byte[] compressedContent, Fitxer outPutFile) throws IOException;
 }
