@@ -28,9 +28,9 @@ public class DomainCtrl {
     }
 
     public void initializeDomainCtrl() {
-        lz78 = new LZ78(0,0,0,0,0,0,0);
-        lzss = new LZSS(0,0,0,0,0,0,0);
-        jpeg = new JPEG(0,0,0,0,0,0,0);
+        lz78 = new LZ78(new GlobalStatistic(0,0,0,0,0,0,0));
+        lzss = new LZSS(new GlobalStatistic(0,0,0,0,0,0,0));
+        jpeg = new JPEG(new GlobalStatistic(0,0,0,0,0,0,0));
     }
     public void compress(File inFile, File targetDirectory, String saveName, String algorithmType) {
         Fitxer inputFile = new Fitxer(new File(inFile.getPath()), new byte[0]);
