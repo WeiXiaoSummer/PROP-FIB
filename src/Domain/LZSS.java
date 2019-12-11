@@ -13,8 +13,8 @@ public class LZSS extends Algorithm {
     private int MidaMatch;
     private  ArrayList<Byte> ActualMatch;
 
-    public LZSS(int numCompression, int numDecompression, int totalCompressedData, int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime, double averageCompressionRatio) {
-        super(numCompression, numDecompression, totalCompressedData, totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
+    public LZSS(GlobalStatistic estadistiques) {
+        super(estadistiques);
     }
 
     public Pair<Double, Double> comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) {
@@ -37,7 +37,7 @@ public class LZSS extends Algorithm {
                 MIndex = tempIndex;
                 ++MidaMatch;
             } else {
-                if (MidaMatch > 2) {  // Si la mida es mes gran que 3
+                if (MidaMatch > 2) {  // If MatchSize > 2
                     codeMatch(MIndex);
                     Ventana.addAll(ActualMatch.subList(0, MidaMatch));
                     while (Ventana.size() > 4096) Ventana.remove(0);
@@ -45,7 +45,7 @@ public class LZSS extends Algorithm {
                     MIndex = -1;
                     MidaMatch = 1;
 
-                } else {  // Si la mida no es mes gran que 3
+                } else {  // If MatchSize < 2
                     escriu0ILiteral();
                     afegeixLiteralALaFinestra(ActualMatch.get(0));
                     eliminaLiteralDelMatch();
@@ -57,14 +57,14 @@ public class LZSS extends Algorithm {
             MIndex = isSubArray(Ventana.toArray(), ActualMatch.toArray());
 
             if (MIndex != -1) {
-                if (MidaMatch > 2) {  // Si la mida es mes gran que 3
+                if (MidaMatch > 2) {  // If MatchSize > 2
                     codeMatch(MIndex);
                     while (MidaMatch > 0){
                         ActualMatch.remove(0);
                         --MidaMatch;
                     }
 
-                } else {  // Si la mida no es mes gran que 3
+                } else {  // If MatchSize < 2
                     escriu0ILiteral();
                     afegeixLiteralALaFinestra(ActualMatch.get(0));
                     eliminaLiteralDelMatch();
@@ -77,7 +77,7 @@ public class LZSS extends Algorithm {
             }
         }
 
-        long endTime = System.currentTimeMillis(); // get the time when end the compression
+        long endTime = System.currentTimeMillis(); // Get time when end the compression
         double compressTime = (double) (endTime - startTime) * 0.001;
 
         globalStatistic.setNumCompression(globalStatistic.getNumCompression() + 1);
@@ -116,14 +116,14 @@ public class LZSS extends Algorithm {
             byte nextByte = content[i];
             int aux1 = (nextByte & 0b01111111);
             ++i;
-            if (nextByte == 0) {
+            if (nextByte == 0) {  // If it's a literal
                 if (i < content.length) {
                     nextByte = content[i];
                     ++i;
                     afegeixLiteralALaFinestra(nextByte);
                     outStream.write(nextByte);
                 }
-            } else {
+            } else {  // If it's a code
                 int pos;
                 int tam;
                 if (i < content.length) {
@@ -143,7 +143,7 @@ public class LZSS extends Algorithm {
                 }
             }
         }
-        long endTime = System.currentTimeMillis(); // get the time when end the compression
+        long endTime = System.currentTimeMillis(); // Get the time when end the compression
         double descompressTime = (double) (endTime - startTime) * 0.001;
         outputFile.setContent(outStream.toByteArray());
         globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData() + content.length);
@@ -154,42 +154,38 @@ public class LZSS extends Algorithm {
     }
 
 
-    // Function to check if an array is subArray of another one
     private int isSubArray(Object[] A, Object[] B) {
-        // Two pointers
-        int i = 0, j = 0;
-        // A mark pointer
-        int mark = 0;
+        int i = 0, j = 0, mark = 0;
 
         while (i < A.length && j < B.length) {
-            // If matches increment pointers
+            // If matches, increment pointers
             if (A[i] == B[j]) {
                 i++;
                 j++;
-                // If array B is completely traversed
+                // If B is in A
                 if (j == B.length) return mark;
             }
-            // If not, increment i and reset j and mark pointers
+            // If not, increment i and reset j and mark
             else {
                 i++;
                 j = 0;
                 mark = i;
             }
         }
-        // If it isn't a subArray return -1
+        // If B isn't a subArray return -1
         return -1;
     }
 
 
     private void afegeixLiteralALaFinestra(Byte literal) {
-        Ventana.add(literal); //Posem a la finestra el primer char del match
-        if (Ventana.size() > 4096) Ventana.remove(0);  //Eliminem de la finestra el primer element
+        Ventana.add(literal); // Posem a la finestra el primer byte del match
+        if (Ventana.size() > 4096) Ventana.remove(0);  // Eliminem de la finestra el primer element
     }
 
 
     private void escriu0ILiteral() {
-        outStream.write((byte) 0);
-        outStream.write(ActualMatch.get(0));
+        outStream.write((byte) 0);  // Flag a 0
+        outStream.write(ActualMatch.get(0)); // Literal
     }
 
 
@@ -200,9 +196,9 @@ public class LZSS extends Algorithm {
 
 
     private void codeMatch(int MIndex) {
-        byte aux = (byte) (0b10000000 | (0b1111111 & (MIndex >> 5)));
+        byte aux = (byte) (0b10000000 | (0b1111111 & (MIndex >> 5))); // Flag a 1 i meitat del pointer
         outStream.write(aux);
-        aux = (byte) (((0b11111 & MIndex) << 3) | (0b111 & MidaMatch));
+        aux = (byte) (((0b11111 & MIndex) << 3) | (0b111 & MidaMatch)); // Meitat del pointer i MatchSize
         outStream.write(aux);
     }
 
