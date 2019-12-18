@@ -1,23 +1,41 @@
 package Presentation;
 
+import Commons.PresentationLayerException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class PROP extends Application {
+    private Stage primary;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("interface.fxml"));//getClass().getClassLoader().getResource() 和 getClass().getResource()的区别，在不在根目录下
-        primaryStage.setTitle("PROP");
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(true);//窗体缩放（默认为true）
-        primaryStage.show();
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> Platform.runLater(() -> {
+            PresentationCtrl.getInstance().showNotification("Error", "Error", "An internal error has occurred:", e.getMessage(), primary);
+        }));
+        Thread.currentThread().setDefaultUncaughtExceptionHandler((t, e) -> Platform.runLater(() -> {
+            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, e.getMessage(), primary);
+        }));
+        PresentationCtrl.getInstance().initializeDomainCtrl();
+        primary = primaryStage;
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/main.fxml"));
+        primary.setTitle("PROP");
+        primary.setScene(new Scene(root));
+        primary.setResizable(false);
+        primaryStage.sizeToScene();
+        primary.show();
     }
+    @Override
+    public void stop() throws PresentationLayerException {
+        PresentationCtrl.getInstance().closeAndSave();
+    }
+
     public static void main( String[] args )
     {
         launch(args);
     }
+
 }

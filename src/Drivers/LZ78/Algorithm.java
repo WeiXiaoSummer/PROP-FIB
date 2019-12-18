@@ -3,8 +3,6 @@ package Drivers.LZ78;
 import Domain.Fitxer;
 import Domain.GlobalStatistic;
 
-import java.util.ArrayList;
-
 public abstract class Algorithm {
 
     protected GlobalStatistic globalStatistic;
@@ -16,9 +14,9 @@ public abstract class Algorithm {
                 totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
     }
 
-    public ArrayList<Object> getGlobalStatistic() {
+    /*public ArrayList<Object> getGlobalStatistic() {
         return globalStatistic.getInformation();
-    }
+    }*/
 
     public abstract Fitxer comprimir(Fitxer file);
     public abstract Fitxer descomprimir(Fitxer file);

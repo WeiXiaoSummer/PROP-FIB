@@ -1,18 +1,40 @@
 package Domain;
 
-import java.io.ByteArrayOutputStream;
+import Commons.DomainLayerException;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+/**
+ * Class for write bit streams.
+ */
 public class BitWriter {
+    /**
+     * ByteArrayOutputStream which data is write into.
+     */
     private ByteArrayOutputStream Output;
+    /**
+     * temporal buffer for store bytes.
+     */
     private int WriteBuffer;
+    /**
+     * temporal buffer size expressed in bits.
+     */
     private int WriteBufferSize;
 
+    /**
+     * Creates a new BitWriter.
+     */
     public BitWriter() {
         this.Output = new ByteArrayOutputStream();
         this.WriteBuffer = 0;
         this.WriteBufferSize = 0;
     }
 
+    /**
+     * Write codeBits into this bitWriter.
+     * @param data data to be wrote.
+     */
     public void write(CodeBits data) {
         WriteBufferSize += data.getBits();
         WriteBuffer <<= data.getBits();
@@ -25,24 +47,31 @@ public class BitWriter {
         }
     }
 
-    public void write(byte[] array) {
+    /**
+     * Writes array.length bytes from the specified byte array into this bitWriter.
+     * @param array the data to be wrote.
+     * @throws Exception
+     */
+    public void write(byte[] array) throws DomainLayerException {
         try {
             Output.write(array);
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (IOException e) {
+            throw new DomainLayerException("");
         }
     }
 
+    /**
+     * Writes a byte into this bitWriter.
+     * @param b the byte to be wrote.
+     */
     public void write(byte b) {
-        try {
-            Output.write(b);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        Output.write(b);
     }
 
+    /**
+     * Flushes the writeBuffer by writing all it's content into the Output.
+     */
     public void flush() {
         if (WriteBufferSize != 0) {
             Byte oneByte = (byte)(WriteBuffer << (8-WriteBufferSize));
@@ -52,16 +81,20 @@ public class BitWriter {
         }
     }
 
-    public byte[] getOutput() {
-        byte[] result = new byte[0];
+    /**
+     * Returns the current contents of this bitWriter, as a byte array
+     * @return the current contents of this bitWriter, as a byte array
+     * @throws Exception
+     */
+    public byte[] getOutput() throws DomainLayerException{
         try {
-            result = Output.toByteArray();
+            byte[] result = Output.toByteArray();
             Output.close();
+            return result;
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (IOException e) {
+            throw new DomainLayerException("");
         }
-        return result;
     }
 
 }

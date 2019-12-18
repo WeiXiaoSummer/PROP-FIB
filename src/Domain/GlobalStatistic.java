@@ -1,17 +1,16 @@
 package Domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class GlobalStatistic {
 
-    private int numCompression;
-    private int numDecompression;
-    private int totalCompressedData;
-    private int totalDecompressedData;
-    private double totalCompressionTime;
-    private double totalDecompressionTime;
-    private double totalCompressionRatio;
+    private int numCompression;             // indicates the total number of the compression realized by this compression algorithm
+    private int numDecompression;           // indicates the total number of the decompression realized by this compression algorithm
+    private int totalCompressedData;        // indicates the total number of the bytes compressed by this compression algorithm
+    private int totalDecompressedData;      // indicates the total number of the bytes decompressed by this compression algorithm
+    private double totalCompressionTime;    // indicates the total compression time used by this compression algorithm, measured in seconds
+    private double totalDecompressionTime;  // indicates the total decompression time used by this compression algorithm, measured in seconds
+    private double totalCompressionRatio;   // indicates the total compression ratio
+
+    //------------------------------------------------Constructor-----------------------------------------------------//
 
     public GlobalStatistic(){}
 
@@ -27,12 +26,10 @@ public class GlobalStatistic {
         this.totalCompressionRatio = totalCompressionRatio;
     }
 
-    public ArrayList<Object> getInformation() {
-        double averageCompressionSpeed = totalCompressedData/totalCompressionTime;
-        double averageDecompressionSpeed = totalDecompressedData/totalDecompressionTime;
-        double averageCompressionRatio = totalCompressionRatio/numCompression;
-        return new ArrayList<>(Arrays.asList(averageCompressionSpeed, averageDecompressionSpeed, averageCompressionRatio));
-    }
+    //------------------------------------------------Constructor-----------------------------------------------------//
+
+
+    //---------------------------------------------------Getters------------------------------------------------------//
 
     public int getNumCompression() {
         return numCompression;
@@ -62,32 +59,43 @@ public class GlobalStatistic {
         return totalCompressionRatio;
     }
 
-    public void setNumCompression(int numCompression) {
-        this.numCompression = numCompression;
-    }
+    //---------------------------------------------------Getters------------------------------------------------------//
 
-    public void setNumDecompression(int numDecompression) {
-        this.numDecompression = numDecompression;
-    }
 
-    public void setTotalCompressedData(int totalCompressedData) {
-        this.totalCompressedData = totalCompressedData;
-    }
+    //---------------------------------------------------Setters------------------------------------------------------//
 
-    public void setTotalDecompressedData(int totalDecompressedData) {
-        this.totalDecompressedData = totalDecompressedData;
-    }
+    public void setNumCompression(int numCompression) { this.numCompression = numCompression; }
 
-    public void setTotalCompressionTime(double totalCompressionTime) {
-        this.totalCompressionTime = totalCompressionTime;
-    }
+    public void setNumDecompression(int numDecompression) { this.numDecompression = numDecompression; }
 
-    public void setTotalDecompressionTime(double totalDecompressionTime) {
-        this.totalDecompressionTime = totalDecompressionTime;
-    }
+    public void setTotalCompressedData(int totalCompressedData) { this.totalCompressedData = totalCompressedData; }
 
-    public void setTotalCompressionRatio(double totalCompressionRatio) {
-        this.totalCompressionRatio = totalCompressionRatio;
-    }
+    public void setTotalDecompressedData(int totalDecompressedData) { this.totalDecompressedData = totalDecompressedData; }
 
+    public void setTotalCompressionTime(double totalCompressionTime) { this.totalCompressionTime = totalCompressionTime; }
+
+    public void setTotalDecompressionTime(double totalDecompressionTime) { this.totalDecompressionTime = totalDecompressionTime; }
+
+    public void setTotalCompressionRatio(double totalCompressionRatio) { this.totalCompressionRatio = totalCompressionRatio; }
+
+    //---------------------------------------------------Setters------------------------------------------------------//
+
+
+    //---------------------------------------------------Adders-------------------------------------------------------//
+
+    public void addNumCompression() { ++numCompression; }
+
+    public void addNumDecompression() { ++numDecompression; }
+
+    public void addTotalCompressedData(int compressedData) { totalCompressedData += compressedData; }
+
+    public void addTotalDecompressedData(int deecompressedData) { totalDecompressedData += deecompressedData; }
+
+    public void addTotalCompressionTime(double compressionTime) { totalCompressionTime += compressionTime; }
+
+    public void addTotalDecompressionTime(double decompressionTime) { totalDecompressionTime += decompressionTime; }
+
+    public void addTotalCompressionRatio(double compressionRatio) { totalCompressionRatio += compressionRatio; }
+
+    //---------------------------------------------------Adders-------------------------------------------------------//
 }

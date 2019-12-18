@@ -1,182 +1,212 @@
 package Domain;
 
-import javafx.util.Pair;
+import Commons.DomainLayerException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class LZSS extends Algorithm {
 
-    private StringBuilder Ventana;
-    private char nextChar;
-    private String outStream;
+    private ArrayList<Byte> Ventana;
+    private ByteArrayOutputStream outStream;
+    private int MidaMatch;
+    private  ArrayList<Byte> ActualMatch;
 
-
-    public LZSS(int numCompression, int numDecompression, int totalCompressedData, int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime, double averageCompressionRatio) {
-        super(numCompression, numDecompression, totalCompressedData, totalDecompressedData, totalCompressionTime, totalDecompressionTime, averageCompressionRatio);
+    public LZSS(GlobalStatistic estadistiques) {
+        super(estadistiques);
     }
 
-
-    public Pair<Double, Double> comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) {
-        Pair<Double, Double> compressionStatistic = new Pair<>(0.0, 0.0);
-        String content = new String(inFile.getContent());
-        Ventana = new StringBuilder();
-        StringBuilder ActualMatch = new StringBuilder();
+    @Override
+    public Object[] comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) throws DomainLayerException {
+        globalStatistic.addNumCompression();
+        Object[] compressionStatistic = {0, 0, 0};
         long startTime = System.currentTimeMillis();
-        outStream = "";
+
+        // Init variables
+        byte[] content = inFile.getContent();
+        Ventana = new ArrayList<>();
+        ActualMatch = new ArrayList<>();
+        outStream = new ByteArrayOutputStream();
         int MIndex = 0;
         int tempIndex;
-        int MidaMatch = 0;
-        for(int i = 0; i < content.length(); ++i){
-            nextChar =  content.charAt(i);
-            ActualMatch.append((char)nextChar);
-            tempIndex = Ventana.indexOf(ActualMatch.toString());
+        MidaMatch = 0;
 
-            if(tempIndex != -1){
+        for (byte next : content) {
+            ActualMatch.add(next);
+            tempIndex = isSubArray(Ventana.toArray(), ActualMatch.toArray());
+
+            if (tempIndex != -1 && MidaMatch < 7) {
                 MIndex = tempIndex;
                 ++MidaMatch;
-            }
-            else{
-                if (MidaMatch > 3) {  //Si la mida es mes gran que 3, codifica el match
-                    outStream += (char) 1;
-                    outStream += (char)MIndex;
-                    outStream += (char)MidaMatch;
-
-                    Ventana.append(ActualMatch.substring(0, MidaMatch));
-                    while(Ventana.length() > 32768) Ventana.deleteCharAt(0);
-
-                    while(ActualMatch.length() > 1) ActualMatch.deleteCharAt(0);
+            } else {
+                if (MidaMatch > 2) {  // If MatchSize > 2
+                    codeMatch(MIndex);
+                    Ventana.addAll(ActualMatch.subList(0, MidaMatch));
+                    while (Ventana.size() > 4096) Ventana.remove(0);
+                    while (ActualMatch.size() > 1) ActualMatch.remove(0);
                     MIndex = -1;
                     MidaMatch = 1;
 
-                } else {  //Si la mida no es mes gran que 3, escriu flag a 0 i char sense codificar
-                    outStream += (char) 0;
-                    outStream += ActualMatch.charAt(0);
-                    Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
-                    if (Ventana.length() > 32768)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
-
-                    ActualMatch.deleteCharAt(0);
-                    if(ActualMatch.length() == 0) MidaMatch = 0;
-
+                } else {  // If MatchSize < 2
+                    escriu0ILiteral();
+                    afegeixLiteralALaFinestra(ActualMatch.get(0));
+                    eliminaLiteralDelMatch();
                     MIndex = -1;
                 }
             }
         }
-        while(MidaMatch > 0){
-            MIndex = Ventana.indexOf(ActualMatch.toString());
+        while (ActualMatch.size() > 0) {
+            MIndex = isSubArray(Ventana.toArray(), ActualMatch.toArray());
 
-            if(MIndex != -1){
-                if (MidaMatch > 3) {  //Si la mida es mes gran que 3, codifica el match
-                    outStream += (char) 1;
-                    outStream += (char)MIndex;
-                    outStream += (char)MidaMatch;
+            if (MIndex != -1) {
+                if (MidaMatch > 2) {  // If MatchSize > 2
+                    codeMatch(MIndex);
+                    while (MidaMatch > 0){
+                        ActualMatch.remove(0);
+                        --MidaMatch;
+                    }
 
-                    Ventana.append(ActualMatch.substring(0, MidaMatch));
-                    while(Ventana.length() > 32768) Ventana.deleteCharAt(0);
-
-                    while(ActualMatch.length() > 0) ActualMatch.deleteCharAt(0);
-                    MidaMatch = 0;
-
-                } else {  //Si la mida no es mes gran que 3, escriu flag a 0 i char sense codificar
-                    outStream += (char) 0;
-                    outStream += ActualMatch.charAt(0);
-
-                    Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
-                    if (Ventana.length() > 32768)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
-
-                    ActualMatch.deleteCharAt(0);
-                    if(ActualMatch.length() == 0) MidaMatch = 0;
+                } else {  // If MatchSize < 2
+                    escriu0ILiteral();
+                    afegeixLiteralALaFinestra(ActualMatch.get(0));
+                    eliminaLiteralDelMatch();
                 }
-            }
-            else{
-                outStream += (char) 0;
-                outStream += ActualMatch.charAt(0);
-
-                Ventana.append(ActualMatch.charAt(0)); //Posem a la finestra el primer char del match
-                if (Ventana.length() > 32768)  Ventana.deleteCharAt(0);  //Eliminem de la finestra el primer element
-
-                ActualMatch.deleteCharAt(0);
+            } else {
+                escriu0ILiteral();
+                afegeixLiteralALaFinestra(ActualMatch.get(0));
+                ActualMatch.remove(0);
                 --MidaMatch;
             }
         }
-        long endTime=System.currentTimeMillis(); // get the time when end the compression
-        double compressTime = (double)(endTime-startTime)* 0.001;
-        globalStatistic.setNumCompression(globalStatistic.getNumCompression() + 1);
-        globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
-        double Ratio = 0.0;
-        if(content.length() != 0) {
-            Ratio = ((double) content.length() / (double) outStream.length())*100;
-            globalStatistic.setTotalCompressionRatio(globalStatistic.getTotalCompressionRatio()+Ratio);
-        }
-            //output compressed file header and it's content
-        try {
-            byte fileNameLength = (byte) inFile.getFile().getName().length();
-            byte[] compressedContent = outStream.getBytes("UTF-8");
-            byte[] compressedContentSize = ByteBuffer.allocate(4).putInt(compressedContent.length).array();
-            compressedFile.write("LZSS".getBytes());
-            compressedFile.write(fileNameLength); compressedFile.write(inFile.getFile().getName().getBytes());
-            compressedFile.write(compressedContentSize); compressedFile.write(compressedContent);
-        }
-        catch (Exception e) {e.printStackTrace();}
 
-        compressionStatistic = new Pair<>(compressTime, Ratio);
+        long endTime = System.currentTimeMillis(); // Get time when end the compression
+        double compressTime = (double) (endTime - startTime) * 0.001;
+
+        globalStatistic.setNumCompression(globalStatistic.getNumCompression() + 1);
+        globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime() + compressTime);
+
+        byte fileNameLength = (byte) inFile.getFile().getName().length();
+        byte[] compressedContent = outStream.toByteArray();
+        byte[] compressedContentSize = ByteBuffer.allocate(4).putInt(compressedContent.length).array();
+
+        //output compressed file header and it's content
+        try {
+            compressedFile.write("LZSS".getBytes());
+            compressedFile.write(fileNameLength);
+            compressedFile.write(inFile.getFile().getName().getBytes());
+            compressedFile.write(compressedContentSize);
+            compressedFile.write(compressedContent);
+        } catch (IOException e) { throw new DomainLayerException(""); }
+
+        if (content.length > 0) {
+            compressionStatistic[0] = content.length;
+            compressionStatistic[1] = compressedContent.length;
+            compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
+            globalStatistic.addTotalCompressedData(content.length);
+            globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
+            globalStatistic.addTotalCompressionRatio(content.length / compressedContent.length);
+        }
+
+        return compressionStatistic;
+    }
+
+    @Override
+    public Object[] descomprimir(byte[] content, Fitxer outputFile) throws DomainLayerException{
+        long startTime = System.currentTimeMillis();
+        Ventana = new ArrayList<>();
+        outStream = new ByteArrayOutputStream();
+        int i = 0;
+        while (i < content.length) {
+            byte nextByte = content[i];
+            int aux1 = (nextByte & 0b01111111);
+            ++i;
+            if (nextByte == 0) {  // If it's a literal
+                if (i < content.length) {
+                    nextByte = content[i];
+                    ++i;
+                    afegeixLiteralALaFinestra(nextByte);
+                    outStream.write(nextByte);
+                }
+            } else {  // If it's a code
+                int pos;
+                int tam;
+                if (i < content.length) {
+                    byte aux0 = content[i];
+                    ++i;
+                    //Decode aux1 and aux0
+                    tam = 0b111 & aux0;
+                    pos = ((0b11111 & (aux0 >> 3)) | (aux1 << 5));
+
+                    while (tam > 0) {
+                        outStream.write(Ventana.get(pos));
+                        Ventana.add(Ventana.get(pos));
+                        ++pos;
+                        --tam;
+                    }
+                    while (Ventana.size() > 4096) Ventana.remove(0);
+                }
+            }
+        }
+        long endTime = System.currentTimeMillis(); // Get the time when end the compression
+        double decompressTime = (double) (endTime - startTime) * 0.001;
+        byte[] decompressedContent = outStream.toByteArray();
+        outputFile.setContent(decompressedContent);
+        globalStatistic.addNumDecompression();
+        globalStatistic.addTotalDecompressedData(content.length);
+        globalStatistic.addTotalDecompressionTime(decompressTime);
+        Object[] compressionStatistic = {decompressedContent.length, content.length, decompressTime};
         return compressionStatistic;
     }
 
 
-    public Pair<Double, Double> descomprimir(byte[] compressedContent, Fitxer outPutFile) {
-        String content = "";
-        try {
-            content = new String(compressedContent, "UTF-8");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        long startTime = System.currentTimeMillis();
-        Ventana = new StringBuilder();
-        outStream = "";
-        int i = 0;
-        while(i < content.length()){
-            nextChar = content.charAt(i);
-            ++i;
-            if(nextChar == 0){
-                if(i < content.length()){
-                    nextChar = content.charAt(i);
-                    ++i;
-                    Ventana.append(nextChar);
-                    if(Ventana.length() > 32768) Ventana.deleteCharAt(0);
-                    outStream += nextChar;
-                }
-            }
-            else if(nextChar == 1){
-                int pos;
-                int tam;
-                if(i < content.length()){
-                    pos = content.charAt(i);
-                    ++i;
-                    if(i < content.length()){
-                        tam = content.charAt(i);
-                        ++i;
-                        while(tam > 0){
-                            outStream += Ventana.charAt(pos);
-                            Ventana.append(Ventana.charAt(pos));
-                            ++pos;
-                            --tam;
-                        }
-                        while(Ventana.length() > 32768) Ventana.deleteCharAt(0);
-                    }
-                }
-            }
-        }
-        System.out.println("decompressFinished");
-        long endTime=System.currentTimeMillis(); // get the time when end the compression
-        double descompressTime = (double)(endTime-startTime)* 0.001;
-        outPutFile.setContent(outStream.getBytes());
-        globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+compressedContent.length);
-        globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
-        globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime() + descompressTime);
+    private int isSubArray(Object[] A, Object[] B) {
+        int i = 0, j = 0, mark = 0;
 
-        return new Pair<>(descompressTime, (double) outPutFile.getContent().length/compressedContent.length);
+        while (i < A.length && j < B.length) {
+            // If matches, increment pointers
+            if (A[i] == B[j]) {
+                i++;
+                j++;
+                // If B is in A
+                if (j == B.length) return mark;
+            }
+            // If not, increment i and reset j and mark
+            else {
+                i++;
+                j = 0;
+                mark = i;
+            }
+        }
+        // If B isn't a subArray return -1
+        return -1;
+    }
+
+
+    private void afegeixLiteralALaFinestra(Byte literal) {
+        Ventana.add(literal); // Posem a la finestra el primer byte del match
+        if (Ventana.size() > 4096) Ventana.remove(0);  // Eliminem de la finestra el primer element
+    }
+
+
+    private void escriu0ILiteral() {
+        outStream.write((byte) 0);  // Flag a 0
+        outStream.write(ActualMatch.get(0)); // Literal
+    }
+
+
+    private void eliminaLiteralDelMatch() {
+        ActualMatch.remove(0);
+        if (ActualMatch.size() == 0) MidaMatch = 0;
+    }
+
+
+    private void codeMatch(int MIndex) {
+        byte aux = (byte) (0b10000000 | (0b1111111 & (MIndex >> 5))); // Flag a 1 i meitat del pointer
+        outStream.write(aux);
+        aux = (byte) (((0b11111 & MIndex) << 3) | (0b111 & MidaMatch)); // Meitat del pointer i MatchSize
+        outStream.write(aux);
     }
 
 }

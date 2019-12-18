@@ -1,11 +1,10 @@
 package Data;
 
-import java.io.File;
+import Commons.PersistenceLayerException;
 
 public class DataCtrl {
 
     private static DataCtrl instance = null;
-    private IO io = new IO();
 
     private DataCtrl() {}
 
@@ -16,25 +15,17 @@ public class DataCtrl {
         return instance;
     }
 
-    public byte[] getInputFile(File inputFile) {
-        return io.getInputFile(inputFile);
-    }
+    public byte[] getInputFile(String inputFilePath) throws PersistenceLayerException { return IO.getInstance().getInputFile(inputFilePath); }
 
-    public void outputFile(byte[] content, File destinyFile) { io.outputFile(content, destinyFile); }
+    public void outputFile(byte[] content, String destinyFilePath) throws PersistenceLayerException { IO.getInstance().outputFile(content, destinyFilePath); }
 
-    public void setInputCompressedFileStream(File compressedFile) {
-       io.setInputCompressedFileStream(compressedFile);
-    }
+    public void setInputCompressedFileStream(String compressedFilePath) throws PersistenceLayerException { IO.getInstance().setInputCompressedFileStream(compressedFilePath); }
 
-    public void closeInputCompressedFileStream() {
-        io.closeInputCompressedFileStream();
-    }
+    public void closeInputCompressedFileStream() throws PersistenceLayerException { IO.getInstance().closeInputCompressedFileStream(); }
 
-    public byte readFromInputCompressedFileStream() {
-        return io.readFromInputCompressedFileStream();
-    }
+    public byte readFromInputCompressedFileStream() throws PersistenceLayerException { return IO.getInstance().readFromInputCompressedFileStream(); }
 
-    public void readFromInputCompressedFileStream(byte[] array) {
-        io.readFromInputCompressedFileStream(array);
-    }
+    public void readFromInputCompressedFileStream(byte[] array) throws PersistenceLayerException { IO.getInstance().readFromInputCompressedFileStream(array); }
+
+    public void checkFile(String filePath) throws PersistenceLayerException {IO.getInstance().checkFile(filePath);}
 }

@@ -1,60 +1,69 @@
 package Domain;
 
+import Commons.DomainLayerException;
 import javafx.util.Pair;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import static java.lang.Math.*;
+import static java.lang.Math.round;
 
 public class JPEG extends Algorithm {
 
-    public JPEG(int numCompression, int numDecompression, int totalCompressedData,
-                int totalDecompressedData, double totalCompressionTime, double totalDecompressionTime,
-                double averageCompressionRatio) {
-        super(numCompression, numDecompression, totalCompressedData, totalDecompressedData, totalCompressionTime,
-                totalDecompressionTime, averageCompressionRatio);
+    public JPEG(GlobalStatistic globalStatistic) {
+        super(globalStatistic);
     }
 
+    /**
+     * Compress
+     * @param inputImg
+     * @param compressedFile ByteArrayOutputStream to be wrote
+     * @return
+     * @throws DomainLayerException
+     */
     @Override
-    public Pair<Double, Double> comprimir(Fitxer inputImg, ByteArrayOutputStream compressedFile) {
-
-        long startTime=System.currentTimeMillis();
-        byte[] input = inputImg.getContent();
-        Pair<Integer, Integer> dimension = getDimension(input);
-        int offset = 9 + dimension.getKey().toString().length() + dimension.getValue().toString().length();
-        byte[] compressedContent = Compress(input, dimension.getKey(), dimension.getValue(), offset);
-        long endTime=System.currentTimeMillis();
-
-        byte fileNameLength = (byte) inputImg.getFile().getName().length();
-        byte[] outPutWidth =  ByteBuffer.allocate(4).putInt(dimension.getKey()).array();
-        byte[] outPutHeight = ByteBuffer.allocate(4).putInt(dimension.getValue()).array();
-        byte[] compressedContentSize = ByteBuffer.allocate(4).putInt(compressedContent.length).array();
-
+    public Object[] comprimir(Fitxer inputImg, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         try {
+            globalStatistic.addNumCompression();
+            Object[] compressionStatistic = {0, 0, 0};
+            long startTime=System.currentTimeMillis();
+            byte[] input = inputImg.getContent();
+            Pair<Integer, Integer> dimension = getDimension(input);
+            int offset = 9 + dimension.getKey().toString().length() + dimension.getValue().toString().length();
+            byte[] compressedContent = Compress(input, dimension.getKey(), dimension.getValue(), offset);
+            long endTime=System.currentTimeMillis();
+
+            byte fileNameLength = (byte) inputImg.getFile().getName().length();
+            byte[] outPutWidth =  ByteBuffer.allocate(4).putInt(dimension.getKey()).array();
+            byte[] outPutHeight = ByteBuffer.allocate(4).putInt(dimension.getValue()).array();
+            byte[] compressedContentSize = ByteBuffer.allocate(4).putInt(compressedContent.length).array();
+
             compressedFile.write("JPEG".getBytes());
             compressedFile.write(fileNameLength); compressedFile.write(inputImg.getFile().getName().getBytes());
             compressedFile.write(compressedContentSize); compressedFile.write(outPutWidth);
             compressedFile.write(outPutHeight); compressedFile.write(compressedContent);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        double compressTime = (double)(endTime-startTime)* 0.001;
-        double compressRation = input.length/compressedContent.length;
+            if (input.length > 0) {
+                compressionStatistic[0] = input.length;
+                compressionStatistic[1] = compressedContent.length;
+                compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
+                globalStatistic.addTotalCompressedData(input.length);
+                globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
+                globalStatistic.addTotalCompressionRatio(input.length / compressedContent.length);
+            }
 
-        Pair<Double, Double> compressionStatistic = new Pair<>(compressTime, compressRation);
-        globalStatistic.setNumCompression(globalStatistic.getNumCompression()+1);
-        globalStatistic.setTotalCompressedData(globalStatistic.getTotalCompressedData()+input.length);
-        globalStatistic.setTotalCompressionTime(globalStatistic.getTotalCompressionTime()+compressTime);
-        globalStatistic.setTotalCompressionRatio(globalStatistic.getTotalCompressionRatio()+compressRation);
-        return compressionStatistic;
+            return compressionStatistic;
+        }
+        catch (IOException e) { throw new DomainLayerException(" "); }
+        catch (DomainLayerException e) { throw e;}
     }
 
+
     @Override
-    public Pair<Double, Double> descomprimir(byte[] compressedContent, Fitxer outPutFile) {
+    public Object[] descomprimir(byte[] compressedContent, Fitxer outPutFile) throws DomainLayerException{
         long startTime=System.currentTimeMillis();
         byte[] getWidth = Arrays.copyOfRange(compressedContent, 0, 4);
         byte[] getHeight = Arrays.copyOfRange(compressedContent, 4, 8);
@@ -69,12 +78,12 @@ public class JPEG extends Algorithm {
         DeCompress(compressedContent, decompressedContent, width, height, offset);
         long endTime=System.currentTimeMillis(); // get the time when end the compression
         double decompressTime = (double)(endTime-startTime)* 0.001;
-        double compressionRatio = decompressedContent.length/(compressedContent.length-8);
-        globalStatistic.setNumDecompression(globalStatistic.getNumDecompression()+1);
-        globalStatistic.setTotalDecompressedData(globalStatistic.getTotalDecompressedData()+compressedContent.length);
-        globalStatistic.setTotalDecompressionTime(globalStatistic.getTotalDecompressionTime()+decompressTime);
+        globalStatistic.addNumDecompression();
+        globalStatistic.addTotalDecompressedData(compressedContent.length);
+        globalStatistic.addTotalDecompressionTime(decompressTime);
         outPutFile.setContent(decompressedContent);
-        return new Pair<>(decompressTime, compressionRatio);
+        Object[] compressionStatistic = {decompressedContent.length, compressedContent.length, decompressTime};
+        return compressionStatistic;
     }
 
     private Pair<Integer, Integer> getDimension(byte[] imgContent) {
@@ -92,6 +101,7 @@ public class JPEG extends Algorithm {
         }
         return new Pair<>(width, height);
     }
+
     //-----------------------------------------------Initializer------------------------------------------------------//
 
     //Initialize Luminance Quantization Table and Chrominance Quantization Table
@@ -276,7 +286,7 @@ public class JPEG extends Algorithm {
     //-----------------------------------------Block Encoder and Decoder-----------------------------------------------//
 
     private int EncodeBlock(float[][] Block, float[][] QuantMatrix, int lastDC, int[] Zigzag, CodeBits[] huffmanDC,
-                                   CodeBits[] huffmanAC, CodeBits[] VLCTable, BitWriter bitWriter) {
+                           CodeBits[] huffmanAC, CodeBits[] VLCTable, BitWriter bitWriter) {
         //DCT: by rows
         DCTTransform(Block, true);
         //DCT: by columns
@@ -335,7 +345,7 @@ public class JPEG extends Algorithm {
         return zigzag[0][0];
     }
 
-    private int decodeBlock(float[][] block, BitReader bitReader, HuffmanTree DC, HuffmanTree AC, float[][] quantMatrix, int lastDC, int[] Zigzag) {
+    private int decodeBlock(float[][] block, BitReader bitReader, HuffmanTree DC, HuffmanTree AC, float[][] quantMatrix, int lastDC, int[] Zigzag) throws DomainLayerException {
         int length = DC.decodeHuffmanCode(bitReader);
         int diff = bitReader.readInt(length);
         int actualDC = lastDC + diff;
@@ -372,7 +382,7 @@ public class JPEG extends Algorithm {
 
         return actualDC;
     }
-    
+
 
     private byte[][] getBlockWithID(int rowID, int columnID, int realHeight, int realWidth, byte RGB[], int offset) {
         byte[][] block = new byte[8][24];
@@ -394,7 +404,7 @@ public class JPEG extends Algorithm {
         }
         return block;
     }
-    
+
     //----------------------------------------Block Encoder and Decoder-----------------------------------------------//
 
     //------------------------------------------Color Space Transform-------------------------------------------------//
@@ -430,10 +440,10 @@ public class JPEG extends Algorithm {
     }
 
     //------------------------------------------Color Space Transform-------------------------------------------------//
-    
+
     //--------------------------------------- Compressor and Decompressor---------------------------------------------//
-    
-    private byte[] Compress(byte RGB[], int width, int height, int offSet) {
+
+    private byte[] Compress(byte RGB[], int width, int height, int offSet) throws DomainLayerException{
         int realHeight = height;
         int realWidth = width*3;
         int multipleOfEight = width%8;
@@ -521,8 +531,8 @@ public class JPEG extends Algorithm {
         bitWriter.flush();
         return bitWriter.getOutput();
     }
-    
-    private void DeCompress(byte[] InPut, byte[] outPut, int width, int height, int offset) {
+
+    private void DeCompress(byte[] InPut, byte[] outPut, int width, int height, int offset) throws DomainLayerException{
         BitReader bitReader = new BitReader(InPut);
         bitReader.setActualBytePointer(8);
         int lastRow = height;
