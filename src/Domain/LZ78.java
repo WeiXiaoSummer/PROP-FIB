@@ -13,6 +13,13 @@ public class LZ78 extends Algorithm {
         super(estadistiques);
     }
 
+    /**
+     *
+     * @param file
+     * @param compressedFile ByteArrayOutputStream to be wrote
+     * @return
+     * @throws DomainLayerException
+     */
     @Override
     public Object[] comprimir(Fitxer file, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         long startTime=System.currentTimeMillis();
