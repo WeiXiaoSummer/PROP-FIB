@@ -50,14 +50,14 @@ public class BitWriter {
     /**
      * Writes array.length bytes from the specified byte array into this bitWriter.
      * @param array the data to be wrote.
-     * @throws Exception
+     * @throws DomainLayerException
      */
     public void write(byte[] array) throws DomainLayerException {
         try {
             Output.write(array);
         }
         catch (IOException e) {
-            throw new DomainLayerException("");
+            throw new DomainLayerException("An error has occurred during the JPEG process, operation aborted\n"+e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class BitWriter {
     /**
      * Returns the current contents of this bitWriter, as a byte array
      * @return the current contents of this bitWriter, as a byte array
-     * @throws Exception
+     * @throws DomainLayerException
      */
     public byte[] getOutput() throws DomainLayerException{
         try {
@@ -93,7 +93,7 @@ public class BitWriter {
             return result;
         }
         catch (IOException e) {
-            throw new DomainLayerException("");
+            throw new DomainLayerException("An error has occurred during the JPEG process, operation aborted\n"+e.getMessage());
         }
     }
 

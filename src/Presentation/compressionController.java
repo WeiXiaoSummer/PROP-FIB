@@ -78,18 +78,24 @@ public class compressionController implements Initializable {
         RadioButton selectedButton = (RadioButton) type.getSelectedToggle();
         String selectedAlgorithm ="";
         if (!(selectedButton == null)) selectedAlgorithm = selectedButton.getText();
-        File inputFile = new File(filePath.getText());
-        File saveDirectory = new File(directoryPath.getText());
         Stage mainStatge = (Stage) stackpane.getScene().getWindow();
-        if (inputFile.getPath().equals("")) throw new PresentationLayerException("");//PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "input file cannot be empty",mainStatge);
-        else if (saveDirectory.getPath().equals("")) throw new PresentationLayerException("");//PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "target directory cannot be empty", mainStatge);
-        else if (saveName.getText().equals("")) throw new PresentationLayerException("");//PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "name cannot be empty", mainStatge);
-        else if (selectedAlgorithm.equals("")) throw new PresentationLayerException("");//PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Please select a algorithm for compression", mainStatge);
+        if (filePath.getText().equals("")) {
+            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Input file cannot be empty!",mainStatge);
+        }
+        else if (directoryPath.getText().equals("")) {
+            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Target directory cannot be empty!", mainStatge);
+        }
+        else if (saveName.getText().equals("")) {
+            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Name cannot be empty!", mainStatge);
+        }
+        else if (selectedAlgorithm.equals("")) {
+            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Please select a algorithm for the compression!", mainStatge);
+        }
         else {
-            VBox waitingAnimation = PresentationCtrl.getInstance().shwoWaitingAnimationInScene("      Compressing the data... \nPlease do not switch the pane", stackpane, pane);
+            VBox waitingAnimation = PresentationCtrl.getInstance().shwoWaitingAnimationInScene("      Compressing the data... \nPlease do not close the program", stackpane, pane);
             new Thread( ()-> {
                 try {
-                    Pair<Double, Double> compressStatistic = PresentationCtrl.getInstance().compress(inputFile.getPath(), saveDirectory.getPath(),saveName.getText(),selectedButton.getText());
+                    Pair<Double, Double> compressStatistic = PresentationCtrl.getInstance().compress(filePath.getText(), directoryPath.getText(),saveName.getText(),selectedButton.getText());
                     Platform.runLater(() -> PresentationCtrl.getInstance().showNotification("Information", "Information", "Compression Done!",
                             "Compression Ratio: "+String.format("%.2f", compressStatistic.getKey())+
                                     "\nCompression Time: "+String.format("%.2f", compressStatistic.getValue())+" s", mainStatge));

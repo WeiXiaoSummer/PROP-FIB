@@ -57,7 +57,7 @@ public abstract class Algorithm {
      *         -(int)First position contains the original content size expressed in bytes.
      *         -(int)Second position contains the compressed content size expressed in bytes.
      *         -(double)Third position contains the compression time expressed in s.
-     * @throws DomainLayerException
+     * @throws DomainLayerException if a error occurs during the process of the compression
      */
     public abstract Object[] comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) throws DomainLayerException;
 
@@ -69,7 +69,7 @@ public abstract class Algorithm {
      *         -(int)First position contains the decompressed content size expressed in bytes.
      *         -(int)Second position contains the compressed content size expressed in bytes.
      *         -(double)Third position contains the decompression time expressed in s.
-     * @throws DomainLayerException
+     * @throws DomainLayerException if a error occurs during the process of the decompression
      */
     public abstract Object[] descomprimir(byte[] compressedContent, Fitxer outPutFile) throws DomainLayerException;
 

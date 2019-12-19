@@ -2,57 +2,155 @@ package Domain;
 
 import Commons.DomainLayerException;
 
+/**
+ * This class represents a Huffman tree used for decompression.
+ */
 public class HuffmanTree {
 
+    /**
+     * This inner class represents a Node pointer with stores information of huffman tree node.
+     */
     private class NodePtr {
+        /**
+         * Value stored in this node.
+         */
         private char value = 0x00;
+        /**
+         * Tells if this node is leaf.
+         */
         private boolean Leaf = false;
+        /**
+         * Tells if this node is root.
+         */
         private boolean Root = false;
+        /**
+         * Tells if this node is a left child.
+         */
         private boolean Left = false;
+        /**
+         * Pointer that points to the father node of this node.
+         */
         private NodePtr parent = null;
+        /**
+         * Pointer that points to the left children node of this node.
+         */
         private NodePtr lChildren = null;
+        /**
+         * Pointer that points to the Right children node of this node.
+         */
         private NodePtr rChildren = null;
 
+        /**
+         * Creates a new NodePtr.
+         */
         public NodePtr() {}
 
+        /**
+         * Creates a new NodePtr with value = value.
+         * @param value value to be set.
+         */
         public NodePtr(char value) {
             this.value = value;
         }
 
+        /**
+         * Get the value of this NodePtr.
+         * @return the value of this NodePtr.
+         */
         public char getValue() { return this.value; }
 
+        /**
+         * Tells if this node is a leaf.
+         * @return true if this node is a leaf, false otherwise.
+         */
         public boolean isLeaf() { return this.Leaf; }
 
+        /**
+         * Tells if this node is a root.
+         * @return true if this node is a root, false otherwise.
+         */
         public boolean isRoot() { return this.Root; }
 
+        /**
+         * Tells if this node is a left child.
+         * @return true if this node is a left child, false otherwise.
+         */
         public boolean isLeft() { return this.Left; }
 
+        /**
+         * Return the Parent node of this node.
+         * @return the parent node of this node.
+         */
         public NodePtr getParent() { return this.parent; }
 
+        /**
+         * Return the left child node of this node.
+         * @return the left child node.
+         */
         public NodePtr getlChildren() { return this.lChildren; }
 
+        /**
+         * Return the right child node of this node.
+         * @return the right children node.
+         */
         public NodePtr getrChildren() { return this.rChildren; }
 
+        /**
+         * Sets the value of this node to value.
+         * @param value the value to be set.
+         */
         public void setValue(char value) { this.value = value; }
 
+        /**
+         * Sets the leaf attribute of this node to isLeaf.
+         * @param isLeaf the value to be set.
+         */
         public void setLeaf(boolean isLeaf) { this.Leaf = isLeaf; }
 
+        /**
+         * Sets the root attribute of this node to isRoot.
+         * @param isRoot the value to be set.
+         */
         public void setRoot(boolean isRoot) { this.Root = isRoot; }
 
+        /**
+         * Sets the isLeft attribute of this node to isLeft.
+         * @param isLeft the value to be set.
+         */
         public void setLeft(boolean isLeft) { this.Left = isLeft; }
 
+        /**
+         * Sets the parent of this node to parent.
+         * @param parent the parent to be assigned.
+         */
         public void setParent(NodePtr parent) { this.parent = parent; }
 
+        /**
+         * Sets the left children of this node to lChildren.
+         * @param lChildren the left children to be assigned.
+         */
         public void setlChildren(NodePtr lChildren) { this.lChildren = lChildren; }
 
+        /**
+         * Sets the right children of this node to rChildren.
+         * @param rChildren the right children to be assigned.
+         */
         public void setrChildren(NodePtr rChildren) { this.rChildren = rChildren; }
 
+        /**
+         * Inserts a left children with value = value to this node.
+         * @param value the value of the left children to be assigned.
+         */
         public void insertLeft(char value) {
             this.lChildren = new NodePtr(value);
             this.lChildren.parent = this;
             this.lChildren.Left = true;
         }
 
+        /**
+         * Inserts a right children with value = value to this node.
+         * @param value the value of the right children to be assigned.
+         */
         public void insertRight(char value) {
             this.rChildren = new NodePtr(value);
             this.rChildren.parent = this;
@@ -60,16 +158,33 @@ public class HuffmanTree {
         }
     }
 
+    /**
+     * The root node of this huffman tree.
+     */
     private NodePtr root;
 
+    /**
+     * Creates a new huffman tree and initialize it with the given information.
+     * @param codesPerBitSize codes lengths and it's total numbers.
+     * @param huffmanValues huffman codes.
+     */
     public HuffmanTree(char[] codesPerBitSize, char[] huffmanValues) {
         constructHuffmanTree(codesPerBitSize, huffmanValues);
     }
 
+    /**
+     * Get the root node of this huffman tree.
+     * @return the root node
+     */
     public NodePtr getRoot() {
         return root;
     }
 
+    /**
+     * Initializes this huffman tree with the given information.
+     * @param codesPerBitSize codes length and it's total numbers.
+     * @param huffmanValues huffman codes.
+     */
     private void constructHuffmanTree(char[] codesPerBitSize, char[] huffmanValues) {
         root = new NodePtr();
         root.setRoot(true);
@@ -109,6 +224,11 @@ public class HuffmanTree {
         }
     }
 
+    /**
+     * Returns the node at the immediate right and at same level of a given node.
+     * @param actualNode the node that we wishes to find it's corresponding right node.
+     * @return the right node of the actualNode.
+     */
     //returns the node at the immediate right & at same level of this Node.
     public NodePtr getRightNode(NodePtr actualNode) {
         //node is the left child of it's parent, so we just returns the right child of the parent-node
@@ -132,6 +252,12 @@ public class HuffmanTree {
         return nptr;
     }
 
+    /**
+     * Decodes the huffman code read from the bitReader.
+     * @param bitReader bitReader from which the huffman code is read.
+     * @return the corresponding decoded information
+     * @throws DomainLayerException is a error occurs during the decode process.
+     */
     public int decodeHuffmanCode(BitReader bitReader) throws DomainLayerException {
         NodePtr node = root;
         while (bitReader.next() && !node.isLeaf()) {

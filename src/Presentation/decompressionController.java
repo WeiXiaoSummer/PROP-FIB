@@ -52,10 +52,14 @@ public class decompressionController {
         Stage mainStage = (Stage) stackpane.getScene().getWindow();
         File inputFile = new File(filePath.getText());
         File saveDirectory = new File(directoryPath.getText());
-        if (inputFile.getPath().equals("")) throw new PresentationLayerException("");//PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "input file cannot be empty", mainStage); }
-        else if (saveDirectory.getPath().equals("")) throw new PresentationLayerException("");//PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "target directory cannot be empty", mainStage); }
+        if (inputFile.getPath().equals("")) {
+            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Input file cannot be empty!", mainStage);
+        }
+        else if (saveDirectory.getPath().equals("")) {
+            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Target directory cannot be empty!", mainStage);
+        }
         else {
-            VBox waitingAnimation = PresentationCtrl.getInstance().shwoWaitingAnimationInScene("    Decompressing the data... \nPlease do not switch the pane", stackpane, pane);
+            VBox waitingAnimation = PresentationCtrl.getInstance().shwoWaitingAnimationInScene("    Decompressing the data... \nPlease do not close the program", stackpane, pane);
             new Thread(() -> {
                 try {
                     Pair<Double, Double> decompressStatistic = PresentationCtrl.getInstance().decompress(inputFile.getPath(), saveDirectory.getPath());

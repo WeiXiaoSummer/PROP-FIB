@@ -17,7 +17,7 @@ public class PROP extends Application {
             PresentationCtrl.getInstance().showNotification("Error", "Error", "An internal error has occurred:", e.getMessage(), primary);
         }));
         Thread.currentThread().setDefaultUncaughtExceptionHandler((t, e) -> Platform.runLater(() -> {
-            PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, e.getMessage(), primary);
+            PresentationCtrl.getInstance().showNotification("Error", "Error", null, e.getMessage(), primary);
         }));
         PresentationCtrl.getInstance().initializeDomainCtrl();
         primary = primaryStage;
@@ -39,4 +39,7 @@ public class PROP extends Application {
         launch(args);
     }
 
+    private static void showErrorDialog(Throwable e) {
+        System.out.println(e.getMessage());
+    }
 }

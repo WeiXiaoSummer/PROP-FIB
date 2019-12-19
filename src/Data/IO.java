@@ -55,12 +55,12 @@ public class IO {
             return content;
         }
         catch (IOException e) {
-            throw new PersistenceLayerException("An error has occurred while attempting to read from the file " + inputFilePath + ":\n" + e.getMessage());
+            throw new PersistenceLayerException("An error has occurred while attempting to read from the file:" + inputFilePath + ":\n" + e.getMessage());
         }
     }
 
     /**
-     * writes content.length bytes from the specified byte array to the file with path = destinyFilePath.
+     * Writes content.length bytes from the specified byte array to the file with path = destinyFilePath.
      * @param content the data to be wrote.
      * @param destinyFilePath path of the file to be wrote.
      * @throws PersistenceLayerException if an I/O error occurs.
@@ -74,13 +74,18 @@ public class IO {
         }
         catch (IOException e) {
             throw new PersistenceLayerException(
-                    "An error has occurred while attempting to write to file " + destinyFilePath + " :\n" + e.getMessage());
+                    "An error has occurred while attempting to write to file: " + destinyFilePath + " :\n\n" + e.getMessage());
         }
     }
 
+    /**
+     * Checks if the file with path = filePath exists.
+     * @param filePath path of the file to be checked.
+     * @throws PersistenceLayerException if file with path = filePath doesn't exists.
+     */
     public void checkFile(String filePath) throws PersistenceLayerException{
         File file = new File(filePath);
-        if (!file.exists()) throw new PersistenceLayerException("Selected file/folder doesn't exists!\n"+filePath+"\nPlease select another one");
+        if (!file.exists()) throw new PersistenceLayerException("Selected file/folder doesn't exists!\n\n"+filePath+"\n\nPlease select another one");
     }
     //---------------------------------------Basic methods for read and write files-----------------------------------//
 
@@ -97,7 +102,7 @@ public class IO {
             this.compressedFile = new FileInputStream(compressedFilePath);
         }
         catch (IOException e) {
-            throw new PersistenceLayerException("An error has occurred while attempting to open the compressed file:\n" + e.getMessage());
+            throw new PersistenceLayerException("An error has occurred while attempting to open the compressed file:\n\n" + e.getMessage());
         }
     }
 
@@ -110,14 +115,14 @@ public class IO {
             this.compressedFile.close();
         }
         catch (IOException e) {
-            throw new PersistenceLayerException("An error has occurred while attempting to close the compressed file:\n" + e.getMessage());
+            throw new PersistenceLayerException("An error has occurred while attempting to close the compressed file:\n\n" + e.getMessage());
         }
     }
 
     /**
      * Reads a byte of data from the opened input stream.
      * @return the next byte of data, or -1 if the end of the file is reached.
-     * @throws PersistenceLayerException
+     * @throws PersistenceLayerException if an I/O error occurs
      */
 
     public byte readFromInputCompressedFileStream() throws PersistenceLayerException{
@@ -126,7 +131,7 @@ public class IO {
             return aux;
         }
         catch (IOException e) {
-            throw new PersistenceLayerException("An error has occurred while attempting to read the compressed file:\n" + e.getMessage());
+            throw new PersistenceLayerException("An error has occurred while attempting to read the compressed file:\n\n" + e.getMessage());
         }
     }
 
@@ -140,7 +145,7 @@ public class IO {
             this.compressedFile.read(array);
         }
         catch (IOException e) {
-            throw new PersistenceLayerException("An error has occurred while attempting to read the compressed file:\n" + e.getMessage());
+            throw new PersistenceLayerException("An error has occurred while attempting to read the compressed file:\n\n" + e.getMessage());
         }
     }
 

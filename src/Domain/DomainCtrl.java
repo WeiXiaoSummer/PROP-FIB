@@ -16,10 +16,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * This Class is used for wrap Domain Layer's class's methods
+ */
 public class DomainCtrl {
 
+    /**
+     * Singleton attribute of the class IO
+     */
     private static DomainCtrl instance = null;
+
+    /**
+     * Attribute which stores local histories
+     */
     private GlobalHistory globalHistory;
+
+    /**
+     * Attribute which stores available algorithms
+     */
     private HashMap<String, Algorithm> algorithms;
 
 
@@ -240,7 +254,7 @@ public class DomainCtrl {
             return new Pair<>(compressionRatio, compressionTime);
         }
         catch (PersistenceLayerException e) {throw new DomainLayerException(e.getMessage());}
-        catch (IOException e) {throw new DomainLayerException(" ");}
+        catch (IOException e) {throw new DomainLayerException("An internal error has occurred while compressing " + inFilePath + "\n"+e.getMessage());}
         catch (DomainLayerException e) {throw e;}
     }
 
@@ -279,7 +293,7 @@ public class DomainCtrl {
             }
         }
         catch (PersistenceLayerException e) { throw new DomainLayerException(e.getMessage());}
-        catch (IOException e) { throw new DomainLayerException("");}
+        catch (IOException e) { throw new DomainLayerException("An internal error has occurred while compressing " + inputFolder + "\n"+e.getMessage());}
         catch (DomainLayerException e) { throw e;}
 
     }
@@ -330,7 +344,6 @@ public class DomainCtrl {
      *             - The key of this Pair contains the compression ratio
      *             - The value of this Pair contains the time used
      * @throws DomainLayerException
-     * @throws PersistenceLayerException
      */
     public Pair<Double, Double> decompress(String inFilePath, String targetDirectoryPath) throws DomainLayerException {
         try {

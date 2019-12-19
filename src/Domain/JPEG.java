@@ -4,12 +4,10 @@ import Commons.DomainLayerException;
 import javafx.util.Pair;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import static java.lang.Math.*;
-import static java.lang.Math.round;
 
 public class JPEG extends Algorithm {
 
@@ -18,11 +16,15 @@ public class JPEG extends Algorithm {
     }
 
     /**
-     * Compress
-     * @param inputImg
-     * @param compressedFile ByteArrayOutputStream to be wrote
-     * @return
-     * @throws DomainLayerException
+     * Overrides the superclass method, compresses the input .ppm file inputImg and writes the result into the temporal
+     * buffer compressedFile.
+     * @param inputImg Fitxer to be compressed.
+     * @param compressedFile ByteArrayOutputStream to be wrote.
+     * @return the compression statistic in the form of a Object array:
+     *         -(int)First position contains the original content size expressed in bytes.
+     *         -(int)Second position contains the compressed content size expressed in bytes.
+     *         -(double)Third position contains the compression time expressed in s.
+     * @throws DomainLayerException if a error occurs during the compression of the inputImg.
      */
     @Override
     public Object[] comprimir(Fitxer inputImg, ByteArrayOutputStream compressedFile) throws DomainLayerException {
@@ -57,37 +59,57 @@ public class JPEG extends Algorithm {
 
             return compressionStatistic;
         }
-        catch (IOException e) {
-            throw new DomainLayerException("An error has occurred while compressing the file:\n"+inputImg.getFile().getPath()+
-                    "\nCompression aborted"); }
         catch (DomainLayerException e) { throw e;}
+        catch (Exception e) {
+            throw new DomainLayerException("An unidentified error has occurred while compressing the file:\n"+inputImg.getFile().getPath()+
+                    "\nCompression aborted"); }
     }
 
-
+    /**
+     * Override the superclass method, decompress the compressed .ppm content and stores the decompressed content into the outPutFile.
+     * @param compressedContent data to be decompress.
+     * @param outPutFile Fitxer to be wrote.
+     * @return the decompression statistic in the form of a Object array:
+     *         -(int)First position contains the decompressed content size expressed in bytes.
+     *         -(int)Second position contains the compressed content size expressed in bytes.
+     *         -(double)Third position contains the decompression time expressed in s.
+     * @throws DomainLayerException if a error occurs during the process of the decompression
+     */
     @Override
     public Object[] descomprimir(byte[] compressedContent, Fitxer outPutFile) throws DomainLayerException{
-        long startTime=System.currentTimeMillis();
-        byte[] getWidth = Arrays.copyOfRange(compressedContent, 0, 4);
-        byte[] getHeight = Arrays.copyOfRange(compressedContent, 4, 8);
-        Integer width = ByteBuffer.wrap(getWidth).getInt();
-        Integer height = ByteBuffer.wrap(getHeight).getInt();
-        byte[] header = ("P6\n"+width.toString()+" "+height.toString()+"\n255\n").getBytes();
-        byte[] decompressedContent = new byte[width*height*3+header.length];
-        for(int i = 0; i < header.length; ++i) {
-            decompressedContent[i] = header[i];
+        try {
+            long startTime=System.currentTimeMillis();
+            byte[] getWidth = Arrays.copyOfRange(compressedContent, 0, 4);
+            byte[] getHeight = Arrays.copyOfRange(compressedContent, 4, 8);
+            Integer width = ByteBuffer.wrap(getWidth).getInt();
+            Integer height = ByteBuffer.wrap(getHeight).getInt();
+            byte[] header = ("P6\n"+width.toString()+" "+height.toString()+"\n255\n").getBytes();
+            byte[] decompressedContent = new byte[width*height*3+header.length];
+            for(int i = 0; i < header.length; ++i) {
+                decompressedContent[i] = header[i];
+            }
+            int offset = header.length;
+            DeCompress(compressedContent, decompressedContent, width, height, offset);
+            long endTime=System.currentTimeMillis(); // get the time when end the compression
+            double decompressTime = (double)(endTime-startTime)* 0.001;
+            globalStatistic.addNumDecompression();
+            globalStatistic.addTotalDecompressedData(compressedContent.length);
+            globalStatistic.addTotalDecompressionTime(decompressTime);
+            outPutFile.setContent(decompressedContent);
+            Object[] compressionStatistic = {decompressedContent.length, compressedContent.length, decompressTime};
+            return compressionStatistic;
         }
-        int offset = header.length;
-        DeCompress(compressedContent, decompressedContent, width, height, offset);
-        long endTime=System.currentTimeMillis(); // get the time when end the compression
-        double decompressTime = (double)(endTime-startTime)* 0.001;
-        globalStatistic.addNumDecompression();
-        globalStatistic.addTotalDecompressedData(compressedContent.length);
-        globalStatistic.addTotalDecompressionTime(decompressTime);
-        outPutFile.setContent(decompressedContent);
-        Object[] compressionStatistic = {decompressedContent.length, compressedContent.length, decompressTime};
-        return compressionStatistic;
+        catch (DomainLayerException e) {throw e;}
+        catch (Exception e) {
+            throw new DomainLayerException("An error has occurred while decompressing the file, decompression aborted.\n"+
+                    e.getMessage()); }
     }
 
+    /**
+     * Returns the dimension of a .ppm file.
+     * @param imgContent the content of the input .ppm file.
+     * @return a Pair which contains the width and the height of the input .ppm file.
+     */
     private Pair<Integer, Integer> getDimension(byte[] imgContent) {
         Integer width = 0;
         Integer height = 0;
@@ -106,6 +128,11 @@ public class JPEG extends Algorithm {
 
     //-----------------------------------------------Initializer------------------------------------------------------//
 
+    /**
+     * Initializes the Luminance Quantization Table and the Chrominance Quantization table.
+     * @param YQuantMatrix the luminance quantization table to be initialized.
+     * @param CrCbQuantMatrix the chrominance quantization table to be initialized.
+     */
     //Initialize Luminance Quantization Table and Chrominance Quantization Table
     private void initializeQuantizationTable(float YQuantMatrix[][], float CrCbQuantMatrix[][]) {
         //Arai, Agui and Nakajima Scale factor
@@ -141,6 +168,10 @@ public class JPEG extends Algorithm {
 
     }
 
+    /**
+     * Initializes the value-length-code table
+     * @param VLCTable table to be initialized.
+     */
     //Initialize Value-Length-Code Table
     private void initializeVLCTable(CodeBits[] VLCTable) {
         byte numBits = 1;
@@ -155,6 +186,12 @@ public class JPEG extends Algorithm {
         }
     }
 
+    /**
+     * Initializes the given huffman table.
+     * @param numCodes indicates how many codes of the length x it has.
+     * @param values values to be added to the huffman table.
+     * @param huffmantable table to be initialized.
+     */
     //Initialize Huffman Table
     private void initializeMyHuffmanTable(char[] numCodes, char[] values, CodeBits[] huffmantable) {
         char huffmanCode = 0;
@@ -171,6 +208,11 @@ public class JPEG extends Algorithm {
 
     //----------------------------------------Discrete Cosine Transform-----------------------------------------------//
 
+    /**
+     * Applies 2D DCT transform to the given 8x8 block.
+     * @param Block block to be transformed.
+     * @param byRow if true it will applies a 2D DCT by row, otherwise by column.
+     */
     private void DCTTransform(float[][] Block, boolean byRow) {
 
         float sqrtHalfSqrt = 1.306562965f; //    sqrt((2 + sqrt(2)) / 2) = cos(pi * 1 / 8) * sqrt(2)
@@ -228,6 +270,11 @@ public class JPEG extends Algorithm {
         }
     }
 
+    /**
+     * Applies the 2D inverse DCT transform to the given 8x8 block.
+     * @param Block block to be transformed.
+     * @param byRow if true it will applies a 2D inverse DCT transform, otherwise by column.
+     */
     private void IDCTTransform(float[][] Block, boolean byRow) {
         int RowChange = byRow ? 1 : 0;
         int ColumnChange = byRow ? 0 : 1;
@@ -287,6 +334,18 @@ public class JPEG extends Algorithm {
 
     //-----------------------------------------Block Encoder and Decoder-----------------------------------------------//
 
+    /**
+     * Encodes the given block and write the result into bitWriter.
+     * @param Block the block to be encoded.
+     * @param QuantMatrix the quantization matrix to be used.
+     * @param lastDC the last encoded DC value.
+     * @param Zigzag the zigzag matrix.
+     * @param huffmanDC the DC huffman table to be used.
+     * @param huffmanAC the AC huffman table to be used.
+     * @param VLCTable the Value-Length-code table to be used.
+     * @param bitWriter the bit writer into which the data is wrote.
+     * @return the DC value of this block.
+     */
     private int EncodeBlock(float[][] Block, float[][] QuantMatrix, int lastDC, int[] Zigzag, CodeBits[] huffmanDC,
                            CodeBits[] huffmanAC, CodeBits[] VLCTable, BitWriter bitWriter) {
         //DCT: by rows
@@ -347,6 +406,18 @@ public class JPEG extends Algorithm {
         return zigzag[0][0];
     }
 
+    /**
+     * Decodes the actual encode blocked read from the bitReader.
+     * @param block block into which the decompressed content is wrote.
+     * @param bitReader bitReader from which the compressed content is read.
+     * @param DC the DC huffman tree to be used for decompression.
+     * @param AC the AC huffman tree to be used for decompression.
+     * @param quantMatrix quantization matrix to be used for inverse-quantization process.
+     * @param lastDC the last decoded DC value.
+     * @param Zigzag the Zigzag matrix
+     * @return the decoded DC value of this block.
+     * @throws DomainLayerException if the compressed content is corrupted.
+     */
     private int decodeBlock(float[][] block, BitReader bitReader, HuffmanTree DC, HuffmanTree AC, float[][] quantMatrix, int lastDC, int[] Zigzag) throws DomainLayerException {
         int length = DC.decodeHuffmanCode(bitReader);
         int diff = bitReader.readInt(length);
@@ -386,6 +457,16 @@ public class JPEG extends Algorithm {
     }
 
 
+    /**
+     * Gets a 8x8 block with ID <rowID, columnID> form the original image content.
+     * @param rowID row ID of this block.
+     * @param columnID column ID of this block.
+     * @param realHeight height of the image.
+     * @param realWidth width of th image.
+     * @param RGB the RGB content of the image.
+     * @param offset the offset to be applied.
+     * @return 8x8 block read from the original image content.
+     */
     private byte[][] getBlockWithID(int rowID, int columnID, int realHeight, int realWidth, byte RGB[], int offset) {
         byte[][] block = new byte[8][24];
         int rowPos, columnPos, i, j;
@@ -410,6 +491,14 @@ public class JPEG extends Algorithm {
     //----------------------------------------Block Encoder and Decoder-----------------------------------------------//
 
     //------------------------------------------Color Space Transform-------------------------------------------------//
+
+    /**
+     * Transforms a 24x8 RGB block into the corresponding Y, Cr, Cb components and stores into the Y, Cr, Cb matrix.
+     * @param RGB the RGB block to be transformed.
+     * @param Y the Y component.
+     * @param Cr the Cr component.
+     * @param Cb the Cb component.
+     */
     private void YCrCbTransform(byte [][] RGB, float[][] Y, float[][] Cr, float[][] Cb) {
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 22; j += 3) {
@@ -424,6 +513,16 @@ public class JPEG extends Algorithm {
         }
     }
 
+
+    /**
+     * Transforms the Y, Cr, Cb components into the corresponding R, G, B component.
+     * @param R the R component.
+     * @param G the G component.
+     * @param B the B component.
+     * @param Y the Y component.
+     * @param Cr the Cr component.
+     * @param Cb the Cb component.
+     */
     private void RGBTransform(byte [][] R, byte[][] G, byte[][] B, float[][] Y, float[][] Cr, float[][] Cb) {
 
         for (int i = 0; i < 8; ++i) {
@@ -445,6 +544,15 @@ public class JPEG extends Algorithm {
 
     //--------------------------------------- Compressor and Decompressor---------------------------------------------//
 
+    /**
+     * Compresses the given RGB content of a .ppm image and returns the compressed content contained in a byte array.
+     * @param RGB data to be compress.
+     * @param width width of the image.
+     * @param height height of the image.
+     * @param offSet offset to be applied.
+     * @return a byte array which contains the compressed content.
+     * @throws DomainLayerException if a error occurs during the compression.
+     */
     private byte[] Compress(byte RGB[], int width, int height, int offSet) throws DomainLayerException{
         int realHeight = height;
         int realWidth = width*3;
@@ -534,6 +642,15 @@ public class JPEG extends Algorithm {
         return bitWriter.getOutput();
     }
 
+    /**
+     * Decompresses the given compressed image and write the decompressed content into a byte array and returns this one.
+     * @param InPut data to be decompress.
+     * @param outPut buffer which stores the decompressed content.
+     * @param width width of the image.
+     * @param height height of the image.
+     * @param offset offset to be applied.
+     * @throws DomainLayerException if a error occurs during the decompression.
+     */
     private void DeCompress(byte[] InPut, byte[] outPut, int width, int height, int offset) throws DomainLayerException{
         BitReader bitReader = new BitReader(InPut);
         bitReader.setActualBytePointer(8);
