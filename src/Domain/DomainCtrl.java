@@ -60,14 +60,13 @@ public class DomainCtrl {
         ArrayList<LocalHistory> globalHistory = loadGlobalHistory();
         this.globalHistory.setGlobalHistory(globalHistory);
     }
-
     /**
      * Loads algorithm's statistics by reading the default statistic.json file
      * @return an arrayList which includes the globalStatistic of each algorithm that this program has been recording since
      * the first execution.
      * @throws DomainLayerException
      */
-    private ArrayList<GlobalStatistic> loadGlobalStatistics() throws DomainLayerException{
+    private ArrayList<GlobalStatistic> loadGlobalStatistics() throws DomainLayerException {
         //loads the globalStatistics stored in the default statistic.json file
         try {
             Gson gson = new Gson();
@@ -564,13 +563,11 @@ public class DomainCtrl {
         this.globalHistory.clearHistory();
     }
 
-
     private String getFileType(File f) {
         String fileName = f.getName();
         int dotIndex = fileName.lastIndexOf('.');
         return fileName.substring(dotIndex+1);
     }
 
-
-
 }
+

@@ -57,7 +57,9 @@ public class JPEG extends Algorithm {
 
             return compressionStatistic;
         }
-        catch (IOException e) { throw new DomainLayerException(" "); }
+        catch (IOException e) {
+            throw new DomainLayerException("An error has occurred while compressing the file:\n"+inputImg.getFile().getPath()+
+                    "\nCompression aborted"); }
         catch (DomainLayerException e) { throw e;}
     }
 
