@@ -76,13 +76,14 @@ public class historyController implements Initializable {
                 gridPane.add(colContent, 1, i);
             }
             gridPane.getRowConstraints().add(new RowConstraints(30));
-            Button accept = new Button("accept");
+            Button accept = new Button("ACCEPT");
             accept.setPrefSize(70, 30);
             GridPane.setHalignment(accept, HPos.RIGHT);
             gridPane.add(accept, 1, columnNames.size());
             Scene scene = new Scene(gridPane);
             Stage stage = new Stage();
             stage.setScene(scene);
+            accept.setOnAction(actionEvent -> stage.close());
             stage.setTitle("Show local history");
             stage.setResizable(false);
             stage.show();
