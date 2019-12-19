@@ -23,13 +23,13 @@ public class Fitxer {
     }
 
     /**
-     * set the file of Fitxer
+     * set attribute file of Fitxer
      * @param file file we want to set
      */
     public void setFile(File file) { this.file = file; }
 
     /**
-     * set the content of Fitxer
+     * set attibute content of Fitxer
      * @param content content we want to set
      */
     public void setContent(byte[] content) {
@@ -37,11 +37,15 @@ public class Fitxer {
     }
 
     /**
-     * get the file of Fitxer
-     * @return
+     * get attribute file of Fitxer
+     * @return file of Fitxer
      */
     public File getFile() {return file;}
 
+    /**
+     * get attribute content of Fitxer
+     * @return content of Fitxer
+     */
     public byte[] getContent() { return content;}
 
 }
