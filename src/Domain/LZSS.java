@@ -6,17 +6,55 @@ import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+/**
+ * Represents a LZSS compression algorithm class.
+ */
 public class LZSS extends Algorithm {
 
+    /**
+     * Window to search a match
+     */
     private ArrayList<Byte> Ventana;
+
+    /**
+     * Object to write the output
+     */
     private ByteArrayOutputStream outStream;
+
+    /**
+     * Size of the match
+     */
     private int MidaMatch;
+
+    /**
+     * Actual match to search at window
+     */
     private  ArrayList<Byte> ActualMatch;
 
+    /**
+     * Statistics of the compression or decompression process
+     */
+    private Object[] statistics;
+
+
+    /**
+     * Create a new LZSS with the given GlobalStatistic object.
+     * @param estadistiques the GlobalStatistic object to be loaded.
+     */
     public LZSS(GlobalStatistic estadistiques) {
         super(estadistiques);
     }
 
+    /**
+     Compress the content of the inFile and write the result into the temporal buffer compressedFile.
+     * @param inFile Fitxer to be compressed
+     * @param compressedFile ByteArrayOutputStream to be wrote
+     * @return the compression statistic in the form of a Object array:
+     *         -(int)First position contains the original content size expressed in bytes.
+     *         -(int)Second position contains the compressed content size expressed in bytes.
+     *         -(double)Third position contains the compression time expressed in s.
+     * @throws DomainLayerException
+     */
     @Override
     public Object[] comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         try {
@@ -116,6 +154,16 @@ public class LZSS extends Algorithm {
 
     }
 
+    /**
+     * Decompress the compressed content and stores the decompressed content in the outPutFile
+     * @param content data to be decompress
+     * @param outputFile Fitxer to be wrote
+     * @return the decompression statistic in the form of a Object array:
+     *         -(int)First position contains the decompressed content size expressed in bytes.
+     *         -(int)Second position contains the compressed content size expressed in bytes.
+     *         -(double)Third position contains the decompression time expressed in s.
+     * @throws DomainLayerException
+     */
     @Override
     public Object[] descomprimir(byte[] content, Fitxer outputFile) throws DomainLayerException{
         try {
@@ -170,7 +218,12 @@ public class LZSS extends Algorithm {
         }
     }
 
-
+    /**
+     * Check if an array is sub-array of other
+     * @param A source array
+     * @param B array to be check
+     * @return the position of B in A if B is into A, -1 otherwise
+     */
     private int isSubArray(Object[] A, Object[] B) {
         int i = 0, j = 0, mark = 0;
 
@@ -193,25 +246,35 @@ public class LZSS extends Algorithm {
         return -1;
     }
 
-
+    /**
+     * Add a literal to the window and if it's full, delete the first element of the window
+     * @param literal byte to be added in the window
+     */
     private void afegeixLiteralALaFinestra(Byte literal) {
         Ventana.add(literal); // Posem a la finestra el primer byte del match
         if (Ventana.size() > 4096) Ventana.remove(0);  // Eliminem de la finestra el primer element
     }
 
-
+    /**
+     * Write byte 0 and the first literal of the match at output
+     */
     private void escriu0ILiteral() {
         outStream.write((byte) 0);  // Flag a 0
         outStream.write(ActualMatch.get(0)); // Literal
     }
 
-
+    /**
+     * Delete the first literal of the match
+     */
     private void eliminaLiteralDelMatch() {
         ActualMatch.remove(0);
         if (ActualMatch.size() == 0) MidaMatch = 0;
     }
 
-
+    /**
+     * Code the match and writes it to output
+     * @param MIndex Position of the match into the window
+     */
     private void codeMatch(int MIndex) {
         byte aux = (byte) (0b10000000 | (0b1111111 & (MIndex >> 5))); // Flag a 1 i meitat del pointer
         outStream.write(aux);

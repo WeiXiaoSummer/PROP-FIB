@@ -24,14 +24,14 @@
                <children>
                   <AnchorPane prefHeight="432.0" prefWidth="760.0" GridPane.rowIndex="1">
                      <children>
-                        <TextField fx:id="filePath" layoutX="260.0" layoutY="63.0" onAction="#selectFilePressed" prefHeight="30.0" prefWidth="350.0" />
-                        <Label layoutX="31.0" layoutY="69.0" text="SELECT FILE TO DECOMPRESS" />
-                        <Button layoutX="633.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectFilePressed" prefWidth="79.0" text="SELECT" />
-                        <Button layoutX="633.0" layoutY="324.0" mnemonicParsing="false" onAction="#acceptPressed" prefHeight="30.0" prefWidth="79.0" text="ACCEPT" />
-                        <Button layoutX="511.0" layoutY="324.0" mnemonicParsing="false" onAction="#cancelPressed" text="CANCEL" />
-                        <Label layoutX="31.0" layoutY="118.0" text="SELECT PATH TO SAVE" />
-                        <TextField fx:id="directoryPath" layoutX="260.0" layoutY="113.0" onAction="#selectPathPressed" prefHeight="30.0" prefWidth="350.0" />
-                        <Button layoutX="633.0" layoutY="113.0" mnemonicParsing="false" onAction="#selectPathPressed" prefHeight="30.0" prefWidth="79.0" text="SELECT" />
+                        <TextField fx:id="filePath" editable="false" layoutX="220.0" layoutY="90.0" onAction="#selectFilePressed" prefHeight="30.0" prefWidth="350.0" />
+                        <Label layoutX="37.0" layoutY="97.0" text="SELECT FILE TO DECOMPRESS" />
+                        <Button layoutX="580.0" layoutY="90.0" mnemonicParsing="false" onAction="#selectFilePressed" prefHeight="30.0" prefWidth="125.0" text="SELECT" />
+                        <Button layoutX="610.0" layoutY="325.0" mnemonicParsing="false" onAction="#acceptPressed" prefHeight="30.0" prefWidth="90.0" text="ACCEPT" />
+                        <Button layoutX="488.0" layoutY="325.0" mnemonicParsing="false" onAction="#cancelPressed" prefHeight="30.0" prefWidth="90.0" text="CANCEL" />
+                        <Label layoutX="37.0" layoutY="146.0" text="SELECT PATH TO SAVE" />
+                        <TextField fx:id="directoryPath" editable="false" layoutX="220.0" layoutY="140.0" onAction="#selectPathPressed" prefHeight="30.0" prefWidth="350.0" />
+                        <Button layoutX="580.0" layoutY="140.0" mnemonicParsing="false" onAction="#selectPathPressed" prefHeight="30.0" prefWidth="125.0" text="SELECT" />
                      </children>
                   </AnchorPane>
                </children>

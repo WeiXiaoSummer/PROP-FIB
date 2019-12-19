@@ -20,12 +20,12 @@
             </Label>
          </children>
       </Pane>
-      <TableView fx:id="tableView" layoutY="172.0" prefHeight="428.0" prefWidth="760.0" stylesheets="@../Style.css">
+      <TableView fx:id="tableView" layoutX="5" layoutY="172.0" prefHeight="422.0" prefWidth="750.0" stylesheets="@../Style.css">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button layoutX="511.0" layoutY="134.0" mnemonicParsing="false" onAction="#clearPressed" prefWidth="79.0" text="Clear" />
-      <Button layoutX="633.0" layoutY="134.0" mnemonicParsing="false" onAction="#refreshPressed" prefWidth="79.0" text="Refresh" />
+      <Button layoutX="511.0" layoutY="134.0" mnemonicParsing="false" onAction="#clearPressed" prefHeight="30.0" prefWidth="90.0" text="Clear" />
+      <Button layoutX="633.0" layoutY="134.0" mnemonicParsing="false" onAction="#refreshPressed" prefHeight="30.0" prefWidth="90.0" text="Refresh" />
    </children>
 </Pane>

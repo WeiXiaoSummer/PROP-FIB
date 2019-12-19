@@ -24,27 +24,19 @@
                <children>
                   <AnchorPane prefHeight="432.0" prefWidth="760.0" GridPane.rowIndex="1">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="191.0" layoutX="31.0" layoutY="171.0" stroke="BLACK" strokeType="INSIDE" width="196.0" />
-                        <TextField fx:id="filePath" layoutX="260.0" layoutY="15.0" onAction="#selectFilePressed" prefHeight="30.0" prefWidth="350.0" />
-                        <Button layoutX="620.0" layoutY="15.0" mnemonicParsing="false" onAction="#selectFilePressed" text="SELECT FILE" />
-                        <Button layoutX="633.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectPressed" prefHeight="30.0" prefWidth="79.0" text="SELECT" />
-                        <Label layoutX="31.0" layoutY="21.0" text="SELECT FILE TO COMPRESS" />
-                        <TextField fx:id="directoryPath" layoutX="260.0" layoutY="63.0" onAction="#selectPressed" prefHeight="30.0" prefWidth="350.0" />
-                        <Label layoutX="31.0" layoutY="69.0" text="SELECT PATH TO SAVE" />
-                        <TextField fx:id="saveName" layoutX="260.0" layoutY="113.0" prefHeight="30.0" prefWidth="350.0" />
-                        <Label layoutX="31.0" layoutY="118.0" text="NEW NAME" />
-                        <RadioButton fx:id="auto" layoutX="50.0" layoutY="228.0" mnemonicParsing="false" text="AUTO">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="type" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton layoutX="49.0" layoutY="257.0" mnemonicParsing="false" text="LZSS" toggleGroup="$type" />
-                        <RadioButton layoutX="49.0" layoutY="284.0" mnemonicParsing="false" text="LZ78" toggleGroup="$type" />
-                        <RadioButton layoutX="49.0" layoutY="314.0" mnemonicParsing="false" text="JPEG" toggleGroup="$type" />
-                        <Label layoutX="50.0" layoutY="193.0" text="SELECT ALGORITHM : " />
-                        <Button layoutX="633.0" layoutY="324.0" mnemonicParsing="false" onAction="#acceptPressed" prefHeight="30.0" prefWidth="79.0" text="ACCEPT" />
-                        <Button fx:id="btnCancel" layoutX="511.0" layoutY="324.0" mnemonicParsing="false" onAction="#cancelPressed" text="CANCEL" />
-                        <Button layoutX="563.0" layoutY="188.0" mnemonicParsing="false" onAction="#selectFolderPressed" text="SELECT FOLDER" />
+                        <TextField fx:id="filePath" editable="false" layoutX="220.0" onAction="#selectFilePressed" prefHeight="30.0" prefWidth="350.0" />
+                        <Button layoutX="580.0" mnemonicParsing="false" onAction="#selectFilePressed" prefHeight="30.0" prefWidth="125.0" text="SELECT FILE" />
+                        <Button layoutX="580.0" layoutY="90.0" mnemonicParsing="false" onAction="#selectPressed" prefHeight="30.0" prefWidth="125.0" text="SELECT" />
+                        <Label layoutX="37.0" layoutY="6.0" text="SELECT FILE TO COMPRESS" />
+                        <TextField fx:id="directoryPath" editable="false" layoutX="220.0" layoutY="90.0" onAction="#selectPressed" prefHeight="30.0" prefWidth="350.0" />
+                        <Label layoutX="37.0" layoutY="96.0" text="SELECT PATH TO SAVE" />
+                        <TextField fx:id="saveName" layoutX="220.0" layoutY="140.0" prefHeight="30.0" prefWidth="350.0" />
+                        <Label layoutX="37.0" layoutY="145.0" text="NEW NAME" />
+                        <Label layoutX="37.0" layoutY="197.0" text="SELECT ALGORITHM : " />
+                        <Button layoutX="610.0" layoutY="325.0" mnemonicParsing="false" onAction="#acceptPressed" prefHeight="30.0" prefWidth="90.0" text="ACCEPT" />
+                        <Button fx:id="btnCancel" layoutX="488.0" layoutY="325.0" mnemonicParsing="false" onAction="#cancelPressed" prefHeight="30.0" prefWidth="90.0" text="CANCEL" />
+                        <Button layoutX="580.0" layoutY="45.0" mnemonicParsing="false" onAction="#selectFolderPressed" prefHeight="30.0" prefWidth="125.0" text="SELECT FOLDER" />
+                        <ComboBox fx:id="comboAlgo" layoutX="220.0" layoutY="192.0" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
                </children>

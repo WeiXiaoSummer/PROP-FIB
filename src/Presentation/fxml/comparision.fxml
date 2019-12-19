@@ -7,7 +7,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Presentation.comparisionController">
    <children>
       <Pane fx:id="pane" prefHeight="600.0" prefWidth="760.0" style="-fx-background-color: white;">
@@ -21,20 +20,30 @@
                   </Label>
                </children>
             </Pane>
-            <Label layoutX="31.0" layoutY="233.0" prefHeight="20.0" prefWidth="199.0" text="SELECT FILE TO COMPARE" />
-            <TextField fx:id="filePath" layoutX="260.0" layoutY="227.0" prefHeight="30.0" prefWidth="350.0" />
-            <Button layoutX="633.0" layoutY="227.0" mnemonicParsing="false" onAction="#selectPressed" prefHeight="30.0" prefWidth="79.0" text="SELECT" />
-            <Button layoutX="633.0" layoutY="488.0" mnemonicParsing="false" onAction="#acceptPressed" prefHeight="30.0" prefWidth="79.0" text="ACCEPT" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="157.0" layoutX="31.0" layoutY="335.0" stroke="BLACK" strokeType="INSIDE" width="196.0" />
-            <Label layoutX="50.0" layoutY="357.0" text="SELECT ALGORITHM : " />
-            <RadioButton layoutX="50.0" layoutY="449.0" mnemonicParsing="false" text="JPEG">
-               <toggleGroup>
-                  <ToggleGroup fx:id="type" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton layoutX="50.0" layoutY="419.0" mnemonicParsing="false" text="LZ78" toggleGroup="$type" />
-            <RadioButton layoutX="50.0" layoutY="392.0" mnemonicParsing="false" text="LZSS" toggleGroup="$type" />
-            <Button fx:id="btnCancel" layoutX="511.0" layoutY="488.0" mnemonicParsing="false" onAction="#cancelPressed" prefWidth="79.0" text="CANCEL" />
+
+            <GridPane fx:id="pnDescompressió" layoutY="125.0" prefHeight="475.0" prefWidth="760.0" style="-fx-background-color: white;">
+               <children>
+                  <AnchorPane prefHeight="432.0" prefWidth="760.0" GridPane.rowIndex="1">
+                     <children>
+                        <Label layoutX="37.0" layoutY="97.0" prefHeight="20.0" prefWidth="199.0" text="SELECT FILE TO COMPARE" />
+                        <TextField fx:id="filePath" editable="false" layoutX="220.0" layoutY="90.0" prefHeight="30.0" prefWidth="350.0" />
+                        <Button layoutX="580.0" layoutY="90.0" mnemonicParsing="false" onAction="#selectPressed" prefHeight="30.0" prefWidth="125.0" text="SELECT" />
+                        <Label layoutX="37.0" layoutY="146.0" text="SELECT ALGORITHM" />
+                        <ComboBox fx:id="comboAlgo2" layoutX="220.0" layoutY="140.0" prefWidth="150.0" />
+                        <Button layoutX="610.0" layoutY="325.0" mnemonicParsing="false" onAction="#acceptPressed" prefHeight="30.0" prefWidth="90.0" text="ACCEPT" />
+                        <Button layoutX="488.0" layoutY="325.0" mnemonicParsing="false" onAction="#cancelPressed" prefHeight="30.0" prefWidth="90.0" text="CANCEL" />
+
+                     </children>
+                  </AnchorPane>
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="447.0" minHeight="10.0" prefHeight="447.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
          </children>
       </Pane>
    </children>
