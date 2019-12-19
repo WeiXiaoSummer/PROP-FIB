@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Presentation.mainController">
+   <left>
+      <VBox prefHeight="600.0" prefWidth="240.0" style="-fx-background-color: #283747;" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="125.0" prefWidth="240.0" style="-fx-background-color: #1B2641;">
+               <children>
+                  <Sphere cullFace="FRONT" drawMode="LINE" layoutX="64.0" layoutY="62.0" radius="50.0" />
+                  <Text fill="WHITE" layoutX="54.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PROP" textAlignment="CENTER" underline="true">
+                     <font>
+                        <Font name="Segoe UI Black" size="48.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Button fx:id="btnCompression" graphicTextGap="10.0" mnemonicParsing="false" onAction="#compressionPressed" prefHeight="50.0" prefWidth="260.0" stylesheets="@../Style.css" text="COMPRESSION" textFill="WHITE" />
+            <Button fx:id="btnDecompression" graphicTextGap="10.0" mnemonicParsing="false" onAction="#decompressionPressed" prefHeight="50.0" prefWidth="260.0" stylesheets="@../Style.css" text="DECOMPRESSION" textFill="WHITE" />
+            <Button fx:id="btnStatistic" graphicTextGap="10.0" mnemonicParsing="false" onAction="#statisticPressed" prefHeight="50.0" prefWidth="260.0" stylesheets="@../Style.css" text="STATISTIC" textFill="WHITE" />
+            <Button fx:id="btnHistory" graphicTextGap="10.0" mnemonicParsing="false" onAction="#historyPressed" prefHeight="50.0" prefWidth="260.0" stylesheets="@../Style.css" text="HISTORY" textFill="WHITE" />
+            <Button fx:id="btnComparision" graphicTextGap="10.0" mnemonicParsing="false" onAction="#comparisionPressed" prefHeight="50.0" prefWidth="260.0" stylesheets="@../Style.css" text="COMPARISION" textFill="WHITE" />
+            <Button fx:id="btnExit" graphicTextGap="10.0" mnemonicParsing="false" onAction="#exitPressed" prefHeight="50.0" prefWidth="260.0" stylesheets="@../Style.css" text="EXIT" textFill="WHITE" />
+         </children>
+      </VBox>
+   </left>
+</BorderPane>

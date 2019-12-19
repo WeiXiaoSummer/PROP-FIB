@@ -177,4 +177,9 @@ public class PresentationCtrl {
         mainStackPane.getChildren().remove(boxToBeDisabled);
         paneToActive.setDisable(false);
     }
+
+    public String getFileType(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        return fileName.substring(dotIndex+1);
+    }
 }

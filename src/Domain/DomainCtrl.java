@@ -6,7 +6,6 @@ import Data.DataCtrl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.util.Pair;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;

@@ -23,7 +23,6 @@ public class decompressionController {
     private @FXML TextField filePath;
     private @FXML TextField directoryPath;
 
-
     public void selectFilePressed() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PROP Files", "*.prop"));
