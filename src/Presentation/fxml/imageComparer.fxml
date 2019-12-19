@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Presentation.imageComparerController">
+   <children>
+      <Pane fx:id="paneBefore" layoutX="20.0" layoutY="225.0" prefHeight="460.0" prefWidth="610.0" style="-fx-border-color: #283747; -fx-border-width: 5;">
+         <children>
+            <ImageView fx:id="beforeImage" fitHeight="400.0" fitWidth="520.0" layoutX="45.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </Pane>
+      <Pane layoutY="45.0" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: #283747;">
+         <children>
+            <Label fx:id="titile" layoutX="80.0" layoutY="21.0" prefHeight="35.0" prefWidth="294.0" text="IMAGE COMPARISON" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="292.0" layoutY="191.0" text="Before Image" />
+      <Label layoutX="898.0" layoutY="191.0" text="After Image" />
+      <Pane fx:id="paneAfter" layoutX="656.0" layoutY="225.0" prefHeight="460.0" prefWidth="610.0" style="-fx-border-color: #283747; -fx-border-width: 5;">
+         <children>
+            <ImageView fx:id="afterImage" fitHeight="400.0" fitWidth="520.0" layoutX="45.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </Pane>
+   </children>
+</Pane>

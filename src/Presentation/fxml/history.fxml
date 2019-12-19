@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="600.0" prefWidth="760.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Presentation.historyController">
+   <children>
+      <Pane layoutY="45.0" prefHeight="80.0" prefWidth="760.0" style="-fx-background-color: #283747;">
+         <children>
+            <Label fx:id="titile" layoutX="31.0" layoutY="23.0" prefHeight="35.0" prefWidth="294.0" text="HISTORY" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TableView fx:id="tableView" layoutY="172.0" prefHeight="428.0" prefWidth="760.0" stylesheets="@../Style.css">
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Button layoutX="511.0" layoutY="134.0" mnemonicParsing="false" onAction="#clearPressed" prefWidth="79.0" text="Clear" />
+      <Button layoutX="633.0" layoutY="134.0" mnemonicParsing="false" onAction="#refreshPressed" prefWidth="79.0" text="Refresh" />
+   </children>
+</Pane>

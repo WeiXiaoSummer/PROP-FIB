@@ -27,6 +27,7 @@ public class PROP extends Application {
         primary.setResizable(false);
         primaryStage.sizeToScene();
         primary.show();
+
     }
     @Override
     public void stop() throws PresentationLayerException {
