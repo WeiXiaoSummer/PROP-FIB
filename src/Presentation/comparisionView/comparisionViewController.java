@@ -51,6 +51,8 @@ public class comparisionViewController implements Initializable {
     public void selectPressed() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt", "*.ppm"));
+        File workingDirectory =new File(System.getProperty("user.dir"));
+        fileChooser.setInitialDirectory(workingDirectory);
         File file = fileChooser.showOpenDialog(pane.getScene().getWindow());
         if (file != null) {
             String path = file.getPath();

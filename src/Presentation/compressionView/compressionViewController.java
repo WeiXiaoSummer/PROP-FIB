@@ -84,6 +84,8 @@ public class compressionViewController implements Initializable {
     public void selectFolderPressed() {
         //Choose folder
         DirectoryChooser directoryChooser = new DirectoryChooser();
+        File workingDirectory =new File(System.getProperty("user.dir"));
+        directoryChooser.setInitialDirectory(workingDirectory);
         File file = directoryChooser.showDialog(pane.getScene().getWindow());
         if (file != null) {
             //write selected file's path to the text field filePath

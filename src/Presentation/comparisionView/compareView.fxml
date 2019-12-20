@@ -11,7 +11,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Presentation.comparisionView.compareViewController">
     <children>
-        <Pane fx:id="main" prefHeight="680.0" prefWidth="1060.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Pane fx:id="main" prefHeight="660.0" prefWidth="1060.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Pane layoutY="45.0" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: #283747;">
                     <children>
@@ -56,7 +56,7 @@
                         </ScrollPane>
                     </children>
                 </GridPane>
-                <HBox layoutX="30.0" layoutY="604.0">
+                <HBox layoutX="30.0" layoutY="580.0">
                     <children>
                         <Label fx:id="lbZoom" prefHeight="27.0" prefWidth="125.0" text="Zoom: ">
                             <padding>

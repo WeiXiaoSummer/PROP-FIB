@@ -33,6 +33,8 @@ public class decompressionViewController {
     public void selectFilePressed() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PROP Files", "*.prop"));
+        File workingDirectory =new File(System.getProperty("user.dir"));
+        fileChooser.setInitialDirectory(workingDirectory);
         File file = fileChooser.showOpenDialog(pane.getScene().getWindow());
         if (file != null) {
             String path = file.getPath();
