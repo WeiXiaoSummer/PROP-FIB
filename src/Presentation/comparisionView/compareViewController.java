@@ -1,4 +1,4 @@
-package Presentation;
+package Presentation.comparisionView;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 /**
  * This is a controller Class which controls the imageComparerView.
  */
-public class imageComparerController {
+public class compareViewController {
     private @FXML StackPane stackRight;
     private @FXML StackPane stackLeft;
     private @FXML Slider sliderZoom;

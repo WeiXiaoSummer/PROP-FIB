@@ -1,6 +1,7 @@
-package Presentation;
+package Presentation.compressionView;
 
 import Commons.PresentationLayerException;
+import Presentation.PresentationCtrl;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
 /**
  * This is a controller Class which controls the compressionView.
  */
-public class compressionController implements Initializable {
+public class compressionViewController implements Initializable {
 
     private @FXML StackPane stackpane;
     private @FXML Pane pane;
@@ -129,7 +130,7 @@ public class compressionController implements Initializable {
     public void helpPressed() {
         Stage mainStage = (Stage)stackpane.getScene().getWindow();
         PresentationCtrl.getInstance().showNotification("Information", "Information", "To compress the folder of the file:",
-                "1- Select the file or the folder to be compressed\n\n2- Select the folder to save the compressed file\n\n3- Introduce the name of the compressed file to be saved" +
+                "1- Select the file or the folder to be compressed by click the select file button or the select folder button\n\n2- Select the folder to save the compressed file\n\n3- Introduce the name of the compressed file to be saved" +
                         "\n\n4- Select an algorithm for compression\n\n5- Click accept to start the compression", mainStage);
     }
 
@@ -153,7 +154,7 @@ public class compressionController implements Initializable {
         else if (selectedAlgorithm.equals("")) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Please select a algorithm for compression!", mainStatge);
         //Compression
         else {
-            //Show the waiting animation to tell user that the compression is started
+            //Show the waiting animation to tell user that the compression has been started
             VBox waitingAnimation = PresentationCtrl.getInstance().shwoWaitingAnimationInScene("      Compressing the data... \nPlease do not close the program", stackpane, pane);
             new Thread( ()-> {
                 //Creates a thread which calls the compression method

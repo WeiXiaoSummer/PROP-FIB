@@ -1,20 +1,24 @@
-package Presentation;
+package Presentation.mainView;
 
 import Commons.PresentationLayerException;
+import Presentation.PresentationCtrl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
  * This is a controller class which controls the mainView
  */
-public class mainController implements Initializable {
+public class mainViewController implements Initializable {
     private @FXML BorderPane borderpane;
     private @FXML StackPane compressionView;
     private @FXML StackPane decompressionView;
@@ -30,14 +34,18 @@ public class mainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            compressionView = FXMLLoader.load(getClass().getResource("fxml/compression.fxml"));
-            decompressionView = FXMLLoader.load(getClass().getResource("fxml/decompression.fxml"));
-            statisticView = FXMLLoader.load(getClass().getResource("fxml/statistic.fxml"));
-            historyView = FXMLLoader.load(getClass().getResource("fxml/history.fxml"));
-            comparisionView = FXMLLoader.load(getClass().getResource("fxml/comparision.fxml"));
+            compressionView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Presentation/compressionView/compressionView.fxml")));
+            decompressionView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Presentation/decompressionView/decompressionView.fxml")));
+            statisticView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Presentation/statisticView/statisticView.fxml")));
+            historyView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Presentation/historyView/historyView.fxml")));
+            comparisionView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Presentation/comparisionView/comparisionView.fxml")));
             borderpane.setCenter(compressionView);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            Stage mainStage = (Stage) borderpane.getScene().getWindow();
+            PresentationCtrl.getInstance().showNotification("Error", "Error", "Cannot load stage",
+                    "An error has occured while trying to load the stage, program aborted. \n\n" +
+                    "See below\n\n"+e.toString(), mainStage);
+            System.exit(0);
         }
     }
 

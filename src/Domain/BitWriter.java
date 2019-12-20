@@ -57,7 +57,7 @@ public class BitWriter {
             Output.write(array);
         }
         catch (IOException e) {
-            throw new DomainLayerException("An error has occurred during the JPEG process, operation aborted\n"+e.getMessage());
+            throw new DomainLayerException("An error has occurred during the JPEG process, operation aborted\n\nsee below\n\n"+e.toString());
         }
     }
 
@@ -93,7 +93,7 @@ public class BitWriter {
             return result;
         }
         catch (IOException e) {
-            throw new DomainLayerException("An error has occurred during the JPEG process, operation aborted\n"+e.getMessage());
+            throw new DomainLayerException("An error has occurred during the JPEG process, operation aborted\n\nsee below\n\n"+e.toString());
         }
     }
 

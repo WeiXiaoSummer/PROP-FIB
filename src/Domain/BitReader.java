@@ -54,15 +54,21 @@ public class BitReader {
      * @return returns true if this bitReader has just read a 1, false otherwise.
      * @throws DomainLayerException
      */
-    public boolean readOne() throws ArrayIndexOutOfBoundsException {
-        int isOne = (input[actualByte] >> (7-readedBit))&0x01;
-        ++readedBit;
-        ++actualBit;
-        if(readedBit == 8) {
-            ++actualByte;
-            readedBit = 0;
+    public boolean readOne() throws DomainLayerException {
+        try {
+            int isOne = (input[actualByte] >> (7-readedBit))&0x01;
+            ++readedBit;
+            ++actualBit;
+            if(readedBit == 8) {
+                ++actualByte;
+                readedBit = 0;
+            }
+            return isOne == 1;
         }
-        return isOne == 1;
+        catch (IndexOutOfBoundsException e) {
+            throw new DomainLayerException("An error has occurred while decompress the image content, operation aborted.\n\n" +
+                    "The compressed content seems to be corrupted.");
+        }
     }
 
     /**
@@ -70,7 +76,7 @@ public class BitReader {
      * @param length length of the integer value expressed in bits.
      * @return the value of the corresponding integer value.
      */
-    public int readInt(int length) throws ArrayIndexOutOfBoundsException{
+    public int readInt(int length) throws DomainLayerException{
         if(length == 0) return 0;
         boolean positive = readOne();
         int value = positive ? 0x1:0x0;
