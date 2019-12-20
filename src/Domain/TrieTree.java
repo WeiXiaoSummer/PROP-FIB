@@ -6,7 +6,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * trie Tree use for compress
+ */
 public class TrieTree {
+    /**
+     * construct a node of trieTree
+     */
     class Node{
         public int element;
         HashMap<Byte, Node> childdren = null;
@@ -24,11 +30,20 @@ public class TrieTree {
     private Node root;
     private int key = 0;
 
+    /**
+     * construct a trieTree
+     */
     public TrieTree(){
         root = new Node();
         root.element = 0;
     }
 
+    /**
+     * compress input with trieTree, write the result into a ByteArrayOutputStream and return it
+     * @param input byte array need to compress
+     * @return output compressed
+     * @throws DomainLayerException
+     */
     public ByteArrayOutputStream comprimir(byte[] input) throws DomainLayerException {
         try {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -60,7 +75,12 @@ public class TrieTree {
         catch (IOException e) { throw  new DomainLayerException(" "); }
     }
 
-    public static byte[] intToByteArray(int value) {
+    /**
+     * transfer int to byte array and return byte array
+     * @param value which int we want to transfer
+     * @return byte array is the result of transfer
+     */
+    private static byte[] intToByteArray(int value) {
         return new byte[] {
                 (byte)(value >>> 24),
                 (byte)(value >>> 16),

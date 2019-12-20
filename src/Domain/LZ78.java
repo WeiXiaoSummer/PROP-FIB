@@ -6,12 +6,25 @@ import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+/**
+ * Represents a LZ78 compression algorithm class.
+ */
 public class LZ78 extends Algorithm {
 
     public LZ78(GlobalStatistic estadistiques) {
         super(estadistiques);
     }
 
+    /**
+     * Compress the content of the inFile and write the result into the temporal buffer compressedFile.
+     * @param file Fitxer to be compressed
+     * @param compressedFile ByteArrayOutputStream to be wrote
+     * @return the compression statistic in the form of a Object array:
+     *          -(int)First position contains the original content size expressed in bytes.
+     *          -(int)Second position contains the compressed content size expressed in bytes.
+     *          -(double)Third position contains the compression time expressed in s.
+     * @throws DomainLayerException
+     */
     @Override
     public Object[] comprimir(Fitxer file, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         try {
@@ -50,6 +63,16 @@ public class LZ78 extends Algorithm {
                     "\n\nCompression aborted\n\n" + e.getMessage());}
     }
 
+    /**
+     * Decompress the compressed content and stores the decompressed content in the outPutFile
+     * @param compressedContent data to be decompress
+     * @param file data to be decompress
+     * @return the decompression statistic in the form of a Object array:
+     *          -(int)First position contains the decompressed content size expressed in bytes.
+     *          -(int)Second position contains the compressed content size expressed in bytes.
+     *          -(double)Third position contains the decompression time expressed in s.
+     * @throws DomainLayerException
+     */
     @Override
     public Object[] descomprimir(byte[] compressedContent, Fitxer file) throws DomainLayerException {
         try {
@@ -101,15 +124,26 @@ public class LZ78 extends Algorithm {
                     "The compressed content is corrupted, decompression aborted.");}
     }
 
-    // transfer bytes to int
-    public int byteToInt(byte[] bytes, int i) {
+    /**
+     * transfer 4 bytes to int
+     * @param bytes byte array to transfer
+     * @param i indicate the position of bytes we wants to start the transfer
+     * @return int transfered
+     */
+    private int byteToInt(byte[] bytes, int i) {
         return (bytes[i]&0xff)<<24
                 | (bytes[i+1]&0xff)<<16
                 | (bytes[i+2]&0xff)<<8
                 | (bytes[i+3]&0xff);
     }
-    // add a byte into a byte[]
-    public byte[] addByte(byte[] bytes, byte b) {
+
+    /**
+     * add a byte at end of byte[]
+     * @param bytes the byte array witch we want to add a byte
+     * @param b the byte witch we want to add at end of bytes
+     * @return a byte array added the b at end.
+     */
+    private byte[] addByte(byte[] bytes, byte b) {
         byte[] in = new byte[bytes.length + 1];
         for (int i = 0; i < bytes.length; ++i) {
             in[i] = bytes[i];
