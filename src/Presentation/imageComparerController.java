@@ -1,6 +1,7 @@
 package Presentation;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
@@ -17,6 +18,7 @@ public class imageComparerController {
     private @FXML Slider sliderZoom;
     private @FXML ScrollPane spLeft;
     private @FXML ScrollPane spRight;
+    private @FXML Label lbZoom;
 
     /**
      * Sets the images to be showed to the imageComparerView.
@@ -62,5 +64,6 @@ public class imageComparerController {
         stackLeft.getChildren().add(textLeft);
         stackRight.getChildren().add(textRight);
         sliderZoom.setVisible(false);
+        lbZoom.setVisible(false);
     }
 }
