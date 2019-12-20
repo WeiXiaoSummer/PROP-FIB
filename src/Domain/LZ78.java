@@ -49,8 +49,8 @@ public class LZ78 extends Algorithm {
             compressedFile.write(compressedContent);
 
             if (text.length > 0) {
-                compressionStatistic[0] = text.length;
-                compressionStatistic[1] = compressedContent.length;
+                compressionStatistic[0] = (double) text.length;
+                compressionStatistic[1] = (double) compressedContent.length;
                 compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
                 globalStatistic.addTotalCompressedData(text.length);
                 globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);

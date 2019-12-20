@@ -36,6 +36,7 @@ public class JPEG extends Algorithm {
             byte[] input = inputImg.getContent();
 
             Pair<Integer, Integer> dimension = getDimension(input);
+            System.out.println(dimension);
             int offset = 9 + dimension.getKey().toString().length() + dimension.getValue().toString().length();
             byte[] compressedContent = Compress(input, dimension.getKey(), dimension.getValue(), offset);
             long endTime=System.currentTimeMillis();
@@ -50,8 +51,8 @@ public class JPEG extends Algorithm {
             compressedFile.write(compressedContentSize); compressedFile.write(outPutWidth);
             compressedFile.write(outPutHeight); compressedFile.write(compressedContent);
 
-            compressionStatistic[0] = input.length;
-            compressionStatistic[1] = compressedContent.length;
+            compressionStatistic[0] = (double)input.length;
+            compressionStatistic[1] = (double)compressedContent.length;
             compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
             globalStatistic.addTotalCompressedData(input.length);
             globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
@@ -109,6 +110,7 @@ public class JPEG extends Algorithm {
                     "The compressed content is corrupted, decompression aborted.");
         }
         catch (Exception e) {
+            e.printStackTrace();
             throw new DomainLayerException("An unidentified error has occurred while decompressing the file, decompression aborted.\n\nsee below\n\n"+
                     e.toString()); }
     }
@@ -119,8 +121,8 @@ public class JPEG extends Algorithm {
      * @return a Pair which contains the width and the height of the input .ppm file.
      */
     private Pair<Integer, Integer> getDimension(byte[] imgContent) {
-        Integer width = 0;
-        Integer height = 0;
+        int width = 0;
+        int height = 0;
         int pos = 3;
         while (imgContent[pos] != ' ') {
             width = width * 10 + (imgContent[pos] - '0');
@@ -660,8 +662,9 @@ public class JPEG extends Algorithm {
      * @throws DomainLayerException if a error occurs during the decompression.
      */
     private void DeCompress(byte[] InPut, byte[] outPut, int width, int height, int offset) throws DomainLayerException{
+        System.out.println(width);
         BitReader bitReader = new BitReader(InPut);
-        bitReader.setActualBytePointer(8);
+        if(width > 0) bitReader.setActualBytePointer(8);
         int lastRow = height;
         int lastColumn = width*3;
         int multipleOfEight = width%8;

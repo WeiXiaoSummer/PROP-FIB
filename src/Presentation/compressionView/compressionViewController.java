@@ -94,6 +94,7 @@ public class compressionViewController implements Initializable {
 
             //set the default save name according to the name of the selected file
             saveName.setText(file.getName());
+            comboAlgo.setItems(FXCollections.observableArrayList(algortihms.getKey()));
         }
     }
 
