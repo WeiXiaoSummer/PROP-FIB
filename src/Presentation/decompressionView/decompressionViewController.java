@@ -105,8 +105,7 @@ public class decompressionViewController {
 
                     //Show the notification dialog once the decompression is done
                     Platform.runLater(() -> PresentationCtrl.getInstance().showNotification("Information", "Information",
-                            "Decompression Done!", "Compression Ratio: "+String.format("%.2f", decompressStatistic.getKey())+
-                                    "\nDecompression Time: "+String.format("%.2f", decompressStatistic.getValue())+" s", mainStage));
+                            "Decompression Done!", "Decompression Time: "+String.format("%.2f", decompressStatistic.getValue())+" s", mainStage));
                 }
                 catch (PresentationLayerException e) { throw e; }
                 finally {

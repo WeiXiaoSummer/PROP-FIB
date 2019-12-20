@@ -84,10 +84,12 @@ public class comparisionViewController implements Initializable {
      */
     public void acceptPressed() throws PresentationLayerException{
         //Get the type of the selected file
+        String selectedAlgorithm = comboAlgo2.getValue();
         String fileType = PresentationCtrl.getInstance().getFileType(filePath.getText());
         Stage mainStatge = (Stage) stackPane.getScene().getWindow();
         //add constraints
         if (filePath.getText().equals("")) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Input file cannot be empty!",mainStatge);
+        else if (selectedAlgorithm == null) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Please select a algorithm for compression!", mainStatge);
         else {
             //Show the waiting animation to tell user that the comparision process has been started
             VBox waitingAnimation = PresentationCtrl.getInstance().shwoWaitingAnimationInScene("      Processing the data... \nPlease do not close the program", stackPane, pane);

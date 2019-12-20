@@ -154,7 +154,7 @@ public class compressionViewController implements Initializable {
         if (inputFile.getPath().equals("")) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Input file cannot be empty!",mainStatge);
         else if (saveDirectory.getPath().equals("")) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Target directory cannot be empty!", mainStatge);
         else if (saveName.getText().equals("")) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Name cannot be empty!", mainStatge);
-        else if (selectedAlgorithm.equals("")) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Please select a algorithm for compression!", mainStatge);
+        else if (selectedAlgorithm == null) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Please select a algorithm for compression!", mainStatge);
         //Compression
         else {
             //Show the waiting animation to tell user that the compression has been started
@@ -174,6 +174,7 @@ public class compressionViewController implements Initializable {
                 finally { Platform.runLater(() -> PresentationCtrl.getInstance().disableWaitingAnimationOfTheScene(waitingAnimation, stackpane, pane)); }
             }).start();
         }
+
     }
 
 

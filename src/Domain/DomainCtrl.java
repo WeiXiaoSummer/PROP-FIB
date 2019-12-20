@@ -366,7 +366,7 @@ public class DomainCtrl {
 
             //check if the main header equals "PROP", in the case of no throws the exception
             String check = new String(aux);
-            if (!check.equals("PROP")) throw new DomainLayerException(inFilePath+" is corrupted, decompression aborted.");
+            if (!check.equals("PROP")) throw new DomainLayerException("the file\n\n"+inFilePath+"\n\nis corrupted, decompression aborted.");
 
             //read the type section of this local file header, in this case we know it will be the "FOLD" as our program wraps
             //the selected file into a folder
@@ -396,9 +396,16 @@ public class DomainCtrl {
             DataCtrl.getInstance().closeInputCompressedFileStream();
             return new Pair<>(compressionRatio, decompressionTime);
         }
-        catch (PersistenceLayerException e) {throw new DomainLayerException(e.getMessage());}
-        catch (DomainLayerException e) {throw e;}
-        catch (Exception e) {e.printStackTrace();throw new DomainLayerException("An error has occurred while decompressing the file:\n\n"+inFilePath+"\n\nThe compressed" +
+        catch (PersistenceLayerException e) {
+            DataCtrl.getInstance().closeInputCompressedFileStream();
+            throw new DomainLayerException(e.getMessage());
+        }
+        catch (DomainLayerException e) {
+            DataCtrl.getInstance().closeInputCompressedFileStream();
+            throw e;}
+        catch (Exception e) {
+            DataCtrl.getInstance().closeInputCompressedFileStream();
+                throw new DomainLayerException("An error has occurred while decompressing the file:\n\n"+inFilePath+"\n\nThe compressed" +
                 " content is corrupted, decompression aborted.");}
     }
 
@@ -592,7 +599,7 @@ public class DomainCtrl {
             return new Pair<>(originalContent, decompressedFile.getContent());
         }
         catch (PersistenceLayerException e) { throw new DomainLayerException(e.getMessage()); }
-        catch (DomainLayerException e) { throw e; }
+        catch (DomainLayerException e) { throw new DomainLayerException("The file\n\n"+filePath+"\n\ncannot be visualized because is corrupted."); }
 
     }
 

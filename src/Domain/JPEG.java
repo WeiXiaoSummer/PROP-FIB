@@ -36,8 +36,9 @@ public class JPEG extends Algorithm {
             byte[] input = inputImg.getContent();
 
             Pair<Integer, Integer> dimension = getDimension(input);
-            System.out.println(dimension);
+
             int offset = 9 + dimension.getKey().toString().length() + dimension.getValue().toString().length();
+
             byte[] compressedContent = Compress(input, dimension.getKey(), dimension.getValue(), offset);
             long endTime=System.currentTimeMillis();
 
@@ -110,7 +111,6 @@ public class JPEG extends Algorithm {
                     "The compressed content is corrupted, decompression aborted.");
         }
         catch (Exception e) {
-            e.printStackTrace();
             throw new DomainLayerException("An unidentified error has occurred while decompressing the file, decompression aborted.\n\nsee below\n\n"+
                     e.toString()); }
     }
@@ -662,7 +662,6 @@ public class JPEG extends Algorithm {
      * @throws DomainLayerException if a error occurs during the decompression.
      */
     private void DeCompress(byte[] InPut, byte[] outPut, int width, int height, int offset) throws DomainLayerException{
-        System.out.println(width);
         BitReader bitReader = new BitReader(InPut);
         if(width > 0) bitReader.setActualBytePointer(8);
         int lastRow = height;
