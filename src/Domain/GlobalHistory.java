@@ -49,7 +49,7 @@ public class GlobalHistory {
      */
     public ArrayList<String> getColumnNames() {
         ArrayList<String> columnNames = new ArrayList<>(Arrays.asList("Input Path", "OutPut Path",
-                "Operation", "Algorithm", "Time Used", "File Extension", "Compression Ratio"));
+                "Operation", "Algorithm", "Time Used", "File Extension", "Compression Ratio", "Date"));
         return  columnNames;
     }
 

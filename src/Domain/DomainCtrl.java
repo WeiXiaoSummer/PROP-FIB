@@ -6,11 +6,16 @@ import Data.DataCtrl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.util.Pair;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -84,7 +89,9 @@ public class DomainCtrl {
         //loads the globalStatistics stored in the default statistic.json file
         try {
             Gson gson = new Gson();
-            byte[] jsonContent = DataCtrl.getInstance().getInputFile(".\\src\\Data\\statistic.json");
+            Path currentPath = Paths.get("");
+            String filePath = currentPath.toAbsolutePath().toString()+File.separator+"statistic.json";
+            byte[] jsonContent = DataCtrl.getInstance().getInputFile(filePath);
             Type arrayType = new TypeToken<ArrayList<GlobalStatistic>>() {}.getType();
             return gson.fromJson(new String(jsonContent), arrayType);
         }
@@ -103,8 +110,9 @@ public class DomainCtrl {
         //loads the globalHistories stored in the default globalHistory.json file
         try {
             Gson gson = new Gson();
-            File statisticFile = new File(".\\src\\Data\\globalHistory.json");
-            byte[] jsonContent = DataCtrl.getInstance().getInputFile(statisticFile.getPath());
+            Path currentPath = Paths.get("");
+            String filePath = currentPath.toAbsolutePath().toString()+File.separator+"globalHistory.json";
+            byte[] jsonContent = DataCtrl.getInstance().getInputFile(filePath);
             Type arrayType = new TypeToken<ArrayList<LocalHistory>>() {}.getType();
             return gson.fromJson(new String(jsonContent), arrayType);
         }
@@ -140,7 +148,9 @@ public class DomainCtrl {
                     algorithms.get("LZ78").getGlobalStatistic(), algorithms.get("JPEG").getGlobalStatistic()));
             Type arrayType = new TypeToken<ArrayList<GlobalStatistic>>() {}.getType();
             String jsonContent = gson.toJson(globalStatistics, arrayType);
-            DataCtrl.getInstance().outputFile(jsonContent.getBytes(), ".\\src\\Data\\statistic.json");
+            Path currentPath = Paths.get("");
+            String filePath = currentPath.toAbsolutePath().toString()+File.separator+"statistic.json";
+            DataCtrl.getInstance().outputFile(jsonContent.getBytes(), filePath);
         }
         catch (PersistenceLayerException e) {
             throw new DomainLayerException(e.getMessage());
@@ -158,7 +168,9 @@ public class DomainCtrl {
             Type arrayType = new TypeToken<ArrayList<LocalHistory>>() {}.getType();
             ArrayList<LocalHistory> globalHistory = this.globalHistory.getGlobalHistory();
             String jsonContent = gson.toJson(globalHistory, arrayType);
-            DataCtrl.getInstance().outputFile(jsonContent.getBytes(), ".\\src\\Data\\globalHistory.json");
+            Path currentPath = Paths.get("");
+            String filePath = currentPath.toAbsolutePath().toString()+File.separator+"globalHistory.json";
+            DataCtrl.getInstance().outputFile(jsonContent.getBytes(), filePath);
         }
         catch (PersistenceLayerException e) {
             throw new DomainLayerException(e.getMessage());
@@ -233,7 +245,9 @@ public class DomainCtrl {
                 compressFile(inputFile, compressedFile, fileType, algorithmType, compressStatistic);
                 if ((double) compressStatistic[0] != 0) compressionRatio = (double)compressStatistic[0]/(double)compressStatistic[1];
                 compressionTime = (double) compressStatistic[2];
-                localHistory = new LocalHistory(inFilePath, outputFile.getFile().getPath(), fileType, "Compression", algorithmType, compressionRatio, compressionTime);
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                localHistory = new LocalHistory(inFilePath, outputFile.getFile().getPath(), fileType, "Compression", algorithmType, compressionRatio, compressionTime, dtf.format(now));
             }
 
             //  -case if it's a folder
@@ -241,7 +255,9 @@ public class DomainCtrl {
                 compressFolder(inputFile, compressedFile, algorithmType, compressStatistic);
                 if ((double) compressStatistic[0] != 0) compressionRatio = (double)compressStatistic[0]/(double)compressStatistic[1];
                 compressionTime = (double) compressStatistic[2];
-                localHistory = new LocalHistory(inFilePath, outputFile.getFile().getPath(), "FOLDER", "Compression", algorithmType, compressionRatio, compressionTime);
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                localHistory = new LocalHistory(inFilePath, outputFile.getFile().getPath(), "FOLDER", "Compression", algorithmType, compressionRatio, compressionTime, dtf.format(now));
             }
 
             //the program has just done compression operation, this should be added and stored as a part of the global history
@@ -389,7 +405,9 @@ public class DomainCtrl {
             compressionRatio = decompressionTime = 0;
             if ((double) decompressStatistic[0] != 0) compressionRatio = (double)decompressStatistic[0]/(double)decompressStatistic[1];
             decompressionTime = (double) decompressStatistic[2];
-            LocalHistory localHistory = new LocalHistory(inFilePath, targetDirectoryPath, "PROP", "Decompression", "AUTO", compressionRatio, decompressionTime);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            LocalHistory localHistory = new LocalHistory(inFilePath, targetDirectoryPath, "PROP", "Decompression", "AUTO", 0d, decompressionTime, dtf.format(now));
             globalHistory.addLocalHistory(localHistory);
 
             //close the input stream to release the system resources
@@ -558,7 +576,7 @@ public class DomainCtrl {
         for (int i = 0; i < globalHistory.size(); ++i) {
             LocalHistory lh = globalHistory.get(i);
             String[] localHistory = {lh.getInputPath(), lh.getOutPutPath(), lh.getOperation(), lh.getAlgorithm(),
-                    String.format("%.2f", lh.getTimeUsed())+"s", lh.getFileExtension(), String.format("%.2f", lh.getCompressionRatio())};
+                    String.format("%.2f", lh.getTimeUsed())+"s", lh.getFileExtension(), String.format("%.2f", lh.getCompressionRatio()), lh.getDate()};
             histories.add(localHistory);
         }
         return histories;

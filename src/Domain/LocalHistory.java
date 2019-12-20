@@ -39,6 +39,11 @@ public class LocalHistory {
      */
     private double timeUsed;
 
+    /**
+     * indicates the date that the this operation has done
+     */
+    private String date;
+
     //-----------------------------------------------Constructor------------------------------------------------------//
 
     /**
@@ -51,7 +56,7 @@ public class LocalHistory {
      * @param compressionRatio the Compression Ratio in the case of "Compression", 0 otherwise
      * @param timeUsed the time used in this operation
      */
-    public LocalHistory(String inputPath, String outputPath, String fileExtension, String operation, String algorithm, double compressionRatio, double timeUsed) {
+    public LocalHistory(String inputPath, String outputPath, String fileExtension, String operation, String algorithm, double compressionRatio, double timeUsed, String date) {
         this.inputPath = inputPath;
         this.outPutPath = outputPath;
         this.fileExtension = fileExtension;
@@ -59,6 +64,7 @@ public class LocalHistory {
         this.algorithm = algorithm;
         this.compressionRatio = compressionRatio;
         this.timeUsed = timeUsed;
+        this.date = date;
     }
 
     //-----------------------------------------------Constructor------------------------------------------------------//
@@ -109,6 +115,10 @@ public class LocalHistory {
     public double getTimeUsed() { return this.timeUsed; }
 
 
+    /**
+     * get the date
+     */
+    public String getDate() { return this.date; }
     //-------------------------------------------------Getters---------------------------------------------------------//
 
 
@@ -155,6 +165,11 @@ public class LocalHistory {
      * @param timeUsed the time of operation used
      */
     public void setTimeUsed(double timeUsed) {this.timeUsed = timeUsed; }
+
+    /**
+     *
+     */
+    public void setDate(String date) {this.date = date;}
 
     //-------------------------------------------------Setters---------------------------------------------------------//
 

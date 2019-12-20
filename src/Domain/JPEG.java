@@ -52,13 +52,14 @@ public class JPEG extends Algorithm {
             compressedFile.write(compressedContentSize); compressedFile.write(outPutWidth);
             compressedFile.write(outPutHeight); compressedFile.write(compressedContent);
 
-            compressionStatistic[0] = (double)input.length;
-            compressionStatistic[1] = (double)compressedContent.length;
-            compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
-            globalStatistic.addTotalCompressedData(input.length);
-            globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
-            globalStatistic.addTotalCompressionRatio((double)input.length / (double)compressedContent.length);
-
+            if (input.length > 0) {
+                compressionStatistic[0] = (double)input.length;
+                compressionStatistic[1] = (double)compressedContent.length;
+                compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
+                globalStatistic.addTotalCompressedData(input.length);
+                globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
+                globalStatistic.addTotalCompressionRatio((double)input.length / (double)compressedContent.length);
+            }
             return compressionStatistic;
         }
         catch (DomainLayerException e) { throw e;}

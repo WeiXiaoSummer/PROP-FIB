@@ -11,10 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -61,7 +58,8 @@ public class historyViewController implements Initializable {
     public void helpPressed() {
         Stage mainStage = (Stage)pane.getScene().getWindow();
         PresentationCtrl.getInstance().showNotification("Information", "Information", null,
-                "- Click <Clear> button to clear the history\n\n- Click <Refresh> button to refresh the history", mainStage);
+                "- Click <Clear> button to clear the history\n\n- Click <Refresh> button to refresh the history" +
+                        "\n\n- Double clicks on a row to see the detailed information", mainStage);
     }
     /**
      * Set the default behaviour when the refresh button is pressed:
@@ -126,6 +124,7 @@ public class historyViewController implements Initializable {
             Button accept = new Button("ACCEPT");
             accept.setPrefSize(70, 30);
             GridPane.setHalignment(accept, HPos.RIGHT);
+            GridPane.setMargin(accept, new Insets(0,0,0,20));
             gridPane.add(accept, 1, columnNames.size());
             Scene scene = new Scene(gridPane);
             Stage stage = new Stage();
