@@ -41,6 +41,12 @@ public class comparisionController implements Initializable {
                 "1- Select the file to be compared\n\n2- Select the algorithm to be used\n\n3- Click accept to start the comparision", mainStage);
     }
 
+    /**
+     * Set default behaviour when the select file button is pressed:
+     *      -Opens the fileChooser dialog
+     *      -Writes the path of the selected file to the text field filePath
+     *      -If selected file isn't null writes the name of the selected file to the text field file path
+     */
     public void selectPressed() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt")
@@ -58,11 +64,22 @@ public class comparisionController implements Initializable {
         }
     }
 
+    /**
+     * Set default behaviour when the cancel button is pressed:
+     *      -Clear all text fields
+     */
     public void cancelPressed() {
         filePath.setText("");
     }
 
 
+    /**
+     * Set default behaviour when the accept button is pressed:
+     *      -Check if there is any uncompleted text field
+     *      -Creates a Thread which calls the method getTXTsForCompare or getImgsForCompare to compress the selected file
+     *      -Show compression statistics once the compression is done
+     * @throws PresentationLayerException
+     */
     public void acceptPressed() throws PresentationLayerException{
         String fileType = PresentationCtrl.getInstance().getFileType(filePath.getText());
         Stage mainStatge = (Stage) stackPane.getScene().getWindow();

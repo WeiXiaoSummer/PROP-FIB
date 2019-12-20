@@ -31,7 +31,7 @@ public class LZ78 extends Algorithm {
             long startTime=System.currentTimeMillis();
             byte[] text = file.getContent();
             globalStatistic.addNumCompression();
-            Object[] compressionStatistic = {0, 0, 0d};
+            Object[] compressionStatistic = {0d, 0d, 0d};
 
             // compress
             TrieTree trieTree = new TrieTree();
@@ -54,7 +54,7 @@ public class LZ78 extends Algorithm {
                 compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
                 globalStatistic.addTotalCompressedData(text.length);
                 globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
-                globalStatistic.addTotalCompressionRatio(text.length / compressedContent.length);
+                globalStatistic.addTotalCompressionRatio((double)text.length / (double)compressedContent.length);
             }
             return compressionStatistic;
         }
@@ -116,7 +116,7 @@ public class LZ78 extends Algorithm {
             globalStatistic.addTotalDecompressionTime(decompressTime);
             byte[] decompressedContent = outStream.toString().getBytes();
             file.setContent(decompressedContent);
-            Object[] compressionStatistic = {decompressedContent.length, compressedContent.length, decompressTime};
+            Object[] compressionStatistic = {(double)decompressedContent.length, (double)compressedContent.length, decompressTime};
             return compressionStatistic;
         }
         catch (Exception e) {
