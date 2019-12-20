@@ -196,7 +196,7 @@ public class DomainCtrl {
 
             //creates a Object array into which the global compression statistic is stored. We stores in this Object array the total size of the
             //selected file, the total size of the corresponding compressed file and the total time used for compress this file
-            Object[] compressStatistic = {0, 0, 0d};
+            Object[] compressStatistic = {0d, 0d, 0d};
             double compressionRatio, compressionTime;
             compressionRatio = compressionTime = 0;
 
@@ -231,7 +231,7 @@ public class DomainCtrl {
             if (inputFile.getFile().isFile()) {
                 String fileType = getFileType(inputFile.getFile());
                 compressFile(inputFile, compressedFile, fileType, algorithmType, compressStatistic);
-                if ((int) compressStatistic[0] != 0) compressionRatio = (double) ((int)compressStatistic[0]/(int)compressStatistic[1]);
+                if ((double) compressStatistic[0] != 0) compressionRatio = (double)compressStatistic[0]/(double)compressStatistic[1];
                 compressionTime = (double) compressStatistic[2];
                 localHistory = new LocalHistory(inFilePath, outputFile.getFile().getPath(), fileType, "Compression", algorithmType, compressionRatio, compressionTime);
             }
@@ -239,7 +239,7 @@ public class DomainCtrl {
             //  -case if it's a folder
             else {
                 compressFolder(inputFile, compressedFile, algorithmType, compressStatistic);
-                if ((int) compressStatistic[0] != 0) compressionRatio = (double) ((int)compressStatistic[0]/(int)compressStatistic[1]);
+                if ((double) compressStatistic[0] != 0) compressionRatio = (double)compressStatistic[0]/(double)compressStatistic[1];
                 compressionTime = (double) compressStatistic[2];
                 localHistory = new LocalHistory(inFilePath, outputFile.getFile().getPath(), "FOLDER", "Compression", algorithmType, compressionRatio, compressionTime);
             }
@@ -324,8 +324,8 @@ public class DomainCtrl {
             else throw new DomainLayerException("This folder contains files that can't be compressed:\n\n"+inputFile.getFile().getPath()+"\n\ncompression aborted.");
 
             //add the local compression statistic to the global compression statistic
-            compressStatistic[0] = (int) compressStatistic[0] + (int) compressedFileStatistic[0];
-            compressStatistic[1] = (int) compressStatistic[1] + (int) compressedFileStatistic[1];
+            compressStatistic[0] = (double) compressStatistic[0] + (double) compressedFileStatistic[0];
+            compressStatistic[1] = (double) compressStatistic[1] + (double) compressedFileStatistic[1];
             compressStatistic[2] = (double) compressStatistic[2] + (double) compressedFileStatistic[2];
         }
         catch (PersistenceLayerException e) {throw new DomainLayerException(e.getMessage());}
@@ -355,7 +355,7 @@ public class DomainCtrl {
             //     - the first position contains the size of the decompressed folder expressed in bytes
             //     - the second position contains the size of the compressed file expressed in bytes
             //     - the third position contains the time used in
-            Object[] decompressStatistic = {0, 0, 0d};
+            Object[] decompressStatistic = {0d, 0d, 0d};
 
             //open an input stream with the input compressed file for read it's content
             DataCtrl.getInstance().setInputCompressedFileStream(inFilePath);
@@ -387,7 +387,7 @@ public class DomainCtrl {
             //compute the decompression statistic and add this operation to the global history
             double compressionRatio, decompressionTime;
             compressionRatio = decompressionTime = 0;
-            if ((int) decompressStatistic[0] != 0) compressionRatio = (double) ((int)decompressStatistic[0]/(int)decompressStatistic[1]);
+            if ((double) decompressStatistic[0] != 0) compressionRatio = (double)decompressStatistic[0]/(double)decompressStatistic[1];
             decompressionTime = (double) decompressStatistic[2];
             LocalHistory localHistory = new LocalHistory(inFilePath, targetDirectoryPath, "PROP", "Decompression", "AUTO", compressionRatio, decompressionTime);
             globalHistory.addLocalHistory(localHistory);

@@ -31,7 +31,7 @@ public class JPEG extends Algorithm {
     public Object[] comprimir(Fitxer inputImg, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         try {
             globalStatistic.addNumCompression();
-            Object[] compressionStatistic = {0, 0, 0d};
+            Object[] compressionStatistic = {0d, 0d, 0d};
             long startTime=System.currentTimeMillis();
             byte[] input = inputImg.getContent();
 
@@ -55,7 +55,7 @@ public class JPEG extends Algorithm {
             compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
             globalStatistic.addTotalCompressedData(input.length);
             globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
-            globalStatistic.addTotalCompressionRatio(input.length / compressedContent.length);
+            globalStatistic.addTotalCompressionRatio((double)input.length / (double)compressedContent.length);
 
             return compressionStatistic;
         }
@@ -100,7 +100,7 @@ public class JPEG extends Algorithm {
             globalStatistic.addTotalDecompressedData(compressedContent.length);
             globalStatistic.addTotalDecompressionTime(decompressTime);
             outPutFile.setContent(decompressedContent);
-            Object[] compressionStatistic = {decompressedContent.length, compressedContent.length, decompressTime};
+            Object[] compressionStatistic = {(double)decompressedContent.length, (double)compressedContent.length, decompressTime};
             return compressionStatistic;
         }
         catch (DomainLayerException e) {throw e;}

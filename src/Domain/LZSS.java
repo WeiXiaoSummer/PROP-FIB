@@ -59,7 +59,7 @@ public class LZSS extends Algorithm {
     public Object[] comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         try {
             globalStatistic.addNumCompression();
-            Object[] compressionStatistic = {0, 0, 0d};
+            Object[] compressionStatistic = {0d, 0d, 0d};
             long startTime = System.currentTimeMillis();
 
             // Init variables
@@ -137,12 +137,12 @@ public class LZSS extends Algorithm {
             compressedFile.write(compressedContent);
 
             if (content.length > 0) {
-                compressionStatistic[0] = content.length;
-                compressionStatistic[1] = compressedContent.length;
+                compressionStatistic[0] = (double) content.length;
+                compressionStatistic[1] = (double) compressedContent.length;
                 compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
                 globalStatistic.addTotalCompressedData(content.length);
                 globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
-                globalStatistic.addTotalCompressionRatio(content.length / compressedContent.length);
+                globalStatistic.addTotalCompressionRatio((double)content.length / (double)compressedContent.length);
             }
 
             return compressionStatistic;
@@ -208,7 +208,7 @@ public class LZSS extends Algorithm {
             globalStatistic.addNumDecompression();
             globalStatistic.addTotalDecompressedData(content.length);
             globalStatistic.addTotalDecompressionTime(decompressTime);
-            Object[] compressionStatistic = {decompressedContent.length, content.length, decompressTime};
+            Object[] compressionStatistic = {(double)decompressedContent.length, (double)content.length, decompressTime};
             return compressionStatistic;
         }
         catch (Exception e) {
