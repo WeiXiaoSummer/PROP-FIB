@@ -122,6 +122,17 @@ public class compressionController implements Initializable {
 
 
     /**
+     * Set default behaviour when the help button is pressed:
+     *      -Opens a dialog to guide user
+     */
+    public void helpPressed() {
+        Stage mainStage = (Stage)stackpane.getScene().getWindow();
+        PresentationCtrl.getInstance().showNotification("Information", "Information", "To compress the folder of the file:",
+                "1- Select the file or the folder to be compressed\n\n2- Select the folder to save the compressed file\n\n3- Introduce the name of the compressed file to be saved" +
+                        "\n\n4- Select an algorithm for compression\n\n5- Click accept to start the compression", mainStage);
+    }
+
+    /**
      * Set default behaviour when the accpt button is pressed:
      *      -Check if there is any uncompleted text field
      *      -Creates a Thread which calls the compress method to compress the selected file

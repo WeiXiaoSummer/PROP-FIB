@@ -31,6 +31,16 @@ public class comparisionController implements Initializable {
         algorithms = PresentationCtrl.getInstance().getAlgorithms();
     }
 
+    /**
+     * Set default behaviour when the help button is pressed:
+     *      -Opens a dialog to guide user
+     */
+    public void helpPressed() {
+        Stage mainStage = (Stage)stackPane.getScene().getWindow();
+        PresentationCtrl.getInstance().showNotification("Information", "Information", "To compare the file:",
+                "1- Select the file to be compared\n\n2- Select the algorithm to be used\n\n3- Click accept to start the comparision", mainStage);
+    }
+
     public void selectPressed() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt")

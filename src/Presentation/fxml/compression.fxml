@@ -18,6 +18,7 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
+                  <Button layoutX="655.0" layoutY="26.0" mnemonicParsing="false" onAction="#helpPressed" prefHeight="30.0" prefWidth="56.0" text="Help" />
                </children>
             </Pane>
             <GridPane fx:id="pnCompressió" layoutY="125.0" prefHeight="475.0" prefWidth="760.0" style="-fx-background-color: white;">

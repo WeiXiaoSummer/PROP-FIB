@@ -266,6 +266,7 @@ public class PresentationCtrl {
         alert.initOwner(stage);
         alert.setX(alert.getX()+(stage.getWidth()/2-380d));
         alert.show();
+        alert.setWidth(500d);
     }
 
     /**

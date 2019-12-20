@@ -567,6 +567,7 @@ public class DomainCtrl {
      */
     public Pair<byte[], byte[]> getCompareFilesContent(String filePath, String algorithm) throws DomainLayerException{
         try {
+            if (algorithm.equals("AUTO")) algorithm = "LZ78";
             byte[] originalContent = DataCtrl.getInstance().getInputFile(filePath);
             Fitxer originalFile = new Fitxer(new File(filePath), originalContent);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();

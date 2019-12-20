@@ -63,7 +63,17 @@ public class decompressionController {
     }
 
     /**
-     * Set default behaviour when the accpt button is pressed:
+     * Set default behaviour when the help button is pressed:
+     *      -Opens a dialog to guide user
+     */
+    public void helpPressed() {
+        Stage mainStage = (Stage)stackpane.getScene().getWindow();
+        PresentationCtrl.getInstance().showNotification("Information", "Information", "To decompress an compressed file:",
+                "1- Select the file to be decompressed\n\n2- Select the folder to save the decompressed folder\n\n3- Click accept to start the decompression", mainStage);
+    }
+
+    /**
+     * Set default behaviour when the accept button is pressed:
      *      -Check if there is any uncompleted text field
      *      -Creates a Thread which calls the decompress method to decompress the selected file
      *      -Show decompression statistics once the compression is done

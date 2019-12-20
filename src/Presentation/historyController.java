@@ -12,6 +12,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -24,6 +25,7 @@ import java.util.ResourceBundle;
  * This is a controller Class which controls the historyView
  */
 public class historyController implements Initializable {
+    private @FXML Pane pane;
     private @FXML TableView tableView;
     private ArrayList<String> columnNames;
 
@@ -48,6 +50,15 @@ public class historyController implements Initializable {
         tableView.setItems(data);
     }
 
+    /**
+     * Set default behaviour when the help button is pressed:
+     *      -Opens a dialog to guide user
+     */
+    public void helpPressed() {
+        Stage mainStage = (Stage)pane.getScene().getWindow();
+        PresentationCtrl.getInstance().showNotification("Information", "Information", null,
+                "- Click <Clear> button to clear the history\n\n- Click <Refresh> button to refresh the history", mainStage);
+    }
     /**
      * Set the default behaviour when the refresh button is pressed:
      *      -reload histories
