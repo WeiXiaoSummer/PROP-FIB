@@ -18,7 +18,7 @@ public class LZ78 extends Algorithm {
             long startTime=System.currentTimeMillis();
             byte[] text = file.getContent();
             globalStatistic.addNumCompression();
-            Object[] compressionStatistic = {0, 0, 0};
+            Object[] compressionStatistic = {0, 0, 0d};
 
             // compress
             TrieTree trieTree = new TrieTree();
@@ -46,9 +46,8 @@ public class LZ78 extends Algorithm {
             return compressionStatistic;
         }
         catch (Exception e) {
-            throw new DomainLayerException( "An error has occurred while compressing the file:\n"+file.getFile().getPath()+
-                "\nCompression aborted");}
-
+            throw new DomainLayerException( "An error has occurred while compressing the file:\n\n"+file.getFile().getPath()+
+                    "\n\nCompression aborted\n\n" + e.getMessage());}
     }
 
     @Override
@@ -98,8 +97,8 @@ public class LZ78 extends Algorithm {
             return compressionStatistic;
         }
         catch (Exception e) {
-            throw new DomainLayerException("An error has occurred while decompressing the file, decompression aborted.\n"+
-                    e.getMessage());}
+            throw new DomainLayerException("An error has occurred while decompressing the file:\n\n" + file.getFile().getName()+"\n\n" +
+                    "The compressed content is corrupted, decompression aborted.");}
     }
 
     // transfer bytes to int

@@ -20,9 +20,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * This is a controller Class which controls the historyView
+ */
 public class historyController implements Initializable {
     private @FXML TableView tableView;
     private ArrayList<String> columnNames;
+
+    /**
+     * Initializes the historyView when it's loaded.
+     *      -Load the column names to be displayed
+     *      -Load the histories
+     * @param location default location
+     * @param resources default resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         columnNames = PresentationCtrl.getInstance().getHistoryColumnNames();
@@ -37,16 +48,28 @@ public class historyController implements Initializable {
         tableView.setItems(data);
     }
 
+    /**
+     * Set the default behaviour when the refresh button is pressed:
+     *      -reload histories
+     */
     public void refreshPressed() {
         ObservableList<String[]> data = PresentationCtrl.getInstance().getHistories();
         tableView.setItems(data);
     }
 
+    /**
+     * Set the default behaviour when the clear button is pressed:
+     *      -clear all histories
+     */
     public void clearPressed() {
         PresentationCtrl.getInstance().clearHistory();
         refreshPressed();
     }
 
+    /**
+     * Set the default behaviour when double clicks on a row of the tableView
+     *      -Shows a dialog which contains detailed information of the selected local history
+     */
     public void setDoubleClickOnTable(){
         tableView.setRowFactory(tableView-> {
             TableRow<String[]> row = new TableRow<>();
@@ -57,8 +80,16 @@ public class historyController implements Initializable {
         });
     }
 
+    /**
+     * Checks the mouseEvent, if it's a double click then show the selected row
+     * @param event mouseEvent
+     * @param row selected row
+     */
     public void displayHistory(MouseEvent event, TableRow<String[]> row) {
+        //Checks if it's a double click
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() >= 2 && (!row.isEmpty())) {
+
+            //Paint and show the dialog
             String[] lh = row.getItem();
             GridPane gridPane = new GridPane();
             gridPane.setVgap(10);

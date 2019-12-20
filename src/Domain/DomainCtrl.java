@@ -253,8 +253,9 @@ public class DomainCtrl {
             return new Pair<>(compressionRatio, compressionTime);
         }
         catch (PersistenceLayerException e) {throw new DomainLayerException(e.getMessage());}
-        catch (IOException e) {throw new DomainLayerException("An internal error has occurred while compressing " + inFilePath + "\n"+e.getMessage());}
         catch (DomainLayerException e) {throw e;}
+        catch (Exception e) {throw new DomainLayerException("An unidentified error has occurred while compressing:\n\n" + inFilePath + "\n\n"+e.getMessage());}
+
     }
 
     /**
@@ -319,7 +320,8 @@ public class DomainCtrl {
                 if (algorithmType.equals("AUTO")) compressedFileStatistic = algorithms.get("LZ78").comprimir(inputFile, compressedFile);
                 else compressedFileStatistic = algorithms.get(algorithmType).comprimir(inputFile, compressedFile);
             }
-            else compressedFileStatistic = algorithms.get("JPEG").comprimir(inputFile, compressedFile);
+            else if (type.equals("ppm")) compressedFileStatistic = algorithms.get("JPEG").comprimir(inputFile, compressedFile);
+            else throw new DomainLayerException("This folder contains files that can't be compressed:\n\n"+inputFile.getFile().getPath()+"\n\ncompression aborted.");
 
             //add the local compression statistic to the global compression statistic
             compressStatistic[0] = (int) compressStatistic[0] + (int) compressedFileStatistic[0];
@@ -396,6 +398,8 @@ public class DomainCtrl {
         }
         catch (PersistenceLayerException e) {throw new DomainLayerException(e.getMessage());}
         catch (DomainLayerException e) {throw e;}
+        catch (Exception e) {throw new DomainLayerException("An error has occurred while decompressing the file:\n\n"+inFilePath+"\n\nThe compressed" +
+                " content is corrupted, decompression aborted.");}
     }
 
     /**
@@ -484,7 +488,7 @@ public class DomainCtrl {
 
     /**
      * Returns the name of the columns which should be displayed in the tableView of the historyView which shows the global
-     * histories
+     * histories.
      * @return the name of the columns which should be displayed in the tableView of the history view which shows the global histories
      */
     public ArrayList<String> getHistoryColumnNames() {
@@ -493,45 +497,53 @@ public class DomainCtrl {
 
     /**
      * Returns the name of the columns which should be displayed in the tableView of the statisticView which shows the global statistic
-     * of each algorithm
+     * of each algorithm.
      * @return the name of the columns which should be displayed in the tableView of the statisticView which shows the global statistic
      * of each algorithm
      */
-    public ArrayList<String> getStatisticColumnNames() {
-        ArrayList<String> statistcColumnNames = new ArrayList<>(Arrays.asList("Av.Comp. Speed", "Av.Decomp. Speed", "Av.Comp. Ratio"));
+    public String[] getStatisticColumnNames() {
+        String[] statistcColumnNames = {"","Av.Comp. Speed", "Av.Decomp. Speed", "Av.Comp. Ratio"};
         return statistcColumnNames;
     }
 
     /**
-     * Returns the name of the available algorithms that can be choosed for user
-     * @return the name of the available algorithms that can be choosed for user
+     * Returns the name of the available algorithms that can be choosed for user.
+     * @return the name of the available algorithms that can be choosed for user, the key of the pair contains the names of the .txt compression
+     * algorithm and the value contains the names of the .ppm compression algorithm.
      */
-    public ArrayList<String> getAlgorithmsNames() {
-        ArrayList<String> algorithms = new ArrayList<>(Arrays.asList("AUTO", "LZSS", "LZ78", "JPEG"));
-        return algorithms;
+    public Pair<String[], String[]> getAlgorithmsNames() {
+        String[] txtAlgorithms = {"AUTO", "LZSS", "LZ78"};
+        String[] ppmAlgorithms = {"JPEG"};
+        return new Pair<>(txtAlgorithms, ppmAlgorithms);
     }
 
     /**
-     * Returns the statistic of each algorithm
-     * @return the statistic of each algorithm
+     * Returns the statistic of each algorithm.
+     * @return a ArrayList of String arrays, each of these array are composed by:
+     *      -Name of the algorithm
+     *      -Average compression speed of this algorithm measured in MB/s
+     *      -Average decompression speed of this algorithm measured in MB/s
+     *      -Average compression ratio of this algorithm
      */
-    public ArrayList<double[]> getStatistics() {
-        ArrayList<double[]> statistics = new ArrayList<>();
+    public ArrayList<String[]> getStatistics() {
+        ArrayList<String[]> statistics = new ArrayList<>();
         String[] algorithms = {"LZSS", "LZ78", "JPEG"};
         for (String algorithm : algorithms) {
+            double averageCompressionSpeed, averageDecompressionSpeed, averageCompressionRatio;
+            averageCompressionSpeed = averageDecompressionSpeed = averageCompressionRatio = 0d;
             GlobalStatistic algorithmStatistic = this.algorithms.get(algorithm).getGlobalStatistic();
-            double averageCompressionSpeed = algorithmStatistic.getTotalCompressedData()/algorithmStatistic.getTotalCompressionTime();
-            double averageDecompressionSpeed = algorithmStatistic.getTotalDecompressedData()/algorithmStatistic.getTotalDecompressionTime();
-            double averageCompressionRatio = algorithmStatistic.getTotalCompressionRatio()/algorithmStatistic.getNumCompression();
-            double[] statistic = {averageCompressionSpeed, averageDecompressionSpeed, averageCompressionRatio};
+            if (algorithmStatistic.getTotalCompressionTime() != 0d) averageCompressionSpeed = algorithmStatistic.getTotalCompressedData()/(algorithmStatistic.getTotalCompressionTime()*1000000);
+            if (algorithmStatistic.getTotalDecompressionTime() != 0d) averageDecompressionSpeed = algorithmStatistic.getTotalDecompressedData()/(algorithmStatistic.getTotalDecompressionTime()*1000000);
+            if (algorithmStatistic.getNumCompression() != 0d) averageCompressionRatio = algorithmStatistic.getTotalCompressionRatio()/algorithmStatistic.getNumCompression();
+            String[] statistic = {algorithm, String.format("%.2f", averageCompressionSpeed)+" MB/s", String.format("%.2f", averageDecompressionSpeed)+" MB/s", String.format("%.2f", averageCompressionRatio)};
             statistics.add(statistic);
         }
         return statistics;
     }
 
     /**
-     * Returns the global history
-     * @return the global history
+     * Returns the global history.
+     * @return the global history.
      */
     public ArrayList<String[]> getHistories() {
         ArrayList<String[]> histories = new ArrayList<>();
@@ -546,10 +558,10 @@ public class DomainCtrl {
     }
 
     /**
-     * Returns the original content of the selected file and it's corresponding content after applied the compress-decompress process
-     * @param filePath path of the file to be compared
-     * @param algorithm name of the algorithm to be used
-     * @return the original content and the content after applied the compress-decompress process
+     * Returns the original content of the selected file and it's corresponding content after applied the compress-decompress process;
+     * @param filePath path of the file to be compared.
+     * @param algorithm name of the algorithm to be used.
+     * @return the original content and the content after applied the compress-decompress process.
      * @throws DomainLayerException
      * @throws PersistenceLayerException
      */
@@ -572,10 +584,18 @@ public class DomainCtrl {
 
     //------------------------------------------------Getter Methods--------------------------------------------------//
 
+    /**
+     * Clears all the histories stored in this program.
+     */
     public void clearHistory() {
         this.globalHistory.clearHistory();
     }
 
+    /**
+     * Returns the extension of the given file.
+     * @param f the file to be determinate.
+     * @return the type of the given file, for example if the file has name xxx.txt it returns "txt".
+     */
     private String getFileType(File f) {
         String fileName = f.getName();
         int dotIndex = fileName.lastIndexOf('.');

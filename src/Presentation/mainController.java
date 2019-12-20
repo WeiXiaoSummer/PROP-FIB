@@ -11,6 +11,9 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This is a controller class which controls the mainView
+ */
 public class mainController implements Initializable {
     private @FXML BorderPane borderpane;
     private @FXML StackPane compressionView;
@@ -18,6 +21,12 @@ public class mainController implements Initializable {
     private @FXML Pane statisticView;
     private @FXML Pane historyView;
     private @FXML StackPane comparisionView;
+
+    /**
+     * Initializes the mainView when it's loaded
+     * @param location default location
+     * @param resources default resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -32,22 +41,43 @@ public class mainController implements Initializable {
         }
     }
 
+    /**
+     * Changes the center view to the compressionView when the compression button is pressed.
+     */
     public void compressionPressed() { borderpane.setCenter(compressionView); }
 
+    /**
+     * Changes the center view to the decompressionView when the decompression button is pressed.
+     */
     public void decompressionPressed() {
         borderpane.setCenter(decompressionView);
     }
 
+    /**
+     * Changes the center view to the statisticView when the statistic button is pressed.
+     */
     public void statisticPressed() {
         borderpane.setCenter(statisticView);
     }
 
+    /**
+     * Changes the center view to the historyView when the history button is pressed.
+     */
     public void historyPressed() { borderpane.setCenter(historyView); }
 
+    /**
+     * Changes the center view to the comparisionView when the comparision button is pressed.
+     */
     public void comparisionPressed() {
         borderpane.setCenter(comparisionView);
     }
 
+    /**
+     * Set the default behaviour when the exit button is pressed:
+     *      -Stores the histories and the global statistics
+     *      -Closes the program
+     * @throws PresentationLayerException
+     */
     public void exitPressed() throws PresentationLayerException {
         PresentationCtrl.getInstance().closeAndSave();
         System.exit(0);

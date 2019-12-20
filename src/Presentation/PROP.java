@@ -8,11 +8,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The main runnable Class
+ */
 public class PROP extends Application {
     private Stage primary;
 
+    /**
+     * Starts the program.
+     * @param primaryStage the primary stage where the program is showed.
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        //Set the default behaviour when a exception throws:
+        //      -Display a message box showing the error message
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> Platform.runLater(() -> {
             PresentationCtrl.getInstance().showNotification("Error", "Error", "An internal error has occurred:", e.getMessage(), primary);
         }));
@@ -39,7 +50,4 @@ public class PROP extends Application {
         launch(args);
     }
 
-    private static void showErrorDialog(Throwable e) {
-        System.out.println(e.getMessage());
-    }
 }

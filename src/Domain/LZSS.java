@@ -59,7 +59,7 @@ public class LZSS extends Algorithm {
     public Object[] comprimir(Fitxer inFile, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         try {
             globalStatistic.addNumCompression();
-            Object[] compressionStatistic = {0, 0, 0};
+            Object[] compressionStatistic = {0, 0, 0d};
             long startTime = System.currentTimeMillis();
 
             // Init variables
@@ -148,9 +148,8 @@ public class LZSS extends Algorithm {
             return compressionStatistic;
         }
         catch (Exception e) {
-            throw new DomainLayerException( "An error has occurred while compressing the file:\n"+inFile.getFile().getPath()+
-                    "\nCompression aborted");
-        }
+            throw new DomainLayerException( "An error has occurred while compressing the file:\n\n"+inFile.getFile().getPath()+
+                    "\n\nCompression aborted\n\n" + e.getMessage());}
 
     }
 
@@ -213,9 +212,8 @@ public class LZSS extends Algorithm {
             return compressionStatistic;
         }
         catch (Exception e) {
-            throw new DomainLayerException("An error has occurred while decompressing the file, decompression aborted.\n"+
-                    e.getMessage());
-        }
+            throw new DomainLayerException("An error has occurred while decompressing the file:\n\n" + outputFile.getFile().getName()+"\n\n" +
+                    "The compressed content is corrupted, decompression aborted.");}
     }
 
     /**

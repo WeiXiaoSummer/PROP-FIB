@@ -1,16 +1,16 @@
 package Presentation;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
-import java.io.File;
-
+/**
+ * This is a controller Class which controls the imageComparerView.
+ */
 public class imageComparerController {
     private @FXML StackPane stackRight;
     private @FXML StackPane stackLeft;
@@ -18,6 +18,11 @@ public class imageComparerController {
     private @FXML ScrollPane spLeft;
     private @FXML ScrollPane spRight;
 
+    /**
+     * Sets the images to be showed to the imageComparerView.
+     * @param original original image
+     * @param modified image after applied the compression-decompression process
+     */
     public void setImages(Image original, Image modified) {
         ImageView imageLeft = new ImageView();
         ImageView imageRight = new ImageView();
@@ -43,6 +48,11 @@ public class imageComparerController {
         stackRight.prefHeightProperty().bind(sliderZoom.valueProperty().multiply(modified.getHeight()));
     }
 
+    /**
+     * Sets the texts to be showed to the imageComparerView
+     * @param original original text
+     * @param modified text after applied the compression-decompression process
+     */
     public void setText(String original, String modified) {
         Text textLeft = new Text();
         Text textRight = new Text();
@@ -51,5 +61,6 @@ public class imageComparerController {
 
         stackLeft.getChildren().add(textLeft);
         stackRight.getChildren().add(textRight);
+        sliderZoom.setVisible(false);
     }
 }

@@ -4,6 +4,7 @@ import Commons.DomainLayerException;
 import javafx.util.Pair;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -30,9 +31,10 @@ public class JPEG extends Algorithm {
     public Object[] comprimir(Fitxer inputImg, ByteArrayOutputStream compressedFile) throws DomainLayerException {
         try {
             globalStatistic.addNumCompression();
-            Object[] compressionStatistic = {0, 0, 0};
+            Object[] compressionStatistic = {0, 0, 0d};
             long startTime=System.currentTimeMillis();
             byte[] input = inputImg.getContent();
+
             Pair<Integer, Integer> dimension = getDimension(input);
             int offset = 9 + dimension.getKey().toString().length() + dimension.getValue().toString().length();
             byte[] compressedContent = Compress(input, dimension.getKey(), dimension.getValue(), offset);
@@ -48,21 +50,23 @@ public class JPEG extends Algorithm {
             compressedFile.write(compressedContentSize); compressedFile.write(outPutWidth);
             compressedFile.write(outPutHeight); compressedFile.write(compressedContent);
 
-            if (input.length > 0) {
-                compressionStatistic[0] = input.length;
-                compressionStatistic[1] = compressedContent.length;
-                compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
-                globalStatistic.addTotalCompressedData(input.length);
-                globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
-                globalStatistic.addTotalCompressionRatio(input.length / compressedContent.length);
-            }
+            compressionStatistic[0] = input.length;
+            compressionStatistic[1] = compressedContent.length;
+            compressionStatistic[2] = (double) (endTime - startTime) * 0.001;
+            globalStatistic.addTotalCompressedData(input.length);
+            globalStatistic.addTotalCompressionTime((double) compressionStatistic[2]);
+            globalStatistic.addTotalCompressionRatio(input.length / compressedContent.length);
 
             return compressionStatistic;
         }
         catch (DomainLayerException e) { throw e;}
+        catch (IOException e) {
+            throw new DomainLayerException("An error has occurred while compressing the file:\n\n"+inputImg.getFile().getPath()+
+                    "\n\nCompression aborted\n\n" + e.getMessage()); }
         catch (Exception e) {
-            throw new DomainLayerException("An unidentified error has occurred while compressing the file:\n"+inputImg.getFile().getPath()+
-                    "\nCompression aborted"); }
+            throw new DomainLayerException("An error has occurred while compressing the file:\n\n"+inputImg.getFile().getPath()+"\n\nThis PPM file " +
+                    "has incorrect header, Compression aborted.\n\n");
+        }
     }
 
     /**
@@ -100,8 +104,12 @@ public class JPEG extends Algorithm {
             return compressionStatistic;
         }
         catch (DomainLayerException e) {throw e;}
+        catch (ArrayIndexOutOfBoundsException e) {
+            throw new DomainLayerException("An error has occurred while decompressing the file:\n\n" + outPutFile.getFile().getName()+"\n\n" +
+                    "The compressed content is corrupted, decompression aborted.");
+        }
         catch (Exception e) {
-            throw new DomainLayerException("An error has occurred while decompressing the file, decompression aborted.\n"+
+            throw new DomainLayerException("An unidentified error has occurred while decompressing the file, decompression aborted.\n\n"+
                     e.getMessage()); }
     }
 
