@@ -3,6 +3,7 @@ package Presentation;
 import Commons.DomainLayerException;
 import Commons.PresentationLayerException;
 import Domain.DomainCtrl;
+import Presentation.comparisionView.compareViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -127,6 +128,7 @@ public class PresentationCtrl {
      * of each algorithm
      */
     public String[] getStatisticColumnNames() {return DomainCtrl.getInstance().getStatisticColumnNames();}
+
     /**
      * Returns the name of the columns which should be displayed in the tableView of the historyView which shows the global
      * histories.
@@ -178,6 +180,7 @@ public class PresentationCtrl {
      */
     public Pair<Image, Image> getImgsForCompare(String imgPath) throws PresentationLayerException{
         try {
+            //get the dimension of the image
             Pair<byte[], byte[]> imgContents = DomainCtrl.getInstance().getCompareFilesContent(imgPath, "JPEG");
             byte[] originalContent = imgContents.getKey();
             byte[] decompressedContent = imgContents.getValue();
@@ -194,11 +197,19 @@ public class PresentationCtrl {
                 ++pos;
             }
             int offset = pos + 5;
+
+            //Javafx does not support .ppm file, so what we do is create a WritableImage and write it's content manual,
+            //that means introduce all the pixel manually.
+
+            //Create WritableImages
             WritableImage originalImage = new WritableImage(width, height);
             WritableImage decompressedImage = new WritableImage(width, height);
+
+            //Get pixelWriter for write pixels
             PixelWriter originalPixelWriter = originalImage.getPixelWriter();
             PixelWriter decompresedPixelWriter = decompressedImage.getPixelWriter();
 
+            //Read pixels from the .ppm file and write it into the corresponding WritableImage
             for (int i = 0; i < height; ++i) {
                 int xPos = i * width*3 + offset;
                 for (int j = 0; j < width; ++j) {
@@ -331,17 +342,22 @@ public class PresentationCtrl {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Stage stage = new Stage();
-            fxmlLoader.setLocation(getClass().getResource("fxml/imageComparer.fxml"));
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("Presentation/comparisionView/compareView.fxml"));
             Pane imgpane = fxmlLoader.load();
-            imageComparerController controller = fxmlLoader.getController();
+            compareViewController controller = fxmlLoader.getController();
             if (toBeSet.equals("ppm")) controller.setImages(imgs.getKey(), imgs.getValue());
             else controller.setText(texts.getKey(), texts.getValue());
             Scene scene = new Scene(imgpane);
             stage.setScene(scene);
+            stage.setTitle("Compare");
             stage.show();
         }
-        catch (IOException e) {
-            throw new PresentationLayerException("");
+        catch (IllegalStateException e) {
+            throw new PresentationLayerException("An error has occurred while trying to set location, comparision aborted.\n\nsee below\n\n"+e.toString());
         }
+        catch (IOException e) {
+            throw new PresentationLayerException("An error has occurred while trying to load the stage compareView, comparision aborted\n\nsee below\n\n"+e.toString());
+        }
+        catch (PresentationLayerException e) {throw e;}
     }
 }

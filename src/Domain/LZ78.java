@@ -60,7 +60,7 @@ public class LZ78 extends Algorithm {
         }
         catch (Exception e) {
             throw new DomainLayerException( "An error has occurred while compressing the file:\n\n"+file.getFile().getPath()+
-                    "\n\nCompression aborted\n\n" + e.getMessage());}
+                    "\n\nCompression aborted\n\nsee below\n\n" + e.toString());}
     }
 
     /**

@@ -149,7 +149,7 @@ public class LZSS extends Algorithm {
         }
         catch (Exception e) {
             throw new DomainLayerException( "An error has occurred while compressing the file:\n\n"+inFile.getFile().getPath()+
-                    "\n\nCompression aborted\n\n" + e.getMessage());}
+                    "\n\nCompression aborted\n\nsee below\n\n" + e.toString());}
 
     }
 

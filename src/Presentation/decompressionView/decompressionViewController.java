@@ -1,6 +1,7 @@
-package Presentation;
+package Presentation.decompressionView;
 
 import Commons.PresentationLayerException;
+import Presentation.PresentationCtrl;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -17,7 +18,7 @@ import java.io.File;
 /**
  * This is a controller Class which controls the decompression view.
  */
-public class decompressionController {
+public class decompressionViewController {
 
     private @FXML Pane pane;
     private @FXML StackPane stackpane;

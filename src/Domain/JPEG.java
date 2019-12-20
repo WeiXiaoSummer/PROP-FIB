@@ -62,10 +62,10 @@ public class JPEG extends Algorithm {
         catch (DomainLayerException e) { throw e;}
         catch (IOException e) {
             throw new DomainLayerException("An error has occurred while compressing the file:\n\n"+inputImg.getFile().getPath()+
-                    "\n\nCompression aborted\n\n" + e.getMessage()); }
+                    "\n\nCompression aborted\n\nsee below\n\n" + e.toString()); }
         catch (Exception e) {
             throw new DomainLayerException("An error has occurred while compressing the file:\n\n"+inputImg.getFile().getPath()+"\n\nThis PPM file " +
-                    "has incorrect header, Compression aborted.\n\n");
+                    "has incorrect form, Compression aborted.\n\n");
         }
     }
 
@@ -109,8 +109,8 @@ public class JPEG extends Algorithm {
                     "The compressed content is corrupted, decompression aborted.");
         }
         catch (Exception e) {
-            throw new DomainLayerException("An unidentified error has occurred while decompressing the file, decompression aborted.\n\n"+
-                    e.getMessage()); }
+            throw new DomainLayerException("An unidentified error has occurred while decompressing the file, decompression aborted.\n\nsee below\n\n"+
+                    e.toString()); }
     }
 
     /**

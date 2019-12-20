@@ -1,6 +1,7 @@
-package Presentation;
+package Presentation.comparisionView;
 
 import Commons.PresentationLayerException;
+import Presentation.PresentationCtrl;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class comparisionController implements Initializable {
+public class comparisionViewController implements Initializable {
     private @FXML StackPane stackPane;
     private @FXML Pane pane;
     private @FXML TextField filePath;
@@ -81,23 +82,32 @@ public class comparisionController implements Initializable {
      * @throws PresentationLayerException
      */
     public void acceptPressed() throws PresentationLayerException{
+        //Get the type of the selected file
         String fileType = PresentationCtrl.getInstance().getFileType(filePath.getText());
         Stage mainStatge = (Stage) stackPane.getScene().getWindow();
+        //add constraints
         if (filePath.getText().equals("")) PresentationCtrl.getInstance().showNotification("Warning", "Warning", null, "Input file cannot be empty!",mainStatge);
         else {
+            //Show the waiting animation to tell user that the comparision process has been started
             VBox waitingAnimation = PresentationCtrl.getInstance().shwoWaitingAnimationInScene("      Processing the data... \nPlease do not close the program", stackPane, pane);
             new Thread(() -> {
+                //Creates a thread which calls the get method according to the type of the selected file
                 try {
+
+                    //Get txts for compare
                     if (fileType.equals("txt")) {
                         Pair<String, String> txts = PresentationCtrl.getInstance().getTXTsForCompare(filePath.getText(), comboAlgo2.getValue());
                         Platform.runLater(() -> PresentationCtrl.getInstance().showContent(null, txts, "txt"));
                     }
+
+                    //Get ppms for compare
                     else {
                         Pair<Image, Image> imgs = PresentationCtrl.getInstance().getImgsForCompare(filePath.getText());
                         Platform.runLater(() -> PresentationCtrl.getInstance().showContent(imgs, null, "ppm"));
                     }
                 }
                 catch (PresentationLayerException e) { throw e; }
+                //Remove the waiting animation once the compare window is opened or some error has occurred.
                 finally { Platform.runLater(()->PresentationCtrl.getInstance().disableWaitingAnimationOfTheScene(waitingAnimation, stackPane, pane)); }
             }).start();
         }

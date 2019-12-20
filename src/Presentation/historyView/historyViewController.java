@@ -1,5 +1,6 @@
-package Presentation;
+package Presentation.historyView;
 
+import Presentation.PresentationCtrl;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,7 +25,7 @@ import java.util.ResourceBundle;
 /**
  * This is a controller Class which controls the historyView
  */
-public class historyController implements Initializable {
+public class historyViewController implements Initializable {
     private @FXML Pane pane;
     private @FXML TableView tableView;
     private ArrayList<String> columnNames;
@@ -38,6 +39,7 @@ public class historyController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Initialize the tableView
         columnNames = PresentationCtrl.getInstance().getHistoryColumnNames();
         ObservableList<String[]> data = PresentationCtrl.getInstance().getHistories();
         for (int i = 0; i < 5; ++i) {
@@ -46,6 +48,8 @@ public class historyController implements Initializable {
             tblCol.setCellValueFactory(cellData-> new SimpleStringProperty(cellData.getValue()[index]));
             tableView.getColumns().add(tblCol);
         }
+
+        //set default behaviour while double clicks on a row
         setDoubleClickOnTable();
         tableView.setItems(data);
     }
@@ -64,6 +68,7 @@ public class historyController implements Initializable {
      *      -reload histories
      */
     public void refreshPressed() {
+        //refresh the content of the tableView
         ObservableList<String[]> data = PresentationCtrl.getInstance().getHistories();
         tableView.setItems(data);
     }
