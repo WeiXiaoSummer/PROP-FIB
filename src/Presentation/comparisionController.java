@@ -43,8 +43,7 @@ public class comparisionController implements Initializable {
 
     public void selectPressed() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt")
-                , new FileChooser.ExtensionFilter("Image Files", "*.ppm"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt", "*.ppm"));
         File file = fileChooser.showOpenDialog(pane.getScene().getWindow());
         if (file != null) {
             String path = file.getPath();

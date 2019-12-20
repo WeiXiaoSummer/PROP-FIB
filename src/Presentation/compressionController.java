@@ -54,8 +54,9 @@ public class compressionController implements Initializable {
     public void selectFilePressed() {
         //Choose file
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt")
-                , new FileChooser.ExtensionFilter("Image Files", "*.ppm"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.txt", "*.ppm"));
+        File workingDirectory =new File(System.getProperty("user.dir"));
+        fileChooser.setInitialDirectory(workingDirectory);
         File file = fileChooser.showOpenDialog(pane.getScene().getWindow());
 
         if (file != null) {
