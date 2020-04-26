@@ -41,7 +41,7 @@ Per l'execució del programa has d'introduïr la següent comanda situant en el 
 ```
 Un exemple d'execució seria:
 
-![](execucio.jpg) 
+![](execucio.JPG) 
 
 ## Tutorial
 Aquest programa permet el jugador jugar amb un dels bots dissenyats, concretament són els següents
@@ -51,9 +51,9 @@ Aquest programa permet el jugador jugar amb un dels bots dissenyats, concretamen
 * Smart (el Bot usa l'estratègia minimax)
 
 Un cop escollida la mida del tauler i el Bot, l'usuari només ha d'introduir en cada ronda la columna on vol posar la fitxa. En el cas que s'introdueix un index no vàlid el programa s'avisarà i pots tornar a introduir de nou
-![](error.jpg) 
+![](error.JPG) 
 En tot moment es veurà el tauler actualitzat i al final de la partida es mostrarà en forma de missatge qui es el guanyador.
-![](winner.jpg) 
+![](winner.JPG) 
 ## Construït amb
 
 * [Haskell](https://www.haskell.org) 
