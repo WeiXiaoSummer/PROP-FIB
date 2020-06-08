@@ -10,7 +10,7 @@ La part interessant d'aquesta pràctica és que haurem de desenvolupar desde 0 u
 
 ### Prerequisits 
 
-Per poder executar el nostre bot s'ha de tenir instalat Python3 i antlr4. Podem descarregar el fitxer .jar del antlr4 en el link següent：https://www.antlr.org/download/antlr-4.7.1-complete.jar, i podem trobar l'instrucció de l'instal·lació en aquesta pàgina:
+Per poder executar el nostre bot s'ha de tenir instalat `Python3` i `antlr4`. Podem descarregar el fitxer .jar del `antlr4` en el link següent：https://www.antlr.org/download/antlr-4.7.1-complete.jar, i podem trobar l'instrucció de l'instal·lació en aquesta pàgina:
 https://github.com/antlr/antlr4/blob/master/doc/getting-started.md.
 
 Un cop tenim instal·lada Python3 i antlr4 en el nostre ordinador aleshores ens cal instal·lar el python runtime per antlr4, podem fer servir un dels següents commandes:
