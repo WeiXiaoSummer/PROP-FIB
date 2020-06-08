@@ -48,7 +48,7 @@ Els operadors permesos són:
 * skyline * N: replicació N vegades de l’skyline (vegeu exemple d’interacció).
 * skyline + N: desplaçament a la dreta de l’skyline N posicions.
 * skyline - N: desplaçament a l’esquerra de l’skyline N posicions.
-* //-skyline: retorna l’skyline reflectit.
+* \- skyline: retorna l’skyline reflectit.
 
 Cal destacar que N ha de ser un nombre positiu.
 
